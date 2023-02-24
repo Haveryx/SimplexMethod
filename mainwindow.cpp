@@ -20,6 +20,8 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    solution Solution=new solution();
-    Solution->Show();
+   Solution* solution=new Solution();
+   this->hide();
+   solution->show();
+
 }
