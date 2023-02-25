@@ -2,6 +2,7 @@
 #define SOLUTION_H
 #include <QWidget>
 #include<QLabel>
+#include<QVector>
 #include<QLineEdit>
 namespace Ui {
 class Solution;
@@ -24,9 +25,12 @@ private slots:
 private:
     Ui::Solution *ui;
     QLineEdit ** LineEdits;
+    void PaintTable();
+    void GetSystems();
     QLabel** Labels;
     int vars=0,cEquation=0;
     double* coeff;
+    QVector <QLineEdit**> vectors;
     bool type=false;
     QLabel * Zx;
 };

@@ -59,9 +59,13 @@ for(int i=0;i<vars;i++)
     delete LineEdits[i];
     delete Labels[i];
 }
+ui->pushButton->hide();
+disconnect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(GetCoeff()));
+GetSystems();
 
 
 delete Zx;
+
 }
 
 void Solution::on_radioButton_2_clicked()
@@ -72,4 +76,42 @@ void Solution::on_radioButton_2_clicked()
 void Solution::on_radioButton_clicked()
 {
     type=false;
+}
+
+void Solution::PaintTable()
+{
+
+
+}
+
+void Solution::GetSystems()
+{
+    Labels =new QLabel*[vars+1];
+   LineEdits =new QLineEdit*[vars+1];
+   int i;
+    for(int j=0;j<cEquation;j++)
+    {
+
+
+        for(i=0;i<vars;i++)
+        {
+            LineEdits[i]=new QLineEdit(this);
+            LineEdits[i]->setGeometry(70 +i*65,120 + j*30,30,15);
+            LineEdits[i]->show();
+            char chars[12];
+            sprintf(chars, "X%d",i+1);
+           Labels[i]=new QLabel((QString)chars,this);
+           Labels[i]->setGeometry(105+i*65,120 +j*30,20,15);
+           Labels[i]->show();
+        }
+        Labels[i+1]=new QLabel("=",this);
+        Labels[i+1]->setGeometry(135+i*65,120 +j*30,20,15);
+        Labels[i+1]->show();
+        LineEdits[i+1]=new QLineEdit(this);
+        LineEdits[i+1]->setGeometry(170 +i*65,120 + j*30,30,15);
+        LineEdits[i+1]->show();
+        vectors.push_back(LineEdits);
+    }
+
+
 }
