@@ -2,8 +2,8 @@
 #define SOLUTION_H
 #include <QWidget>
 #include<QLabel>
-#include<QVector>
 #include<QLineEdit>
+#include<QComboBox>
 namespace Ui {
 class Solution;
 }
@@ -21,16 +21,16 @@ private slots:
     void GetCoeff();
     void on_radioButton_2_clicked();
     void on_radioButton_clicked();
-
+void GetCoeffSystem();
 private:
     Ui::Solution *ui;
     QLineEdit ** LineEdits;
     void PaintTable();
     void GetSystems();
     QLabel** Labels;
+    QComboBox ** comboBox;
     int vars=0,cEquation=0;
-    double* coeff;
-    QVector <QLineEdit**> vectors;
+    double* coeff,** coeffSystems;
     bool type=false;
     QLabel * Zx;
 };
