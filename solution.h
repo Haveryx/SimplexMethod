@@ -4,6 +4,7 @@
 #include<QLabel>
 #include<QLineEdit>
 #include<QComboBox>
+#include"massive.h"
 namespace Ui {
 class Solution;
 }
@@ -27,12 +28,15 @@ private:
     QLineEdit ** LineEdits;
     void PaintTable();
     void GetSystems();
+    void ShowEquation();
+    void ShowInputEquation();
     QLabel** Labels;
     QComboBox ** comboBox;
     int vars=0,cEquation=0;
-    double* coeff,** coeffSystems;
+    double* coeff,** coeffSystems,*sign;
     bool type=false;
     QLabel * Zx;
+    Massive* massive;
 };
 
 #endif // SOLUTION_H

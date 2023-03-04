@@ -6,7 +6,7 @@ Solution::Solution(QWidget *parent) :
     ui(new Ui::Solution)
 {
     ui->setupUi(this);
-
+massive=new Massive();
 }
 
 Solution::~Solution()
@@ -27,22 +27,8 @@ void Solution::on_pushButton_clicked()
    delete ui->lineEdit_2;
     ui->pushButton->hide();
     //Add Equation
-Zx =new QLabel("Z(X)=",this);
-Zx->setGeometry(30,120,47,15);
-Zx->show();
-LineEdits =new   QLineEdit*[vars] ;
-Labels=new QLabel*[vars];
-for(int i=0;i<vars;i++)
-{
- LineEdits[i]=new QLineEdit(this);
- LineEdits[i]->setGeometry(70 +i*65,120,30,15);
- LineEdits[i]->show();
- char chars[12];
- sprintf(chars, "X%d",i+1);
-Labels[i]=new QLabel((QString)chars,this);
-Labels[i]->setGeometry(105+i*65,120,20,15);
-Labels[i]->show();
-}
+ShowEquation();
+
 ui->pushButton->show();
 ui->pushButton->setGeometry(40+(vars*65)/2 ,150,60,25);
 disconnect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(on_pushButton_clicked()));
@@ -81,6 +67,7 @@ void Solution::on_radioButton_clicked()
 void Solution::GetCoeffSystem()
 {
 coeffSystems=new double*[cEquation];
+sign=new double[cEquation];
 for(int i=0;i<cEquation;i++)
 {
     coeffSystems[i]=new double[vars+1];
@@ -88,21 +75,31 @@ for(int i=0;i<cEquation;i++)
 for(int j=0;j<cEquation;j++)
 {
 
-    for(int i=0;i<vars+1;i++)
+    for(int i=0;i<=vars;i++)
     {
     coeffSystems[j][i]= LineEdits[j][i].text().toDouble();
 
     }
 
-
+sign[j]=comboBox[j]->currentIndex();
+if(sign[j]!=0){ //add New vars (if in equation have <= or >=
+   coeffSystems=massive->AddColumn(coeffSystems,vars,cEquation);
+   coeffSystems[j][vars-1]=sign[j]==2?1:-1;
+   coeff=massive->AddElement(coeff,vars);
+  vars+=1;
 }
+}
+
 for(int i=0;i<cEquation;i++)
 {
 delete []LineEdits[i];
-    delete []Labels[i];
+delete []Labels[i];
+delete comboBox[i];
 }
 delete []LineEdits;
 delete []Labels;
+ui->pushButton->hide();
+ShowInputEquation();
 }
 
 void Solution::PaintTable()
@@ -152,4 +149,61 @@ LineEdits[j][i].setParent(this);
     connect(ui->pushButton,SIGNAL(clicked(bool)),SLOT(GetCoeffSystem()));
 
 
+}
+
+void Solution::ShowEquation()
+{
+    Zx =new QLabel("Z(X)=",this);
+    Zx->setGeometry(30,120,47,15);
+    Zx->show();
+    LineEdits =new   QLineEdit*[vars] ;
+    Labels=new QLabel*[vars];
+    for(int i=0;i<vars;i++)
+    {
+     LineEdits[i]=new QLineEdit(this);
+     LineEdits[i]->setGeometry(70 +i*65,120,30,15);
+     LineEdits[i]->show();
+     char chars[12];
+    sprintf(chars, "X%d",i+1);
+    Labels[i]=new QLabel((QString)chars,this);
+    Labels[i]->setGeometry(105+i*65,120,20,15);
+    Labels[i]->show();
+    }
+}
+
+void Solution::ShowInputEquation()
+{
+    Zx =new QLabel("Z(X)=",this);
+    Zx->setGeometry(30,120,50+70*vars,15);
+    Zx->show();
+    for(int i=0;i<vars;i++)
+    {
+        char chars[12];
+        if(coeff[i]<0 or i==0){
+        sprintf(chars, "%.2f * X%d ",coeff[i],i+1);
+        }
+        else  sprintf(chars, "+ %.2f * X%d ",coeff[i],i+1);
+        Zx->setText(Zx->text()+(QString)chars);
+    }
+    Labels =new QLabel*[cEquation];
+    for(int i=0;i<cEquation;i++){
+        Labels[i]=new QLabel("",this);
+        Labels[i]->setGeometry(30,190 +i*30,70+70*vars,15);
+    }
+    char chars[22];
+    for(int i=0;i<cEquation;i++){
+     for(int j=0;j<vars;j++)
+     {
+         if(coeffSystems[i][j]<0 or j==0){
+         sprintf(chars, "%.2f * X%d ",coeffSystems[i][j],j+1);
+         }
+         else  sprintf(chars, "+ %.2f * X%d ",coeffSystems[i][j],j+1);
+
+             Labels[i]->setText(Labels[i]->text()+(QString)chars);
+
+     }
+     sprintf(chars, "= %.2f",coeffSystems[i][vars]);
+     Labels[i]->setText(Labels[i]->text()+(QString)chars);
+     Labels[i]->show();
+    }
 }
