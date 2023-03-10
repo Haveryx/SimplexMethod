@@ -1,6 +1,7 @@
 *.Debug
 *.Release
 *.autosave
+*.user
 /debug/*
 /release/*
 
