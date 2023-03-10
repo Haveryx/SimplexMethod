@@ -38,7 +38,7 @@ connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(GetCoeff()));
 
 void Solution::GetCoeff()
 {
-coeff=new double[vars];
+coeff=new double[vars+cEquation];//процедура увеличения памяти достаточно затратная,поэтому выделим её сразу с запасом
 for(int i=0;i<vars;i++)
 {
     coeff[i]=LineEdits[i]->text().toDouble();
@@ -70,7 +70,7 @@ coeffSystems=new double*[cEquation];
 sign=new double[cEquation];
 for(int i=0;i<cEquation;i++)
 {
-    coeffSystems[i]=new double[vars+1];
+    coeffSystems[i]=new double[vars+1+cEquation];
 }
 for(int j=0;j<cEquation;j++)
 {
@@ -82,14 +82,17 @@ for(int j=0;j<cEquation;j++)
     }
 
 sign[j]=comboBox[j]->currentIndex();
-if(sign[j]!=0){ //add New vars (if in equation have <= or >=
-   coeffSystems=massive->AddColumn(coeffSystems,vars,cEquation);
-   coeffSystems[j][vars-1]=sign[j]==2?1:-1;
-   coeff=massive->AddElement(coeff,vars);
-  vars+=1;
-}
-}
 
+}
+for(int j=0;j<cEquation;j++)
+{
+if(sign[j]!=0){ //add New vars (if in equation have <= or >=
+   massive->AddColumn(coeffSystems,vars,cEquation);
+   coeffSystems[j][vars]=sign[j]==2?1:-1;
+   massive->AddElement(coeff,vars);
+   vars++;
+}
+}
 for(int i=0;i<cEquation;i++)
 {
 delete []LineEdits[i];

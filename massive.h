@@ -6,8 +6,8 @@ class Massive
 {
 public:
     Massive();
-    double** AddColumn(double ** x,int n,int m);
-    double* AddElement(double*x,int n);
+  void AddColumn(double ** x,int n,int m);
+    void AddElement(double*x,int n);
 };
 
 #endif // MASSIVE_H
