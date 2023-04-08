@@ -4,6 +4,7 @@
 #include<QLabel>
 #include<QLineEdit>
 #include<QComboBox>
+#include"paints.h"
 #include"massive.h"
 namespace Ui {
 class Solution;
@@ -23,10 +24,11 @@ private slots:
     void on_radioButton_2_clicked();
     void on_radioButton_clicked();
 void GetCoeffSystem();
+void PaintTable();
 private:
     Ui::Solution *ui;
     QLineEdit ** LineEdits;
-    void PaintTable();
+    Paints * paints;
     void GetSystems();
     void ShowEquation();
     void ShowInputEquation();

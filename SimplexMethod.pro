@@ -27,12 +27,14 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     solution.cpp \
-    massive.cpp
+    massive.cpp \
+    paints.cpp
 
 HEADERS += \
         mainwindow.h \
     solution.h \
-    massive.h
+    massive.h \
+    paints.h
 
 FORMS += \
         mainwindow.ui \

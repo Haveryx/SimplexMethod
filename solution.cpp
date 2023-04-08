@@ -7,6 +7,7 @@ Solution::Solution(QWidget *parent) :
 {
     ui->setupUi(this);
 massive=new Massive();
+paints=new Paints(this);
 }
 
 Solution::~Solution()
@@ -208,5 +209,10 @@ void Solution::ShowInputEquation()
      sprintf(chars, "= %.2f",coeffSystems[i][vars]);
      Labels[i]->setText(Labels[i]->text()+(QString)chars);
      Labels[i]->show();
+
     }
+    disconnect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(GetCoeffSystem()));
+    connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(PaintTable()));
+    ui->pushButton->setGeometry((70+70*vars)/2-30,190 +(cEquation+1)*30,60,25);
+    ui->pushButton->show();
 }
