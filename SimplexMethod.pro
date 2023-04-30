@@ -28,14 +28,17 @@ SOURCES += \
         mainwindow.cpp \
     solution.cpp \
     massive.cpp \
-    paints.cpp
+    table.cpp \
+    simplex.cpp
 
 HEADERS += \
         mainwindow.h \
     solution.h \
     massive.h \
-    paints.h
+    table.h \
+    simplex.h
 
 FORMS += \
         mainwindow.ui \
-    solution.ui
+    solution.ui \
+    table.ui

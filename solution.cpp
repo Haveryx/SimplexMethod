@@ -7,7 +7,7 @@ Solution::Solution(QWidget *parent) :
 {
     ui->setupUi(this);
 massive=new Massive();
-paints=new Paints(this);
+
 }
 
 Solution::~Solution()
@@ -109,6 +109,11 @@ ShowInputEquation();
 void Solution::PaintTable()
 {
 
+table=new Table();
+connect(this,SIGNAL(createTable(int,int)),table,SLOT(addInformation(int,int)));
+createTable(cEquation,vars);
+table->show();
+this->close();
 
 }
 

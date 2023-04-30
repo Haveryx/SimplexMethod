@@ -4,8 +4,8 @@
 #include<QLabel>
 #include<QLineEdit>
 #include<QComboBox>
-#include"paints.h"
 #include"massive.h"
+#include"table.h"
 namespace Ui {
 class Solution;
 }
@@ -17,7 +17,8 @@ class Solution : public QWidget
 public:
     explicit Solution(QWidget *parent = 0);
     ~Solution();
-
+signals:
+    void createTable(int,int);
 private slots:
     void on_pushButton_clicked();
     void GetCoeff();
@@ -26,12 +27,12 @@ private slots:
 void GetCoeffSystem();
 void PaintTable();
 private:
+void GetSystems();
+void ShowEquation();
+void ShowInputEquation();
     Ui::Solution *ui;
     QLineEdit ** LineEdits;
-    Paints * paints;
-    void GetSystems();
-    void ShowEquation();
-    void ShowInputEquation();
+Table* table;
     QLabel** Labels;
     QComboBox ** comboBox;
     int vars=0,cEquation=0;
@@ -39,6 +40,7 @@ private:
     bool type=false;
     QLabel * Zx;
     Massive* massive;
+
 };
 
 #endif // SOLUTION_H

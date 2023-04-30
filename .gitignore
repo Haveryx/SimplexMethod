@@ -2,7 +2,9 @@
 *.Release
 *.autosave
 *.user
+*.o
 /debug/*
 /release/*
+/releaseKsenia/*
 
 
