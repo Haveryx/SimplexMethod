@@ -14,11 +14,13 @@ Table::~Table()
     delete ui;
 }
 
-Table::addInformation(int cEquation, int vars,Type type)
+Table::addInformation(int cEquation, int vars,Type type,double** system,double* z)
 {
     this->cEquation=cEquation;
     this->vars=vars;
     this->type=type;
+    this->z=z;
+    this->system=system;
     if(type==Type::reshenie){
         text=new QLabel*[cEquation+1];
         for(int i=0;i<cEquation+1;i++)
@@ -68,7 +70,7 @@ case Type::reshenie:
     text[0][0].setGeometry(x+sizeLine,y+sizeLine,sizeX-2*sizeLine,sizeY-2*sizeLine);
     text[0][0].setText("b");
     text[0][0].show();
-    for(int i=1;i<vars+1;i++)
+    for(int i=1;i<vars+1;i++)//Заголовок
     {
         text[0][i].setParent(this);
         //text[0][0].setFont();Todo Добавить шрифт

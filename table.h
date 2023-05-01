@@ -5,6 +5,7 @@
 #include<QLineEdit>
 #include<QLabel>
 #include<QColor>
+#include"simplex.h"
 enum class Type{
     reshenie,
     helper
@@ -21,7 +22,7 @@ public:
     explicit Table(QWidget *parent = 0);
     ~Table();
    public slots:
-    addInformation(int,int,Type);
+    addInformation(int,int,Type,double**,double*);
 
 private:
     Ui::Table *ui;
@@ -33,6 +34,8 @@ private:
    QLineEdit ** input;
    int sizeLine=2;
    QColor color=QColor::fromRgb(0,0,0);
+   double** system,*z;
+
 protected:
     void paintEvent(QPaintEvent*) override;
 };

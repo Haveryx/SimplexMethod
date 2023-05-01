@@ -9,6 +9,7 @@ public:
     double** getTetta(double** system,int vars,int cEquation);
     QVector<QVector<int>> GetMin(double ** system,int vars,int cEquation);
     double** getBasis(double** system,int vars,int cEquation,int j,int i);
+
 };
 
 #endif // SIMPLEX_H
