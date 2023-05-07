@@ -19,6 +19,7 @@ Table::~Table()
 Table::addInformation(int cEquation, int vars,Type type,double** System,double* Z)
 {
     system=new double*[cEquation+1];
+   QVector<QVector<int>> vectors;
     for(int i=0;i<cEquation+1;i++)
     {
         system[i]=new double[vars*2+2];
@@ -30,23 +31,32 @@ Table::addInformation(int cEquation, int vars,Type type,double** System,double* 
     Massive massive;
     z=Z;
    massive.Union(system,System,vars,cEquation);
-    if(type==Type::reshenie){
-        text=new QLabel*[cEquation+2];
-        for(int i=0;i<cEquation+2;i++)
-        {
-            text[i]=new QLabel[vars*2+3];
-        }
+   switch (type) {
+   case Type::reshenie:
+       text=new QLabel*[cEquation+2];
+       for(int i=0;i<cEquation+2;i++)
+       {
+           text[i]=new QLabel[vars*2+3];
+       }
 SimpleGod->getTetta(system,vars,cEquation);
+     vectors=SimpleGod->GetMin(system,vars,cEquation);
+     while(!vectors[0].empty()){
+text[1][vectors[0].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
+vectors[0].pop_front();
+     }
 
-    }
-    else{
-        text=new QLabel*[vars*2+1];
-        input=new QLineEdit*[cEquation];
-        for(int i=0;i<cEquation;i++)
-        {
-           input[i]=new QLineEdit[vars*2+1];
-        }
-    }
+       break;
+   case Type::helper:
+       text=new QLabel*[vars*2+1];
+       input=new QLineEdit*[cEquation];
+       for(int i=0;i<cEquation;i++)
+       {
+          input[i]=new QLineEdit[vars*2+1];
+       }
+       break;
+   default:
+       break;
+   }
 repaint();
 }
 
@@ -55,9 +65,9 @@ void Table::paintEvent(QPaintEvent *)
     painter=new QPainter(this);
    auto geometry= this->geometry();
     painter->setPen(QPen(color,sizeLine,Qt::SolidLine));
-    if(geometry.width()<((vars*2 +3)*sizeX))resize(((vars*2 +3)*sizeX),geometry.height());
+    if(geometry.width()<((vars*2 +3)*sizeX +2*sizeLine))resize(((vars*2 +3)*sizeX) +2*sizeLine,geometry.height());
   int x=(int)(geometry.width()-((vars*2 +3)*sizeX))/2;
-  if(geometry.height()<(cEquation+2*sizeY))resize(geometry.width(),(cEquation+2*sizeY));
+  if(geometry.height()<((cEquation+2)*sizeY + 2*sizeLine))resize(geometry.width(),((cEquation+2)*sizeY +2*sizeLine));
    int y=(int)(geometry.height()-(cEquation+2)*sizeY)/2;
         painter->drawLine(QPointF(x,y),QPointF(x+(vars*2 +3)*sizeX,y));//Верхняя линия
         painter->drawLine(QPointF(x,y),QPointF(x,y+(cEquation+2)*sizeY));//Левая вертикальная

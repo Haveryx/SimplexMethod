@@ -12,7 +12,7 @@ void simplex::getTetta(double **system, int vars, int cEquation)
     {
         for(int i=2+vars;i<2*vars+2;i++)
         {
-            system[j][i]=(system[j][1]/system[j][i-vars]>0)?system[j][1]/system[j][i-vars]:INFINITY;
+            system[j][i]=(system[j][1]/system[j][i-vars]>=0)?system[j][1]/system[j][i-vars]:INFINITY;
         }
     }
 
@@ -24,22 +24,17 @@ QVector<QVector<int>>simplex::GetMin(double **system, int vars,int cEquation)
     QVector<int>vector;
     for(int i=0;i<cEquation;i++)
     {
-        vector.push_back(INFINITY);
+
         vectors.push_back(vector);
     }
-    int string=0,column=0;
-    int** min=new int*[cEquation];
-    for(int i=0;i<cEquation;i++)
-    {
-        min[i]=new int[vars];
-    }
-    double Min=system[0][vars+1];
-    for(int j=vars+1;j<2*vars+1;j++)
+    int string=0,column=vars+2;
+    double Min=system[0][vars+2];
+    for(int j=vars+2;j<2*vars+2;j++)
     {
     for(int i=0;i<cEquation;i++)
     {
-        if(Min>system[j][i] ){
-            Min=system[j][i];
+        if(Min>system[i][j] ){
+            Min=system[i][j];
             string=i;
             column=j;
 
@@ -48,11 +43,6 @@ QVector<QVector<int>>simplex::GetMin(double **system, int vars,int cEquation)
     }
     vectors[string].push_back(column);
 
-
-    }
-    for(int i=0;i<cEquation;i++)
-    {
-       vectors[i].pop_front();
     }
 
     return vectors;

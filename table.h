@@ -7,6 +7,7 @@
 #include<QColor>
 #include"simplex.h"
 #include"massive.h"
+#include<Qvector>
 enum class Type{
     reshenie,
     helper
