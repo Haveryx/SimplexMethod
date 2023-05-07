@@ -37,12 +37,16 @@ private:
    QLineEdit ** input;
    int sizeLine=2;
    int Position=0;
+   QString* basis;
    QColor color=QColor::fromRgb(0,0,0);
    double** system,*z;
    simplex* SimpleGod;
 QVector<QLabel*> actual;
 QMap<QLabel*,int> map;
+ QVector<QVector<int>> vectors;
 void ColorColumn(int j);
+void NotColor();
+void NextStep();
 protected:
     void paintEvent(QPaintEvent*) override;
 

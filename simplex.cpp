@@ -27,10 +27,13 @@ QVector<QVector<int>>simplex::GetMin(double **system, int vars,int cEquation)
 
         vectors.push_back(vector);
     }
-    int string=0,column=vars+2;
-    double Min=system[0][vars+2];
+    int string,column;
+    double Min;
     for(int j=vars+2;j<2*vars+2;j++)
     {
+        Min=system[0][j];
+        string=0;
+        column=j;
     for(int i=0;i<cEquation;i++)
     {
         if(Min>system[i][j] ){
@@ -50,24 +53,25 @@ QVector<QVector<int>>simplex::GetMin(double **system, int vars,int cEquation)
 
 void simplex::getBasis(double **system, int vars, int cEquation, int j, int i)
 {
+
     int basis=system[j][i];
- for(int I=2;I<vars+2;I++)
+ for(int I=1;I<vars+2;I++)
     {
 system[j][I]/=basis;
 
     }
 
-    for(int J=0;J<j;j++)
+    for(int J=0;J<j;J++)
     {
-        double coefficient=system[J][i]/basis;
-        for(int I=2;I<vars+2;I++){
+        double coefficient=system[J][i];
+        for(int I=1;I<vars+2;I++){
 system[J][I]-=(coefficient*system[j][I]);
         }
     }
     for(int J=j+1;J<cEquation;J++)
     {
-        double coefficient=system[J][i]/basis;
-       for(int I=2;I<vars+2;I++){
+        double coefficient=system[J][i];
+        for(int I=1;I<vars+2;I++){
 system[J][I]-=(coefficient*system[j][I]);
         }
     }

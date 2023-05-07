@@ -19,10 +19,15 @@ Table::~Table()
 Table::addInformation(int cEquation, int vars,Type type,double** System,double* Z)
 {
     system=new double*[cEquation+1];
-   QVector<QVector<int>> vectors;
+
     for(int i=0;i<cEquation+1;i++)
     {
         system[i]=new double[vars*2+2];
+    }
+    basis=new QString[cEquation];
+    for(int i=0;i<cEquation;i++)
+    {
+        basis[i]="";
     }
      z=new double[vars];
     this->cEquation=cEquation;
@@ -68,6 +73,29 @@ void Table::ColorColumn(int j)
     for(int i=0;i<cEquation+2;i++)
     {
         text[i][j].setStyleSheet("background-color: rgb(71,250,148);");
+    }
+}
+
+void Table::NotColor()
+{
+    for(int i=0;i<actual.size();i++)
+    {
+        actual[i]->setStyleSheet("background-color: rgb(255,255,255);");
+    }
+}
+
+void Table::NextStep()
+{
+    if(Position<cEquation){
+        SimpleGod->getTetta(system,vars,cEquation);
+             vectors=SimpleGod->GetMin(system,vars,cEquation);
+             while(!vectors[Position].empty()){
+        text[1+Position][vectors[Position].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
+        text[1+Position][vectors[Position].front()+1].installEventFilter(this);
+        actual.push_back(&text[1+Position][vectors[Position].front()+1]);
+        map[&text[1+Position][vectors[Position].front()+1]]=vectors[Position].front();
+        vectors[Position].pop_front();
+             }
     }
 }
 
@@ -141,6 +169,12 @@ case Type::reshenie:
 
 for(int j=0;j<cEquation;j++)//Циферки выводим
 {
+    text[j+1][0].setParent(this);
+    //text[0][0].setFont();Todo Добавить шрифт
+  text[j+1][0].setGeometry(x+sizeLine,y+sizeY*(j+1) +sizeLine,sizeX-sizeLine*2,sizeY-sizeLine*2);
+  text[j+1][0].setText(basis[j]);
+  text[j+1][0].show();
+
     for(int i=0;i<(2*vars+2);i++)
     {
         text[j+1][i+1].setParent(this);
@@ -169,11 +203,16 @@ bool Table::eventFilter(QObject *watched, QEvent *event)
        {
            if(event->type() == QEvent::MouseButtonPress)
            {
-actual[i]->setStyleSheet("background-color: rgb(255,255,255);");
-SimpleGod->getBasis(system,vars,cEquation,Position,map[actual[i]]);
+
+SimpleGod->getBasis(system,vars,cEquation,Position,map[actual[i]]-vars);
 ColorColumn(map[actual[i]]+1-vars);
+NotColor();
+char chars[12];
+sprintf(chars, "A%d",map[actual[i]]-1-vars);
+basis[Position]=(QString)chars;
 actual.clear();//ToDo добавить продолжение
 Position++;
+NextStep();
            }
        }
 }
