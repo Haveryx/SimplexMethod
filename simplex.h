@@ -6,9 +6,10 @@ class simplex
 {
 public:
     simplex();
-    double** getTetta(double** system,int vars,int cEquation);
+    void getTetta(double** system,int vars,int cEquation);
     QVector<QVector<int>> GetMin(double ** system,int vars,int cEquation);
     double** getBasis(double** system,int vars,int cEquation,int j,int i);
+    double ** getDelta(double ** system,double* mainSystem,int vars,int cEquation);
 
 };
 

@@ -5,28 +5,16 @@ simplex::simplex()
 
 }
 
-double **simplex::getTetta(double **system, int vars, int cEquation)
+void simplex::getTetta(double **system, int vars, int cEquation)
 {
-    double** systems=new double*[cEquation];
-    for(int i=0;i<cEquation;i++)
-    {
-        systems[i]=new double[vars*2+1];
-    }
+
     for(int j=0;j<cEquation;j++)
     {
-        for(int i=0;i<vars+1;i++)
+        for(int i=2+vars;i<2*vars+2;i++)
         {
-            systems[j][i]=system[j][i];
+            system[j][i]=(system[j][i-vars-1]/system[j][i-vars]>0)?system[j][i-vars-1]/system[j][i-vars]:INFINITY;
         }
     }
-    for(int j=0;j<cEquation;j++)
-    {
-        for(int i=vars;i<2*vars+1;i++)
-        {
-            systems[j][i]=(systems[j][i-vars]/systems[j][i-vars+1]>0)?systems[j][i-vars]/systems[j][i-vars+1]:INFINITY;
-        }
-    }
-    return systems;
 
 }
 
@@ -56,9 +44,8 @@ QVector<QVector<int>>simplex::GetMin(double **system, int vars,int cEquation)
             column=j;
 
         }
-        vectors[i].push_back(0);
+
     }
-    vectors[string].pop_back();
     vectors[string].push_back(column);
 
 
@@ -94,5 +81,25 @@ system[J][I]-=(coefficient*system[j][I]);
 system[J][I]-=(coefficient*system[j][I]);
         }
     }
-return system;
+    return system;
+}
+
+double **simplex::getDelta(double **system, double* mainSystem,int vars, int cEquation)
+{
+    for(int i=0;i<vars+3;i++)
+    {
+        system[cEquation][i]=0;
+    }
+    for(int i=0;i<cEquation;i++)
+    {
+        for(int j=2;j<vars+3;j++)
+        {
+            system[cEquation][j]+=(system[i][1]*system[i][j]);
+        }
+    }
+    for(int i=3;i<vars+3;i++)
+    {
+        system[cEquation][i]-=mainSystem[i];
+    }
+    return system;
 }

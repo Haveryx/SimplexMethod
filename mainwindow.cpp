@@ -20,12 +20,13 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pushButton_2_clicked()
 {
-   /*Solution* solution=new Solution();
+   Solution* solution=new Solution();
    this->hide();
-   solution->show();*/
-    Table* table=new Table();
+   solution->show();
+  /*  Table* table=new Table();
     this->hide();
-    table->addInformation(3,3,Type::reshenie);
+    table->addInformation(3,3,Type::reshenie,0,0);
     table->show();
+    */
 
 }

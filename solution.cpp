@@ -110,8 +110,8 @@ void Solution::PaintTable()
 {
 
 table=new Table();
-connect(this,SIGNAL(createTable(int,int)),table,SLOT(addInformation(int,int)));
-createTable(cEquation,vars);
+connect(this,SIGNAL(createTable(int, int,Type,double**,double*)),table,SLOT(addInformation(int, int,Type,double**,double*)));
+createTable(cEquation,vars,Type::reshenie,coeffSystems,coeff);
 table->show();
 this->close();
 

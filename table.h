@@ -6,6 +6,7 @@
 #include<QLabel>
 #include<QColor>
 #include"simplex.h"
+#include"massive.h"
 enum class Type{
     reshenie,
     helper
@@ -35,6 +36,7 @@ private:
    int sizeLine=2;
    QColor color=QColor::fromRgb(0,0,0);
    double** system,*z;
+   simplex* SimpleGod;
 
 protected:
     void paintEvent(QPaintEvent*) override;
