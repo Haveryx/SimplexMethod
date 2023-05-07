@@ -42,6 +42,9 @@ SimpleGod->getTetta(system,vars,cEquation);
      vectors=SimpleGod->GetMin(system,vars,cEquation);
      while(!vectors[0].empty()){
 text[1][vectors[0].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
+text[1][vectors[0].front()+1].installEventFilter(this);
+actual.push_back(&text[1][vectors[0].front()+1]);
+map[&text[1][vectors[0].front()+1]]=vectors[0].front();
 vectors[0].pop_front();
      }
 
@@ -57,7 +60,15 @@ vectors[0].pop_front();
    default:
        break;
    }
-repaint();
+   repaint();
+}
+
+void Table::ColorColumn(int j)
+{
+    for(int i=0;i<cEquation+2;i++)
+    {
+        text[i][j].setStyleSheet("background-color: rgb(71,250,148);");
+    }
 }
 
 void Table::paintEvent(QPaintEvent *)
@@ -148,4 +159,23 @@ default:
     break;
 }
 
+}
+
+bool Table::eventFilter(QObject *watched, QEvent *event)
+{
+   for(int i=0;i<actual.size();i++)
+    {
+    if(watched==actual[i])
+       {
+           if(event->type() == QEvent::MouseButtonPress)
+           {
+actual[i]->setStyleSheet("background-color: rgb(255,255,255);");
+SimpleGod->getBasis(system,vars,cEquation,Position,map[actual[i]]);
+ColorColumn(map[actual[i]]+1-vars);
+actual.clear();//ToDo добавить продолжение
+Position++;
+           }
+       }
+}
+    return false;
 }

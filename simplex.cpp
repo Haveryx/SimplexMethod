@@ -48,30 +48,30 @@ QVector<QVector<int>>simplex::GetMin(double **system, int vars,int cEquation)
     return vectors;
 }
 
-double **simplex::getBasis(double **system, int vars, int cEquation, int j, int i)
+void simplex::getBasis(double **system, int vars, int cEquation, int j, int i)
 {
     int basis=system[j][i];
-    for(int I=0;I<vars;I++)
+ for(int I=2;I<vars+2;I++)
     {
 system[j][I]/=basis;
 
     }
-    int I;
+
     for(int J=0;J<j;j++)
     {
-        double coefficient=system[J][I]/basis;
-        for(I=0;I<vars;I++){
+        double coefficient=system[J][i]/basis;
+        for(int I=2;I<vars+2;I++){
 system[J][I]-=(coefficient*system[j][I]);
         }
     }
-    for(int J=j+1;J<cEquation;j++)
+    for(int J=j+1;J<cEquation;J++)
     {
-        double coefficient=system[J][I]/basis;
-        for(I=0;I<vars;I++){
+        double coefficient=system[J][i]/basis;
+       for(int I=2;I<vars+2;I++){
 system[J][I]-=(coefficient*system[j][I]);
         }
     }
-    return system;
+
 }
 
 double **simplex::getDelta(double **system, double* mainSystem,int vars, int cEquation)

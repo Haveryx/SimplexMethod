@@ -23,6 +23,10 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+
+    // QObject interface
+public:
+
 };
 
 #endif // MAINWINDOW_H

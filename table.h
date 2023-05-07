@@ -8,6 +8,7 @@
 #include"simplex.h"
 #include"massive.h"
 #include<Qvector>
+#include<QMap>
 enum class Type{
     reshenie,
     helper
@@ -35,12 +36,19 @@ private:
    QLabel** text;
    QLineEdit ** input;
    int sizeLine=2;
+   int Position=0;
    QColor color=QColor::fromRgb(0,0,0);
    double** system,*z;
    simplex* SimpleGod;
-
+QVector<QLabel*> actual;
+QMap<QLabel*,int> map;
+void ColorColumn(int j);
 protected:
     void paintEvent(QPaintEvent*) override;
+
+    // QObject interface
+public:
+    bool eventFilter(QObject *watched, QEvent *event);
 };
 
 #endif // TABLE_H
