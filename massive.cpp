@@ -17,7 +17,7 @@ for(int i=0;i<m;i++)
 
 void Massive::AddElement(double *x, int n)
 {
-    x[n]=1;
+    x[n]=0;
 
 
 

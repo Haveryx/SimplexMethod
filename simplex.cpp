@@ -78,22 +78,22 @@ system[J][I]-=(coefficient*system[j][I]);
 
 }
 
-double **simplex::getDelta(double **system, double* mainSystem,int vars, int cEquation)
+void simplex::getDelta(double **system, double* z,int vars, int cEquation)
 {
-    for(int i=0;i<vars+3;i++)
+    for(int i=1;i<vars+2;i++)
     {
         system[cEquation][i]=0;
     }
     for(int i=0;i<cEquation;i++)
     {
-        for(int j=2;j<vars+3;j++)
+        for(int j=1;j<vars+2;j++)
         {
-            system[cEquation][j]+=(system[i][1]*system[i][j]);
+            system[cEquation][j]+=(system[i][0]*system[i][j]);
         }
     }
-    for(int i=3;i<vars+3;i++)
+    for(int i=0;i<vars;i++)
     {
-        system[cEquation][i]-=mainSystem[i];
+        system[cEquation][i+2]-=z[i];
     }
-    return system;
+
 }

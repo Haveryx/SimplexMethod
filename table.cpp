@@ -97,6 +97,9 @@ void Table::NextStep()
         vectors[Position].pop_front();
              }
     }
+    else{
+        SimpleGod->getDelta(system,z,vars,cEquation);
+    }
 }
 
 void Table::paintEvent(QPaintEvent *)
@@ -185,6 +188,16 @@ for(int j=0;j<cEquation;j++)//Циферки выводим
         text[j+1][i+1].show();
     }
 }
+//Выводим тетту
+for(int i=1;i<vars+2;i++)
+{
+    text[1+cEquation][i+1].setParent(this);
+    //text[0][0].setFont();Todo Добавить шрифт
+ text[1+cEquation][i+1].setGeometry(x+(sizeX*(i+1))+sizeLine,y+sizeY*(cEquation+1) +sizeLine,sizeX-sizeLine*2,sizeY-sizeLine*2);
+sprintf(chars, "%5.2f",system[cEquation][i]);
+text[1+cEquation][i+1].setText((QString)chars);
+    text[1+cEquation][i+1].show();
+}
     break;
 case Type::helper:
 
@@ -210,6 +223,7 @@ NotColor();
 char chars[12];
 sprintf(chars, "A%d",map[actual[i]]-1-vars);
 basis[Position]=(QString)chars;
+system[Position][0]=z[map[actual[i]]-2-vars];
 actual.clear();//ToDo добавить продолжение
 Position++;
 NextStep();
