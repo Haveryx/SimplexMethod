@@ -112,19 +112,20 @@ solution simplex::Resheno(double **system, int *basis, int vars, int cEquation)
     {
         if(system[cEquation][i]<0)return solution::NotOptimal;
         else if(system[cEquation][i]==0){// Смотрим базис ли это?
+            flag=true;
             for(int j=0;j<cEquation;j++)
             {
-                if(i==basis[j])flag=true;
+                if(i-1==(basis[j])){
+                    flag=false;
+                }
+            }
+            if(flag==true){
+                return solution::SomeSolution;
             }
 
         }
     }
-    if(flag==true){
-     return  solution::SomeSolution;
-    }
-    else{
     return solution::Optimal;
-    }
 }
 
 QVector<QVector<int>> simplex::GetMax(double **system,int* Basis, int vars, int cEquation)
