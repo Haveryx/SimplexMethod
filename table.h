@@ -36,13 +36,18 @@ private:
    QLabel** text;
    QLineEdit ** input;
    int sizeLine=2;
+   int y,x;
    int Position=0;
+   void AllNotColor();
+   void SetColorBasis();
+   void SetColorBasis(int* basis);
    QString* basis;
    int  * Basis;
    QColor color=QColor::fromRgb(0,0,0);
    double** system,*z;
    simplex* SimpleGod;
 QVector<QLabel*> actual;
+QLabel* label,*label2;
 QMap<QLabel*,int> map;
  QVector<QVector<int>> vectors;
 void ColorColumn(int j);

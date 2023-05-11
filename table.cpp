@@ -7,6 +7,14 @@ Table::Table(QWidget *parent) :
 {
     ui->setupUi(this);
     SimpleGod=new simplex();
+    label=new QLabel("Решение найдено!",this);
+   auto geo=this->geometry();
+   label->setGeometry(0,5,150,20);
+    label2=new QLabel("Однако есть ещё одно решение!",this);
+     label2->setGeometry(0,30,150,20);
+     label->hide();
+     label2->hide();
+
 }
 
 
@@ -29,6 +37,7 @@ Table::addInformation(int cEquation, int vars,Type type,double** System,double* 
     for(int i=0;i<cEquation;i++)
     {
         basis[i]="";
+        Basis[i]=INFINITY;
     }
      z=new double[vars];
     this->cEquation=cEquation;
@@ -45,7 +54,7 @@ Table::addInformation(int cEquation, int vars,Type type,double** System,double* 
            text[i]=new QLabel[vars*2+3];
        }
 SimpleGod->getTetta(system,vars,cEquation);
-     vectors=SimpleGod->GetMin(system,vars,cEquation);
+     vectors=SimpleGod->GetMin(system,Basis,vars,cEquation);
      while(!vectors[0].empty()){
 text[1][vectors[0].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
 text[1][vectors[0].front()+1].installEventFilter(this);
@@ -69,6 +78,37 @@ vectors[0].pop_front();
    repaint();
 }
 
+void Table::AllNotColor()
+{
+    for(int i=0;i<(cEquation+2);i++)
+    {
+        for(int j=0;j<(vars*2+3);j++)
+        {
+            text[i][j].setStyleSheet("background-color: rgb(255,255,255);");
+        }
+
+    }
+}
+
+void Table::SetColorBasis()
+{
+    for(int i=0;i<cEquation+1;i++)
+    {
+        text[i][0].setStyleSheet("background-color: rgb(71,250,148);");
+    }
+}
+
+void Table::SetColorBasis(int *basis)
+{
+       for(int j=0;j<cEquation;j++)
+       {
+    for(int i=1;i<cEquation+1;i++)
+    {
+        text[i][basis[j]+1].setStyleSheet("background-color: rgb(71,250,148);");
+    }
+       }
+}
+
 void Table::ColorColumn(int j)
 {
     for(int i=0;i<cEquation+2;i++)
@@ -89,13 +129,15 @@ void Table::NextStep()
 {
     if(Position<cEquation){
         SimpleGod->getTetta(system,vars,cEquation);
-             vectors=SimpleGod->GetMin(system,vars,cEquation);
+             vectors=SimpleGod->GetMin(system,Basis,vars,cEquation);
              while(!vectors[Position].empty()){
+
         text[1+Position][vectors[Position].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
         text[1+Position][vectors[Position].front()+1].installEventFilter(this);
         actual.push_back(&text[1+Position][vectors[Position].front()+1]);
         map[&text[1+Position][vectors[Position].front()+1]]=vectors[Position].front();
         vectors[Position].pop_front();
+
              }
     }
     else{
@@ -103,28 +145,64 @@ void Table::NextStep()
         solution j=SimpleGod->Resheno(system,Basis,vars,cEquation);
         switch (j) {
         case solution::Optimal:
+
+           label->show();
+            AllNotColor();
+            SetColorBasis();
             for(int i=3;i<vars+3;i++)
             {
                   text[cEquation+1][i].setStyleSheet("background-color: rgb(71,250,148);");
             }
             break;
+
         case solution::NotOptimal:
-            vectors=SimpleGod->GetMax(system,vars,cEquation);
+            AllNotColor();
+             SetColorBasis(Basis);
+              SimpleGod->getTetta(system,vars,cEquation);
+            vectors=SimpleGod->GetMax(system,Basis,vars,cEquation);
             for(int i=0;i<cEquation;i++)
             {
                 while(!vectors[i].empty()){
+
                     text[1+i][vectors[i].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
                     text[1+i][vectors[i].front()+1].installEventFilter(this);
                     actual.push_back(&text[1+i][vectors[i].front()+1]);
                     map[&text[1+i][vectors[i].front()+1]]=vectors[i].front();
                     vectors[i].pop_front();
+
                 }
             }
 
             break;
         case solution::SomeSolution:
 
+            AllNotColor();
+            SetColorBasis();
+            for(int i=3;i<vars+3;i++)
+            {
+                  text[cEquation+1][i].setStyleSheet("background-color: rgb(71,250,148);");
+            }
+
+              label->show();
+              label2->show();
+              SimpleGod->getTetta(system,vars,cEquation);
+              vectors=SimpleGod->SomeSolution(system,Basis,vars,cEquation);
+                 AllNotColor();
+              for(int i=0;i<cEquation;i++)
+              {
+                  while(!vectors[i].empty()){
+
+                      text[1+i][vectors[i].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
+                      text[1+i][vectors[i].front()+1].installEventFilter(this);
+                      actual.push_back(&text[1+i][vectors[i].front()+1]);
+                      map[&text[1+i][vectors[i].front()+1]]=vectors[i].front();
+                      vectors[i].pop_front();
+
+                  }
+              }
+
             break;
+
         default:
             break;
         }
@@ -148,11 +226,13 @@ void Table::paintEvent(QPaintEvent *)
 {
     painter=new QPainter(this);
    auto geometry= this->geometry();
+    label->setGeometry((geometry.width()-250)/2,5,250,20);
+      label2->setGeometry((geometry.width()-250)/2,30,250,20);
     painter->setPen(QPen(color,sizeLine,Qt::SolidLine));
     if(geometry.width()<((vars*2 +3)*sizeX +2*sizeLine))resize(((vars*2 +3)*sizeX) +2*sizeLine,geometry.height());
-  int x=(int)(geometry.width()-((vars*2 +3)*sizeX))/2;
-  if(geometry.height()<((cEquation+2)*sizeY + 2*sizeLine))resize(geometry.width(),((cEquation+2)*sizeY +2*sizeLine));
-   int y=(int)(geometry.height()-(cEquation+2)*sizeY)/2;
+   x=(int)(geometry.width()-((vars*2 +3)*sizeX))/2;
+  if(geometry.height()<((cEquation+2)*sizeY + 2*sizeLine+50))resize(geometry.width(),((cEquation+2)*sizeY +2*sizeLine+50));
+    y=(int)(geometry.height()-(cEquation+2)*sizeY)/2;
         painter->drawLine(QPointF(x,y),QPointF(x+(vars*2 +3)*sizeX,y));//Верхняя линия
         painter->drawLine(QPointF(x,y),QPointF(x,y+(cEquation+2)*sizeY));//Левая вертикальная
         painter->drawLine(QPointF(x,y+(cEquation+2)*sizeY),QPointF(x+(vars*2 +3)*sizeX,y+(cEquation+2)*sizeY));//Нижняя линия
@@ -259,15 +339,15 @@ bool Table::eventFilter(QObject *watched, QEvent *event)
            if(event->type() == QEvent::MouseButtonPress)
            {
 
-Position=(CheckPosition(actual[i],text) -1);
-SimpleGod->getBasis(system,vars,cEquation,Position,map[actual[i]]-vars);
+auto position=(CheckPosition(actual[i],text) -1);
+SimpleGod->getBasis(system,vars,cEquation,position,map[actual[i]]-vars);
 ColorColumn(map[actual[i]]+1-vars);
 NotColor();
 char chars[12];
 sprintf(chars, "A%d",map[actual[i]]-1-vars);
-Basis[Position]=map[actual[i]]-1-vars;
-basis[Position]=(QString)chars;
-system[Position][0]=z[map[actual[i]]-2-vars];
+Basis[position]=map[actual[i]]-1-vars;
+basis[position]=(QString)chars;
+system[position][0]=z[map[actual[i]]-2-vars];
 actual.clear();//ToDo добавить продолжение
 Position++;
 NextStep();

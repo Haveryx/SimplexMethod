@@ -18,7 +18,7 @@ void simplex::getTetta(double **system, int vars, int cEquation)
 
 }
 
-QVector<QVector<int>>simplex::GetMin(double **system, int vars,int cEquation)
+QVector<QVector<int>>simplex::GetMin(double **system,int* basis, int vars,int cEquation)
 {
     QVector <QVector<int>> vectors;
     QVector<int>vector;
@@ -28,13 +28,15 @@ QVector<QVector<int>>simplex::GetMin(double **system, int vars,int cEquation)
         vectors.push_back(vector);
     }
     int string,column;
+    bool flag=false;
     double Min;
     for(int j=vars+2;j<2*vars+2;j++)
     {
         Min=system[0][j];
         string=0;
         column=j;
-    for(int i=0;i<cEquation;i++)
+        flag=false;
+    for(int i=1;i<cEquation;i++)
     {
         if(Min>system[i][j] ){
             Min=system[i][j];
@@ -45,7 +47,11 @@ QVector<QVector<int>>simplex::GetMin(double **system, int vars,int cEquation)
 
     }
 
-    vectors[string].push_back(column);
+    for(int i=0;i<cEquation;i++){
+        if(basis[i]==(column)-vars-1)flag=true;
+    }
+
+    if(flag==false)vectors[string].push_back(column);
 
     }
 
@@ -55,7 +61,7 @@ QVector<QVector<int>>simplex::GetMin(double **system, int vars,int cEquation)
 void simplex::getBasis(double **system, int vars, int cEquation, int j, int i)
 {
 
-    int basis=system[j][i];
+    double basis=system[j][i];
  for(int I=1;I<vars+2;I++)
     {
 system[j][I]/=basis;
@@ -101,21 +107,27 @@ void simplex::getDelta(double **system, double* z,int vars, int cEquation)
 
 solution simplex::Resheno(double **system, int *basis, int vars, int cEquation)
 {
-    for(int i=2;i<vars+2;i++)
+    bool flag=false;
+    for(int i=1;i<vars+2;i++)
     {
         if(system[cEquation][i]<0)return solution::NotOptimal;
         else if(system[cEquation][i]==0){// Смотрим базис ли это?
             for(int j=0;j<cEquation;j++)
             {
-                if(i==basis[j])return solution::SomeSolution;
+                if(i==basis[j])flag=true;
             }
 
         }
     }
+    if(flag==true){
+     return  solution::SomeSolution;
+    }
+    else{
     return solution::Optimal;
+    }
 }
 
-QVector<QVector<int>> simplex::GetMax(double **system, int vars, int cEquation)
+QVector<QVector<int>> simplex::GetMax(double **system,int* Basis, int vars, int cEquation)
 {
     QVector <QVector<int>> Vector;
     QVector<int>vector;
@@ -124,30 +136,83 @@ QVector<QVector<int>> simplex::GetMax(double **system, int vars, int cEquation)
 
         Vector.push_back(vector);
     }
-    getTetta(system,vars,cEquation);
-    QVector<QVector<int>> vectors=GetMin(system,vars,cEquation);
+
+    QVector<QVector<int>> vectors=GetMin(system,Basis,vars,cEquation);
      double Max;
+     bool flag=false;
      int position;
+     int I;
     for(int i=0;i<cEquation;i++)
     {
-         if(!vectors[i].empty()){
-              Max=system[i][vectors[i].front()]*system[cEquation][vectors[i].front()-vars];
+         if(!vectors[i].empty() && flag==false){
+              Max=-1*system[i][vectors[i].front()]*system[cEquation][vectors[i].front()-vars];
         position=vectors[i].front();
         vectors[i].pop_front();
+        I=i;
+        flag=true;
          }
         while(!vectors[i].empty()){
-            if(Max<(system[i][vectors[i].front()]*system[cEquation][vectors[i].front()-vars])){
-                Max=system[i][vectors[i].front()]*system[cEquation][vectors[i].front()-vars];
-                position=vectors[i].front();
-                  vectors[i].pop_front();
+            if(Max<(-1*system[i][vectors[i].front()]*system[cEquation][vectors[i].front()-vars])){
+                Max=-1*system[i][vectors[i].front()]*system[cEquation][vectors[i].front()-vars];
+                position=vectors[i].front();  
+                I=i;
             }
-            else{
-                  vectors[i].pop_front();
+            else if(Max==(-1*system[i][vectors[i].front()]*system[cEquation][vectors[i].front()-vars]))
+            {
+                Vector[i].push_back(vectors[i].front());
             }
-        }
-        Vector[i].push_back(position);
 
+                  vectors[i].pop_front();
+
+        }
+    }
+    Vector[I].push_back(position);
+    for(int i=0;i<cEquation;i++){
+ for(auto j=Vector[i].begin();j<Vector[i].end();j++){
+     if((-1*system[i][*j]*system[cEquation][Vector[i].front()-vars])!=Max)Vector[i].erase(j);
+ }
     }
     return Vector;
 
+}
+
+QVector<QVector<int> > simplex::SomeSolution(double **system, int *Basis, int vars, int cEquation)
+{
+    QVector <QVector<int>> Vector;
+    QVector<int>vector;
+    bool flag=false;
+    for(int i=0;i<cEquation;i++)
+    {
+
+        Vector.push_back(vector);
+    }
+    for(int i=2;i<vars+2;i++)
+    {
+        flag=false;
+        if(system[cEquation][i]==0){
+            for(int j=0;j<cEquation;j++){
+                if(Basis[j]==i-1)flag=true;
+            }
+            if(flag==false){
+                Vector[GetMin(system,i+vars,cEquation)].push_back(i+vars);
+            }
+        }
+    }
+    return Vector;
+
+
+}
+
+int simplex::GetMin(double **system, int j, int cEquation)
+{
+    double Min=system[0][j];
+    int position=0;
+    for(int i=1;i<cEquation;i++)
+    {
+        if(Min>system[i][j]){
+            position=i;
+            Min=system[i][j];
+        }
+    }
+    return position;
 }
