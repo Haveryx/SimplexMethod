@@ -25,6 +25,7 @@ Table::addInformation(int cEquation, int vars,Type type,double** System,double* 
         system[i]=new double[vars*2+2];
     }
     basis=new QString[cEquation];
+    Basis=new int[cEquation];
     for(int i=0;i<cEquation;i++)
     {
         basis[i]="";
@@ -99,6 +100,47 @@ void Table::NextStep()
     }
     else{
         SimpleGod->getDelta(system,z,vars,cEquation);
+        solution j=SimpleGod->Resheno(system,Basis,vars,cEquation);
+        switch (j) {
+        case solution::Optimal:
+            for(int i=3;i<vars+3;i++)
+            {
+                  text[cEquation+1][i].setStyleSheet("background-color: rgb(71,250,148);");
+            }
+            break;
+        case solution::NotOptimal:
+            vectors=SimpleGod->GetMax(system,vars,cEquation);
+            for(int i=0;i<cEquation;i++)
+            {
+                while(!vectors[i].empty()){
+                    text[1+i][vectors[i].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
+                    text[1+i][vectors[i].front()+1].installEventFilter(this);
+                    actual.push_back(&text[1+i][vectors[i].front()+1]);
+                    map[&text[1+i][vectors[i].front()+1]]=vectors[i].front();
+                    vectors[i].pop_front();
+                }
+            }
+
+            break;
+        case solution::SomeSolution:
+
+            break;
+        default:
+            break;
+        }
+
+
+    }
+}
+
+int Table::CheckPosition(QLabel *labelOne, QLabel **LabelTwo)
+{
+    for(int i=1;i<cEquation+1;i++)
+    {
+        for(int j=vars+3;j<vars*2+3;j++)
+        {
+            if(labelOne==&LabelTwo[i][j])return i;
+        }
     }
 }
 
@@ -217,11 +259,13 @@ bool Table::eventFilter(QObject *watched, QEvent *event)
            if(event->type() == QEvent::MouseButtonPress)
            {
 
+Position=(CheckPosition(actual[i],text) -1);
 SimpleGod->getBasis(system,vars,cEquation,Position,map[actual[i]]-vars);
 ColorColumn(map[actual[i]]+1-vars);
 NotColor();
 char chars[12];
 sprintf(chars, "A%d",map[actual[i]]-1-vars);
+Basis[Position]=map[actual[i]]-1-vars;
 basis[Position]=(QString)chars;
 system[Position][0]=z[map[actual[i]]-2-vars];
 actual.clear();//ToDo добавить продолжение

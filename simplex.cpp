@@ -44,6 +44,7 @@ QVector<QVector<int>>simplex::GetMin(double **system, int vars,int cEquation)
         }
 
     }
+
     vectors[string].push_back(column);
 
     }
@@ -95,5 +96,58 @@ void simplex::getDelta(double **system, double* z,int vars, int cEquation)
     {
         system[cEquation][i+2]-=z[i];
     }
+
+}
+
+solution simplex::Resheno(double **system, int *basis, int vars, int cEquation)
+{
+    for(int i=2;i<vars+2;i++)
+    {
+        if(system[cEquation][i]<0)return solution::NotOptimal;
+        else if(system[cEquation][i]==0){// Смотрим базис ли это?
+            for(int j=0;j<cEquation;j++)
+            {
+                if(i==basis[j])return solution::SomeSolution;
+            }
+
+        }
+    }
+    return solution::Optimal;
+}
+
+QVector<QVector<int>> simplex::GetMax(double **system, int vars, int cEquation)
+{
+    QVector <QVector<int>> Vector;
+    QVector<int>vector;
+    for(int i=0;i<cEquation;i++)
+    {
+
+        Vector.push_back(vector);
+    }
+    getTetta(system,vars,cEquation);
+    QVector<QVector<int>> vectors=GetMin(system,vars,cEquation);
+     double Max;
+     int position;
+    for(int i=0;i<cEquation;i++)
+    {
+         if(!vectors[i].empty()){
+              Max=system[i][vectors[i].front()]*system[cEquation][vectors[i].front()-vars];
+        position=vectors[i].front();
+        vectors[i].pop_front();
+         }
+        while(!vectors[i].empty()){
+            if(Max<(system[i][vectors[i].front()]*system[cEquation][vectors[i].front()-vars])){
+                Max=system[i][vectors[i].front()]*system[cEquation][vectors[i].front()-vars];
+                position=vectors[i].front();
+                  vectors[i].pop_front();
+            }
+            else{
+                  vectors[i].pop_front();
+            }
+        }
+        Vector[i].push_back(position);
+
+    }
+    return Vector;
 
 }

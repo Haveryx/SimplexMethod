@@ -93,6 +93,11 @@ if(sign[j]!=0){ //add New vars (if in equation have <= or >=
    massive->AddElement(coeff,vars);
    vars++;
 }
+if(coeffSystems[j][vars]<0){//if <0
+    for(int i=0;i<vars+1;i++){
+        coeffSystems[j][i]*=-1;
+    }
+}
 }
 for(int i=0;i<cEquation;i++)
 {

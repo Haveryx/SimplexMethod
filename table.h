@@ -38,6 +38,7 @@ private:
    int sizeLine=2;
    int Position=0;
    QString* basis;
+   int  * Basis;
    QColor color=QColor::fromRgb(0,0,0);
    double** system,*z;
    simplex* SimpleGod;
@@ -47,6 +48,7 @@ QMap<QLabel*,int> map;
 void ColorColumn(int j);
 void NotColor();
 void NextStep();
+int CheckPosition(QLabel* labelOne,QLabel** LabelTwo);
 protected:
     void paintEvent(QPaintEvent*) override;
 
