@@ -108,7 +108,7 @@ void simplex::getDelta(double **system, double* z,int vars, int cEquation)
 solution simplex::Resheno(double **system, int *basis, int vars, int cEquation)
 {
     bool flag=false;
-    for(int i=1;i<vars+2;i++)
+    for(int i=2;i<vars+2;i++)
     {
         if(system[cEquation][i]<0)return solution::NotOptimal;
         else if(system[cEquation][i]==0){// Смотрим базис ли это?
