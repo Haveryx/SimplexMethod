@@ -5,7 +5,7 @@ simplex::simplex()
 
 }
 
-void simplex::getTetta(double **system, int vars, int cEquation)
+void simplex::getTetta(double **system,int* basis, int vars, int cEquation)
 {
 
     for(int j=0;j<cEquation;j++)
@@ -15,7 +15,15 @@ void simplex::getTetta(double **system, int vars, int cEquation)
             system[j][i]=(system[j][1]/system[j][i-vars]>=0)?system[j][1]/system[j][i-vars]:INFINITY;
         }
     }
+for(int j=0;j<cEquation;j++)
+{
+    if(basis[j]!=-1000){
+        for(int i=0;i<cEquation;i++){
+            system[i][basis[j]+vars+1]=INFINITY;
+        }
 
+    }
+}
 }
 
 QVector<QVector<int>>simplex::GetMin(double **system,int* basis, int vars,int cEquation)
@@ -216,4 +224,15 @@ int simplex::GetMin(double **system, int j, int cEquation)
         }
     }
     return position;
+}
+
+bool simplex::checkBlackList(QVector<QVector<int> > blackList, int position, int data)
+{
+    bool flag=false;
+  for(int i=0;i<blackList[position].size();i++)
+    {
+      if(blackList[position][i]==data)flag=true;
+
+    }
+    return flag;
 }

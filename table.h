@@ -49,7 +49,7 @@ private:
 QVector<QLabel*> actual;
 QLabel* label,*label2;
 QMap<QLabel*,int> map;
- QVector<QVector<int>> vectors;
+ QVector<QVector<int>> vectors,blackList;
 void ColorColumn(int j);
 void NotColor();
 void NextStep();

@@ -37,7 +37,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Решатель</string>
+     <string>Калькулятор</string>
     </property>
    </widget>
   </widget>
@@ -47,7 +47,7 @@
      <x>0</x>
      <y>0</y>
      <width>636</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>

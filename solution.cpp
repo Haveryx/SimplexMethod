@@ -18,8 +18,14 @@ Solution::~Solution()
 void Solution::on_pushButton_clicked()
 {
     //Read Consts
+    if(ui->lineEdit_2->text().length()==0)cEquation=0;
+    else{
     cEquation=ui->lineEdit_2->text().toInt();
+    }
+     if(ui->lineEdit->text().length()==0)vars=0;
+     else{
     vars=ui->lineEdit->text().toInt();
+     }
     //hide all
     delete ui->label_2;
    delete ui->label;
@@ -42,7 +48,10 @@ void Solution::GetCoeff()
 coeff=new double[vars+cEquation];//процедура увеличения памяти достаточно затратная,поэтому выделим её сразу с запасом
 for(int i=0;i<vars;i++)
 {
+    if(LineEdits[i]->text().length()==0)coeff[i]=0;
+    else{
     coeff[i]=LineEdits[i]->text().toDouble();
+    }
     delete LineEdits[i];
     delete Labels[i];
 }
@@ -78,7 +87,10 @@ for(int j=0;j<cEquation;j++)
 
     for(int i=0;i<=vars;i++)
     {
+        if(LineEdits[j][i].text().length()==0) coeffSystems[j][i]=0;
+        else{
     coeffSystems[j][i]= LineEdits[j][i].text().toDouble();
+        }
 
     }
 

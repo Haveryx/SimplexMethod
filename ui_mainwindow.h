@@ -46,7 +46,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 636, 21));
+        menuBar->setGeometry(QRect(0, 0, 636, 20));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -64,7 +64,7 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
         pushButton->setText(QApplication::translate("MainWindow", "\320\242\321\200\320\265\320\275\320\260\320\266\320\265\321\200", nullptr));
-        pushButton_2->setText(QApplication::translate("MainWindow", "\320\240\320\265\321\210\320\260\321\202\320\265\320\273\321\214", nullptr));
+        pushButton_2->setText(QApplication::translate("MainWindow", "\320\232\320\260\320\273\321\214\320\272\321\203\320\273\321\217\321\202\320\276\321\200", nullptr));
     } // retranslateUi
 
 };
