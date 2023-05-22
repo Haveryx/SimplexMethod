@@ -6,20 +6,48 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>539</width>
+    <width>737</width>
     <height>423</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">Solution{
+background-color: rgb(212, 188, 181);
+}
+QPushButton{
+border-radius:8px;
+border: 2px solid rgb(51, 81, 83);
+background-color: rgb(155,93,86);
+	font: 75 18pt &quot;Times New Roman&quot;;
+}
+QPushButton::hover{
+border: 2px solid rgb(51, 107, 83);
+background-color: rgb(152,143,250);
+}
+QLabel{
+font: 75 18pt &quot;Times New Roman&quot;;
+}
+QRadioButton{
+font: 75 18pt &quot;Times New Roman&quot;;
+}
+QGroupBox{
+border-radius:10px;
+border: 2px solid rgb(110,151,145);
+
+}
+
+</string>
+  </property>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>400</x>
-     <y>20</y>
-     <width>108</width>
-     <height>85</height>
+     <x>560</x>
+     <y>90</y>
+     <width>161</width>
+     <height>141</height>
     </rect>
    </property>
    <property name="title">
@@ -48,67 +76,67 @@
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>220</x>
-     <y>130</y>
-     <width>80</width>
-     <height>21</height>
+     <x>270</x>
+     <y>330</y>
+     <width>241</width>
+     <height>61</height>
     </rect>
    </property>
    <property name="text">
     <string>Далее</string>
    </property>
   </widget>
-  <widget class="QWidget" name="layoutWidget">
+  <widget class="QLineEdit" name="lineEdit">
    <property name="geometry">
     <rect>
-     <x>210</x>
-     <y>50</y>
-     <width>110</width>
-     <height>52</height>
+     <x>340</x>
+     <y>120</y>
+     <width>151</width>
+     <height>31</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout_2">
-    <item>
-     <widget class="QLineEdit" name="lineEdit">
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLineEdit" name="lineEdit_2">
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-   </layout>
+   <property name="text">
+    <string/>
+   </property>
   </widget>
-  <widget class="QWidget" name="layoutWidget">
+  <widget class="QLineEdit" name="lineEdit_2">
    <property name="geometry">
     <rect>
-     <x>50</x>
-     <y>50</y>
-     <width>147</width>
-     <height>53</height>
+     <x>340</x>
+     <y>160</y>
+     <width>151</width>
+     <height>31</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout_3">
-    <item>
-     <widget class="QLabel" name="label">
-      <property name="text">
-       <string>Введите кол-во переменных</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QLabel" name="label_2">
-      <property name="text">
-       <string>Введите кол-во уравнений</string>
-      </property>
-     </widget>
-    </item>
-   </layout>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>120</y>
+     <width>291</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Введите кол-во переменных</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>160</y>
+     <width>291</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Введите кол-во уравнений</string>
+   </property>
   </widget>
  </widget>
  <resources/>

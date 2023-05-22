@@ -8,6 +8,7 @@
 #include"simplex.h"
 #include"massive.h"
 #include<Qvector>
+#include<QDesktopWidget>
 #include<QMap>
 enum class Type{
     reshenie,

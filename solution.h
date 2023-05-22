@@ -6,6 +6,7 @@
 #include<QComboBox>
 #include"massive.h"
 #include"table.h"
+#include<QDesktopWidget>
 namespace Ui {
 class Solution;
 }

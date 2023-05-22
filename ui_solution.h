@@ -29,12 +29,8 @@ public:
     QRadioButton *radioButton;
     QRadioButton *radioButton_2;
     QPushButton *pushButton;
-    QWidget *layoutWidget;
-    QVBoxLayout *verticalLayout_2;
     QLineEdit *lineEdit;
     QLineEdit *lineEdit_2;
-    QWidget *layoutWidget1;
-    QVBoxLayout *verticalLayout_3;
     QLabel *label;
     QLabel *label_2;
 
@@ -42,10 +38,36 @@ public:
     {
         if (Solution->objectName().isEmpty())
             Solution->setObjectName(QStringLiteral("Solution"));
-        Solution->resize(539, 423);
+        Solution->resize(737, 423);
+        Solution->setStyleSheet(QLatin1String("Solution{\n"
+"background-color: rgb(212, 188, 181);\n"
+"}\n"
+"QPushButton{\n"
+"border-radius:8px;\n"
+"border: 2px solid rgb(51, 81, 83);\n"
+"background-color: rgb(155,93,86);\n"
+"	font: 75 18pt \"Times New Roman\";\n"
+"}\n"
+"QPushButton::hover{\n"
+"border: 2px solid rgb(51, 107, 83);\n"
+"background-color: rgb(152,143,250);\n"
+"}\n"
+"QLabel{\n"
+"font: 75 18pt \"Times New Roman\";\n"
+"}\n"
+"QRadioButton{\n"
+"font: 75 18pt \"Times New Roman\";\n"
+"}\n"
+"QGroupBox{\n"
+"border-radius:10px;\n"
+"border: 2px solid rgb(110,151,145);\n"
+"\n"
+"}\n"
+"\n"
+""));
         groupBox = new QGroupBox(Solution);
         groupBox->setObjectName(QStringLiteral("groupBox"));
-        groupBox->setGeometry(QRect(400, 20, 108, 85));
+        groupBox->setGeometry(QRect(560, 90, 161, 141));
         verticalLayout = new QVBoxLayout(groupBox);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         radioButton = new QRadioButton(groupBox);
@@ -61,39 +83,19 @@ public:
 
         pushButton = new QPushButton(Solution);
         pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setGeometry(QRect(220, 130, 80, 21));
-        layoutWidget = new QWidget(Solution);
-        layoutWidget->setObjectName(QStringLiteral("layoutWidget"));
-        layoutWidget->setGeometry(QRect(210, 50, 110, 52));
-        verticalLayout_2 = new QVBoxLayout(layoutWidget);
-        verticalLayout_2->setObjectName(QStringLiteral("verticalLayout_2"));
-        verticalLayout_2->setContentsMargins(0, 0, 0, 0);
-        lineEdit = new QLineEdit(layoutWidget);
+        pushButton->setGeometry(QRect(270, 330, 241, 61));
+        lineEdit = new QLineEdit(Solution);
         lineEdit->setObjectName(QStringLiteral("lineEdit"));
-
-        verticalLayout_2->addWidget(lineEdit);
-
-        lineEdit_2 = new QLineEdit(layoutWidget);
+        lineEdit->setGeometry(QRect(340, 120, 151, 31));
+        lineEdit_2 = new QLineEdit(Solution);
         lineEdit_2->setObjectName(QStringLiteral("lineEdit_2"));
-
-        verticalLayout_2->addWidget(lineEdit_2);
-
-        layoutWidget1 = new QWidget(Solution);
-        layoutWidget1->setObjectName(QStringLiteral("layoutWidget1"));
-        layoutWidget1->setGeometry(QRect(50, 50, 147, 53));
-        verticalLayout_3 = new QVBoxLayout(layoutWidget1);
-        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
-        verticalLayout_3->setContentsMargins(0, 0, 0, 0);
-        label = new QLabel(layoutWidget1);
+        lineEdit_2->setGeometry(QRect(340, 160, 151, 31));
+        label = new QLabel(Solution);
         label->setObjectName(QStringLiteral("label"));
-
-        verticalLayout_3->addWidget(label);
-
-        label_2 = new QLabel(layoutWidget1);
+        label->setGeometry(QRect(20, 120, 291, 21));
+        label_2 = new QLabel(Solution);
         label_2->setObjectName(QStringLiteral("label_2"));
-
-        verticalLayout_3->addWidget(label_2);
-
+        label_2->setGeometry(QRect(20, 160, 291, 31));
 
         retranslateUi(Solution);
 

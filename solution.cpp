@@ -7,7 +7,13 @@ Solution::Solution(QWidget *parent) :
 {
     ui->setupUi(this);
 massive=new Massive();
+QDesktopWidget desktop;
 
+QRect size=desktop.geometry();
+int PositionX=(int)(size.width()-241)/2;
+int PositionY=(int)(size.height()-242)/2;
+size.setY(40);
+this->setGeometry(size);
 }
 
 Solution::~Solution()

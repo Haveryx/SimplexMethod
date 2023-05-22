@@ -12,10 +12,8 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
-#include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
-#include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -26,31 +24,37 @@ public:
     QWidget *centralWidget;
     QPushButton *pushButton;
     QPushButton *pushButton_2;
-    QMenuBar *menuBar;
-    QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
-        MainWindow->resize(636, 441);
+        MainWindow->resize(782, 441);
+        MainWindow->setStyleSheet(QLatin1String("QMainWindow{\n"
+"background-color: rgb(227, 225, 237);\n"
+"}\n"
+"QPushButton{\n"
+"border-radius:8px;\n"
+"border: 2px solid rgb(132, 139, 97);\n"
+"background-color: rgb(132, 139, 97);\n"
+"	font: 75 18pt \"Times New Roman\";\n"
+"}\n"
+"QPushButton::hover{\n"
+"border: 2px solid rgb(51, 107, 83);\n"
+"background-color: rgb(117, 174, 143);\n"
+"}\n"
+"\n"
+""));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         pushButton = new QPushButton(centralWidget);
         pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setGeometry(QRect(210, 130, 131, 23));
+        pushButton->setGeometry(QRect(260, 120, 241, 61));
         pushButton_2 = new QPushButton(centralWidget);
         pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
-        pushButton_2->setGeometry(QRect(210, 180, 131, 23));
+        pushButton_2->setGeometry(QRect(260, 210, 241, 61));
         MainWindow->setCentralWidget(centralWidget);
-        menuBar = new QMenuBar(MainWindow);
-        menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 636, 20));
-        MainWindow->setMenuBar(menuBar);
-        mainToolBar = new QToolBar(MainWindow);
-        mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
-        MainWindow->addToolBar(Qt::TopToolBarArea, mainToolBar);
         statusBar = new QStatusBar(MainWindow);
         statusBar->setObjectName(QStringLiteral("statusBar"));
         MainWindow->setStatusBar(statusBar);
