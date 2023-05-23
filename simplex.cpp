@@ -113,9 +113,10 @@ void simplex::getDelta(double **system, double* z,int vars, int cEquation)
 
 }
 
-solution simplex::Resheno(double **system, int *basis, int vars, int cEquation)
+solution simplex::Resheno(double **system, int *basis, int vars, int cEquation,int checkMin)
 {
     bool flag=false;
+    if(checkMin==1){
     for(int i=2;i<vars+2;i++)
     {
         if(system[cEquation][i]<0)return solution::NotOptimal;
@@ -134,9 +135,30 @@ solution simplex::Resheno(double **system, int *basis, int vars, int cEquation)
         }
     }
     return solution::Optimal;
+    }
+    else{
+        for(int i=2;i<vars+2;i++)
+        {
+            if(system[cEquation][i]>0)return solution::NotOptimal;
+            else if(system[cEquation][i]==0){// Смотрим базис ли это?
+                flag=true;
+                for(int j=0;j<cEquation;j++)
+                {
+                    if(i-1==(basis[j])){
+                        flag=false;
+                    }
+                }
+                if(flag==true){
+                    return solution::SomeSolution;
+                }
+
+            }
+        }
+        return solution::Optimal;
+    }
 }
 
-QVector<QVector<int>> simplex::GetMax(double **system,int* Basis, int vars, int cEquation)
+QVector<QVector<int>> simplex::GetMax(double **system,int* Basis, int vars, int cEquation,int checkMin)
 {
     QVector <QVector<int>> Vector;
     QVector<int>vector;
@@ -151,6 +173,8 @@ QVector<QVector<int>> simplex::GetMax(double **system,int* Basis, int vars, int 
      bool flag=false;
      int position;
      int I;
+     if(checkMin==1)//Ищем максимальное значение
+     {
     for(int i=0;i<cEquation;i++)
     {
          if(!vectors[i].empty() && flag==false){
@@ -182,6 +206,40 @@ QVector<QVector<int>> simplex::GetMax(double **system,int* Basis, int vars, int 
  }
     }
     return Vector;
+     }
+     else{ //Ищем минимальное значение
+         for(int i=0;i<cEquation;i++)
+         {
+              if(!vectors[i].empty() && flag==false){
+                   Max=-1*system[i][vectors[i].front()]*system[cEquation][vectors[i].front()-vars];
+             position=vectors[i].front();
+             vectors[i].pop_front();
+             I=i;
+             flag=true;
+              }
+             while(!vectors[i].empty()){
+                 if(Max>(-1*system[i][vectors[i].front()]*system[cEquation][vectors[i].front()-vars])){
+                     Max=-1*system[i][vectors[i].front()]*system[cEquation][vectors[i].front()-vars];
+                     position=vectors[i].front();
+                     I=i;
+                 }
+                 else if(Max==(-1*system[i][vectors[i].front()]*system[cEquation][vectors[i].front()-vars]))
+                 {
+                     Vector[i].push_back(vectors[i].front());
+                 }
+
+                       vectors[i].pop_front();
+
+             }
+         }
+         Vector[I].push_back(position);
+         for(int i=0;i<cEquation;i++){
+      for(auto j=Vector[i].begin();j<Vector[i].end();j++){
+          if((-1*system[i][*j]*system[cEquation][Vector[i].front()-vars])!=Max)Vector[i].erase(j);
+      }
+         }
+         return Vector;
+     }
 
 }
 

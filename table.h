@@ -10,10 +10,16 @@
 #include<Qvector>
 #include<QDesktopWidget>
 #include<QMap>
+enum Minimal
+{
+    min,
+    max
+};
 enum class Type{
     reshenie,
     helper
 };
+
 namespace Ui {
 class Table;
 }
@@ -26,7 +32,7 @@ public:
     explicit Table(QWidget *parent = 0);
     ~Table();
    public slots:
-    addInformation(int,int,Type,double**,double*);
+    addInformation(int,int,Type,int,double**,double*);
 
 private:
     Ui::Table *ui;
@@ -38,6 +44,7 @@ private:
    QLineEdit ** input;
    int sizeLine=2;
    int y,x;
+   int checkMin;
    int Position=0;
    void AllNotColor();
    void SetColorBasis();

@@ -24,7 +24,7 @@ Table::~Table()
     delete SimpleGod;
 }
 
-Table::addInformation(int cEquation, int vars,Type type,double** System,double* Z)
+Table::addInformation(int cEquation, int vars,Type type,int minimum,double** System,double* Z)
 {
     system=new double*[cEquation+1];
 QVector<int> p;
@@ -44,6 +44,7 @@ QVector<int> p;
     this->cEquation=cEquation;
     this->vars=vars;
     this->type=type;
+     checkMin=minimum;
     Massive massive;
     z=Z;
    massive.Union(system,System,vars,cEquation);
@@ -76,6 +77,7 @@ vectors[0].pop_front();
    default:
        break;
    }
+
    repaint();
 }
 
@@ -143,7 +145,7 @@ void Table::NextStep()
     }
     else{
         SimpleGod->getDelta(system,z,vars,cEquation);
-        solution j=SimpleGod->Resheno(system,Basis,vars,cEquation);
+        solution j=SimpleGod->Resheno(system,Basis,vars,cEquation,checkMin);
         switch (j) {
         case solution::Optimal:
 
@@ -160,7 +162,7 @@ void Table::NextStep()
             AllNotColor();
              SetColorBasis(Basis);
               SimpleGod->getTetta(system,Basis,vars,cEquation);
-            vectors=SimpleGod->GetMax(system,Basis,vars,cEquation);
+            vectors=SimpleGod->GetMax(system,Basis,vars,cEquation,checkMin);
             for(int i=0;i<cEquation;i++)
             {
                 while(!vectors[i].empty()){

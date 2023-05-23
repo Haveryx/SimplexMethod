@@ -14,6 +14,7 @@ int PositionX=(int)(size.width()-241)/2;
 int PositionY=(int)(size.height()-242)/2;
 size.setY(40);
 this->setGeometry(size);
+checkMin=0;
 }
 
 Solution::~Solution()
@@ -72,12 +73,12 @@ delete Zx;
 
 void Solution::on_radioButton_2_clicked()
 {
-    type=true;
+    checkMin=1;
 }
 
 void Solution::on_radioButton_clicked()
 {
-    type=false;
+    checkMin=0;
 }
 
 void Solution::GetCoeffSystem()
@@ -133,8 +134,8 @@ void Solution::PaintTable()
 {
 
 table=new Table();
-connect(this,SIGNAL(createTable(int, int,Type,double**,double*)),table,SLOT(addInformation(int, int,Type,double**,double*)));
-createTable(cEquation,vars,Type::reshenie,coeffSystems,coeff);
+connect(this,SIGNAL(createTable(int, int,Type,int,double**,double*)),table,SLOT(addInformation(int, int,Type,int,double**,double*)));
+createTable(cEquation,vars,Type::reshenie,checkMin,coeffSystems,coeff);
 table->show();
 this->close();
 
