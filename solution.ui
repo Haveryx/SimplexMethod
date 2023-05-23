@@ -38,8 +38,7 @@ border-radius:10px;
 border: 2px solid rgb(110,151,145);
 
 }
-*/
-</string>
+*/</string>
   </property>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
@@ -130,7 +129,7 @@ border: 2px solid rgb(110,151,145);
     <rect>
      <x>20</x>
      <y>160</y>
-     <width>291</width>
+     <width>281</width>
      <height>31</height>
     </rect>
    </property>

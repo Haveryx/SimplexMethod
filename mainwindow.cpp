@@ -11,12 +11,13 @@ MainWindow::MainWindow(QWidget *parent) :
     QDesktopWidget desktop;
 
     QRect size=desktop.geometry();
+    this->setGeometry(size.x(),size.y(),size.width(),size.height());
     int PositionX=(int)(size.width()-241)/2;
     int PositionY=(int)(size.height()-91)/2;
     ui->pushButton->setGeometry(PositionX,PositionY,241,61);
      ui->pushButton_2->setGeometry(PositionX,PositionY+101,241,61);
 
-    this->setGeometry(size);
+
 
 }
 
@@ -27,7 +28,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()
 {
-
+    Training* training=new Training();
+    this->hide();
+    training->show();
 }
 
 void MainWindow::on_pushButton_2_clicked()

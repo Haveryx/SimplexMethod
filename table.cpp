@@ -24,7 +24,7 @@ Table::~Table()
     delete SimpleGod;
 }
 
-Table::addInformation(int cEquation, int vars,Type type,int minimum,double** System,double* Z)
+Table::addInformation(int cEquation, int vars,int minimum,double** System,double* Z)
 {
     system=new double*[cEquation+1];
 QVector<int> p;
@@ -43,19 +43,18 @@ QVector<int> p;
      z=new double[vars];
     this->cEquation=cEquation;
     this->vars=vars;
-    this->type=type;
      checkMin=minimum;
     Massive massive;
     z=Z;
    massive.Union(system,System,vars,cEquation);
-   switch (type) {
-   case Type::reshenie:
+
+
        text=new QLabel*[cEquation+2];
        for(int i=0;i<cEquation+2;i++)
        {
            text[i]=new QLabel[vars*2+3];
        }
-SimpleGod->getTetta(system,Basis,vars,cEquation);
+     SimpleGod->getTetta(system,Basis,vars,cEquation);
      vectors=SimpleGod->GetMin(system,Basis,vars,cEquation);
      while(!vectors[0].empty()){
 text[1][vectors[0].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
@@ -65,20 +64,46 @@ map[&text[1][vectors[0].front()+1]]=vectors[0].front();
 vectors[0].pop_front();
      }
 
-       break;
-   case Type::helper:
-       text=new QLabel*[vars*2+1];
-       input=new QLineEdit*[cEquation];
-       for(int i=0;i<cEquation;i++)
-       {
-          input[i]=new QLineEdit[vars*2+1];
-       }
-       break;
-   default:
-       break;
-   }
+
+
+    type=Type::reshenie;
 
    repaint();
+}
+
+Table::addInformation(int cEquation, int vars,int errors[],int minimum,double** System,double* Z )
+{
+    system=new double*[cEquation+1];
+QVector<int> p;
+    for(int i=0;i<cEquation+1;i++)
+    {
+        system[i]=new double[vars*2+2];
+        blackList.push_back(p);
+    }
+    basis=new QString[cEquation];
+    Basis=new int[cEquation];
+    for(int i=0;i<cEquation;i++)
+    {
+        basis[i]="";
+        Basis[i]=-1000;
+    }
+     z=new double[vars];
+    this->cEquation=cEquation;
+    this->vars=vars;
+     for(int i=0;i<5;i++){
+     this->errors[i]=errors[i];
+     }
+     checkMin=minimum;
+    Massive massive;
+    z=Z;
+   massive.Union(system,System,vars,cEquation);
+    text=new QLabel*[vars*2+1];
+    input=new QLineEdit*[cEquation];
+    for(int i=0;i<cEquation;i++)
+    {
+       input[i]=new QLineEdit[vars*2+1];
+    }
+        type=Type::training;
 }
 
 void Table::AllNotColor()
@@ -355,7 +380,7 @@ text[1+cEquation][i+1].setText((QString)chars);
     text[1+cEquation][i+1].show();
 }
     break;
-case Type::helper:
+case Type::training:
 
     break;
 default:

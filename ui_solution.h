@@ -39,7 +39,7 @@ public:
         if (Solution->objectName().isEmpty())
             Solution->setObjectName(QStringLiteral("Solution"));
         Solution->resize(737, 423);
-        Solution->setStyleSheet(QLatin1String("Solution{\n"
+        Solution->setStyleSheet(QLatin1String("/*Solution{\n"
 "background-color: rgb(212, 188, 181);\n"
 "}\n"
 "QPushButton{\n"
@@ -63,8 +63,7 @@ public:
 "border: 2px solid rgb(110,151,145);\n"
 "\n"
 "}\n"
-"\n"
-""));
+"*/"));
         groupBox = new QGroupBox(Solution);
         groupBox->setObjectName(QStringLiteral("groupBox"));
         groupBox->setGeometry(QRect(560, 90, 161, 141));
@@ -95,7 +94,7 @@ public:
         label->setGeometry(QRect(20, 120, 291, 21));
         label_2 = new QLabel(Solution);
         label_2->setObjectName(QStringLiteral("label_2"));
-        label_2->setGeometry(QRect(20, 160, 291, 31));
+        label_2->setGeometry(QRect(20, 160, 281, 31));
 
         retranslateUi(Solution);
 

@@ -27,8 +27,7 @@ QPushButton::hover{
 border: 2px solid rgb(51, 107, 83);
 background-color: rgb(117, 174, 143);
 }
-*/
-</string>
+*/</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QPushButton" name="pushButton">

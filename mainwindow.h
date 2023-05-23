@@ -3,6 +3,7 @@
 #include <QMainWindow>
 #include<solution.h>
 #include<table.h>
+#include"training.h"
 #include<QDesktopWidget>
 namespace Ui {
 class MainWindow;

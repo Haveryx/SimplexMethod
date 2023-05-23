@@ -31,7 +31,7 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->resize(782, 441);
-        MainWindow->setStyleSheet(QLatin1String("QMainWindow{\n"
+        MainWindow->setStyleSheet(QLatin1String("/*QMainWindow{\n"
 "background-color: rgb(227, 225, 237);\n"
 "}\n"
 "QPushButton{\n"
@@ -44,8 +44,7 @@ public:
 "border: 2px solid rgb(51, 107, 83);\n"
 "background-color: rgb(117, 174, 143);\n"
 "}\n"
-"\n"
-""));
+"*/"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         pushButton = new QPushButton(centralWidget);

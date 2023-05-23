@@ -10,10 +10,7 @@ massive=new Massive();
 QDesktopWidget desktop;
 
 QRect size=desktop.geometry();
-int PositionX=(int)(size.width()-241)/2;
-int PositionY=(int)(size.height()-242)/2;
-size.setY(40);
-this->setGeometry(size);
+this->setGeometry(size.x(),size.y(),size.width(),size.height());
 checkMin=0;
 }
 
@@ -121,8 +118,8 @@ void Solution::PaintTable()
 {
 
 table=new Table();
-connect(this,SIGNAL(createTable(int, int,Type,int,double**,double*)),table,SLOT(addInformation(int, int,Type,int,double**,double*)));
-createTable(cEquation,vars,Type::reshenie,checkMin,coeffSystems,coeff);
+connect(this,SIGNAL(createTable(int, int,int,double**,double*)),table,SLOT(addInformation(int, int,int,double**,double*)));
+createTable(cEquation,vars,checkMin,coeffSystems,coeff);
 table->show();
 this->close();
 
@@ -213,6 +210,11 @@ void Solution::ShowEquation()
 
 void Solution::ShowInputEquation()
 {
+    delete Zx;
+      for(int i=0;i<cEquation;i++){
+        delete Labels[i];
+}
+      delete []Labels;
     Zx =new QLabel("Z(X)=",this);
     Zx->setGeometry(30,120,50+70*vars,15);
     Zx->show();
@@ -338,10 +340,27 @@ void Solution::Show()
 
      }
      if(coeffSystems[i][vars]-((int)coeffSystems[i][vars])==0){
+         if(sign[i]==0){
          sprintf(chars, "= %.0f",coeffSystems[i][vars]);
+         }
+         else if(sign[i]==1){
+              sprintf(chars, ">= %.0f",coeffSystems[i][vars]);
+         }
+         else{
+             sprintf(chars, "<= %.0f",coeffSystems[i][vars]);
+         }
      }
      else {
-          sprintf(chars, "= %.2f",coeffSystems[i][vars]);
+         if(sign[i]==0){
+         sprintf(chars, "= %.2f",coeffSystems[i][vars]);
+         }
+         else if(sign[i]==1){
+              sprintf(chars, ">= %.2f",coeffSystems[i][vars]);
+         }
+         else{
+             sprintf(chars, "<= %.2f",coeffSystems[i][vars]);
+         }
+
      }
      Labels[i]->setText(Labels[i]->text()+(QString)chars);
      Labels[i]->show();

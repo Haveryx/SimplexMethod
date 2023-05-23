@@ -13,6 +13,150 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">/*Training{
+background-color: rgb(212, 188, 181);
+}
+QPushButton{
+border-radius:8px;
+border: 2px solid rgb(51, 81, 83);
+background-color: rgb(155,93,86);
+	font: 75 18pt &quot;Times New Roman&quot;;
+}
+QPushButton::hover{
+border: 2px solid rgb(51, 107, 83);
+background-color: rgb(152,143,250);
+}
+QLabel{
+font: 75 18pt &quot;Times New Roman&quot;;
+}
+QRadioButton{
+font: 75 18pt &quot;Times New Roman&quot;;
+}
+QGroupBox{
+border-radius:10px;
+border: 2px solid rgb(110,151,145);
+
+}
+*/
+QLabel#label_3{
+font: 75 18pt &quot;Times New Roman&quot;;
+background-color: rgb(214,153,146);
+}</string>
+  </property>
+  <widget class="QLineEdit" name="lineEdit">
+   <property name="geometry">
+    <rect>
+     <x>360</x>
+     <y>60</y>
+     <width>151</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>60</y>
+     <width>291</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Введите кол-во переменных</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>100</y>
+     <width>281</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Введите кол-во уравнений</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>270</y>
+     <width>241</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Далее</string>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>580</x>
+     <y>30</y>
+     <width>161</width>
+     <height>141</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string/>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QRadioButton" name="radioButton">
+      <property name="text">
+       <string>Min</string>
+      </property>
+      <property name="checked">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QRadioButton" name="radioButton_2">
+      <property name="text">
+       <string>Max</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_2">
+   <property name="geometry">
+    <rect>
+     <x>360</x>
+     <y>100</y>
+     <width>151</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>10</y>
+     <width>401</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Не приведено к каноническому виду</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

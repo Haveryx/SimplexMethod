@@ -17,7 +17,7 @@ enum Minimal
 };
 enum class Type{
     reshenie,
-    helper
+    training
 };
 
 namespace Ui {
@@ -32,7 +32,8 @@ public:
     explicit Table(QWidget *parent = 0);
     ~Table();
    public slots:
-    addInformation(int,int,Type,int,double**,double*);
+    addInformation(int,int,int,double**,double*);
+      addInformation(int,int,int errors[8],int,double**,double*);
 
 private:
     Ui::Table *ui;
@@ -45,6 +46,7 @@ private:
    int sizeLine=2;
    int y,x;
    int checkMin;
+   int errors[5];
    int Position=0;
    void AllNotColor();
    void SetColorBasis();
