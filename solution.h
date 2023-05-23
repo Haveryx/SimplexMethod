@@ -6,6 +6,8 @@
 #include<QComboBox>
 #include"massive.h"
 #include"table.h"
+#include"simplex.h"
+#include<QDesktopWidget>
 namespace Ui {
 class Solution;
 }
@@ -18,7 +20,7 @@ public:
     explicit Solution(QWidget *parent = 0);
     ~Solution();
 signals:
-    void createTable(int, int,Type,double**,double*);
+    void createTable(int, int,Type,int,double**,double*);
 private slots:
     void on_pushButton_clicked();
     void GetCoeff();
@@ -26,10 +28,13 @@ private slots:
     void on_radioButton_clicked();
 void GetCoeffSystem();
 void PaintTable();
+void Kanon();
 private:
 void GetSystems();
+void Show();
 void ShowEquation();
 void ShowInputEquation();
+
     Ui::Solution *ui;
     QLineEdit ** LineEdits;
 Table* table;
@@ -37,9 +42,9 @@ Table* table;
     QComboBox ** comboBox;
     int vars=0,cEquation=0;
     double* coeff,** coeffSystems,*sign;
-    bool type=false;
     QLabel * Zx;
     Massive* massive;
+   int checkMin;
 
 };
 

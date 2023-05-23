@@ -29,16 +29,19 @@ SOURCES += \
     solution.cpp \
     massive.cpp \
     table.cpp \
-    simplex.cpp
+    simplex.cpp \
+    training.cpp
 
 HEADERS += \
         mainwindow.h \
     solution.h \
     massive.h \
     table.h \
-    simplex.h
+    simplex.h \
+    training.h
 
 FORMS += \
         mainwindow.ui \
     solution.ui \
-    table.ui
+    table.ui \
+    training.ui

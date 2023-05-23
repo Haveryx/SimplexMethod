@@ -1,9 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
 #include <QMainWindow>
 #include<solution.h>
 #include<table.h>
+#include<QDesktopWidget>
 namespace Ui {
 class MainWindow;
 }

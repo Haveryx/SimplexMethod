@@ -24,25 +24,27 @@ Table::~Table()
     delete SimpleGod;
 }
 
-Table::addInformation(int cEquation, int vars,Type type,double** System,double* Z)
+Table::addInformation(int cEquation, int vars,Type type,int minimum,double** System,double* Z)
 {
     system=new double*[cEquation+1];
-
+QVector<int> p;
     for(int i=0;i<cEquation+1;i++)
     {
         system[i]=new double[vars*2+2];
+        blackList.push_back(p);
     }
     basis=new QString[cEquation];
     Basis=new int[cEquation];
     for(int i=0;i<cEquation;i++)
     {
         basis[i]="";
-        Basis[i]=INFINITY;
+        Basis[i]=-1000;
     }
      z=new double[vars];
     this->cEquation=cEquation;
     this->vars=vars;
     this->type=type;
+     checkMin=minimum;
     Massive massive;
     z=Z;
    massive.Union(system,System,vars,cEquation);
@@ -53,7 +55,7 @@ Table::addInformation(int cEquation, int vars,Type type,double** System,double* 
        {
            text[i]=new QLabel[vars*2+3];
        }
-SimpleGod->getTetta(system,vars,cEquation);
+SimpleGod->getTetta(system,Basis,vars,cEquation);
      vectors=SimpleGod->GetMin(system,Basis,vars,cEquation);
      while(!vectors[0].empty()){
 text[1][vectors[0].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
@@ -75,6 +77,7 @@ vectors[0].pop_front();
    default:
        break;
    }
+
    repaint();
 }
 
@@ -102,9 +105,9 @@ void Table::SetColorBasis(int *basis)
 {
        for(int j=0;j<cEquation;j++)
        {
-    for(int i=1;i<cEquation+1;i++)
+    for(int i=0;i<cEquation+1;i++)
     {
-        text[i][basis[j]+1].setStyleSheet("background-color: rgb(71,250,148);");
+        text[i][basis[j]+2].setStyleSheet("background-color: rgb(71,250,148);");
     }
        }
 }
@@ -127,11 +130,11 @@ void Table::NotColor()
 
 void Table::NextStep()
 {
+    int Reshenie=0;
     if(Position<cEquation){
-        SimpleGod->getTetta(system,vars,cEquation);
+        SimpleGod->getTetta(system,Basis,vars,cEquation);
              vectors=SimpleGod->GetMin(system,Basis,vars,cEquation);
              while(!vectors[Position].empty()){
-
         text[1+Position][vectors[Position].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
         text[1+Position][vectors[Position].front()+1].installEventFilter(this);
         actual.push_back(&text[1+Position][vectors[Position].front()+1]);
@@ -142,7 +145,7 @@ void Table::NextStep()
     }
     else{
         SimpleGod->getDelta(system,z,vars,cEquation);
-        solution j=SimpleGod->Resheno(system,Basis,vars,cEquation);
+        solution j=SimpleGod->Resheno(system,Basis,vars,cEquation,checkMin);
         switch (j) {
         case solution::Optimal:
 
@@ -158,21 +161,29 @@ void Table::NextStep()
         case solution::NotOptimal:
             AllNotColor();
              SetColorBasis(Basis);
-              SimpleGod->getTetta(system,vars,cEquation);
-            vectors=SimpleGod->GetMax(system,Basis,vars,cEquation);
+              SimpleGod->getTetta(system,Basis,vars,cEquation);
+            vectors=SimpleGod->GetMax(system,Basis,vars,cEquation,checkMin);
             for(int i=0;i<cEquation;i++)
             {
                 while(!vectors[i].empty()){
-
+if(SimpleGod->checkBlackList(blackList,i,vectors[i].front())==false){
                     text[1+i][vectors[i].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
                     text[1+i][vectors[i].front()+1].installEventFilter(this);
                     actual.push_back(&text[1+i][vectors[i].front()+1]);
                     map[&text[1+i][vectors[i].front()+1]]=vectors[i].front();
                     vectors[i].pop_front();
+                    Reshenie++;
+}
+else{
+    vectors[i].pop_front();
+}
 
                 }
             }
-
+if(Reshenie==0){
+    label->setText("Нет решения");
+     label->show();
+}
             break;
         case solution::SomeSolution:
 
@@ -185,19 +196,36 @@ void Table::NextStep()
 
               label->show();
               label2->show();
-              SimpleGod->getTetta(system,vars,cEquation);
+              SimpleGod->getTetta(system,Basis,vars,cEquation);
               vectors=SimpleGod->SomeSolution(system,Basis,vars,cEquation);
                  AllNotColor();
               for(int i=0;i<cEquation;i++)
               {
                   while(!vectors[i].empty()){
-
+if(SimpleGod->checkBlackList(blackList,i,vectors[i].front())==false)
+{
                       text[1+i][vectors[i].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
                       text[1+i][vectors[i].front()+1].installEventFilter(this);
                       actual.push_back(&text[1+i][vectors[i].front()+1]);
                       map[&text[1+i][vectors[i].front()+1]]=vectors[i].front();
                       vectors[i].pop_front();
+                      Reshenie++;
+}
+else{
+    vectors[i].pop_front();
 
+                  }
+              }
+}
+              if(Reshenie==0)
+              {
+                  label2->hide();
+                  label->show();
+                  AllNotColor();
+                  SetColorBasis();
+                  for(int i=3;i<vars+3;i++)
+                  {
+                        text[cEquation+1][i].setStyleSheet("background-color: rgb(71,250,148);");
                   }
               }
 
@@ -305,12 +333,18 @@ for(int j=0;j<cEquation;j++)//Циферки выводим
         text[j+1][i+1].setParent(this);
         //text[0][0].setFont();Todo Добавить шрифт
       text[j+1][i+1].setGeometry(x+(sizeX*(i+1))+sizeLine,y+sizeY*(j+1) +sizeLine,sizeX-sizeLine*2,sizeY-sizeLine*2);
+      if((i>vars+1) &&(system[j][i]==INFINITY))
+      {
+           text[j+1][i+1].setText("-");
+      }
+      else{
    sprintf(chars, "%5.2f",system[j][i]);
     text[j+1][i+1].setText((QString)chars);
+     }
         text[j+1][i+1].show();
     }
 }
-//Выводим тетту
+//Выводим delta
 for(int i=1;i<vars+2;i++)
 {
     text[1+cEquation][i+1].setParent(this);
@@ -341,10 +375,12 @@ bool Table::eventFilter(QObject *watched, QEvent *event)
 
 auto position=(CheckPosition(actual[i],text) -1);
 SimpleGod->getBasis(system,vars,cEquation,position,map[actual[i]]-vars);
-ColorColumn(map[actual[i]]+1-vars);
 NotColor();
+ColorColumn(map[actual[i]]+1-vars);
+
 char chars[12];
 sprintf(chars, "A%d",map[actual[i]]-1-vars);
+blackList[position].push_back(map[actual[i]]-1);
 Basis[position]=map[actual[i]]-1-vars;
 basis[position]=(QString)chars;
 system[position][0]=z[map[actual[i]]-2-vars];

@@ -7,7 +7,14 @@ Solution::Solution(QWidget *parent) :
 {
     ui->setupUi(this);
 massive=new Massive();
+QDesktopWidget desktop;
 
+QRect size=desktop.geometry();
+int PositionX=(int)(size.width()-241)/2;
+int PositionY=(int)(size.height()-242)/2;
+size.setY(40);
+this->setGeometry(size);
+checkMin=0;
 }
 
 Solution::~Solution()
@@ -18,8 +25,14 @@ Solution::~Solution()
 void Solution::on_pushButton_clicked()
 {
     //Read Consts
+    if(ui->lineEdit_2->text().length()==0)cEquation=0;
+    else{
     cEquation=ui->lineEdit_2->text().toInt();
+    }
+     if(ui->lineEdit->text().length()==0)vars=0;
+     else{
     vars=ui->lineEdit->text().toInt();
+     }
     //hide all
     delete ui->label_2;
    delete ui->label;
@@ -42,7 +55,10 @@ void Solution::GetCoeff()
 coeff=new double[vars+cEquation];//процедура увеличения памяти достаточно затратная,поэтому выделим её сразу с запасом
 for(int i=0;i<vars;i++)
 {
+    if(LineEdits[i]->text().length()==0)coeff[i]=0;
+    else{
     coeff[i]=LineEdits[i]->text().toDouble();
+    }
     delete LineEdits[i];
     delete Labels[i];
 }
@@ -57,12 +73,12 @@ delete Zx;
 
 void Solution::on_radioButton_2_clicked()
 {
-    type=true;
+    checkMin=1;
 }
 
 void Solution::on_radioButton_clicked()
 {
-    type=false;
+    checkMin=0;
 }
 
 void Solution::GetCoeffSystem()
@@ -78,27 +94,17 @@ for(int j=0;j<cEquation;j++)
 
     for(int i=0;i<=vars;i++)
     {
+        if(LineEdits[j][i].text().length()==0) coeffSystems[j][i]=0;
+        else{
     coeffSystems[j][i]= LineEdits[j][i].text().toDouble();
+        }
 
     }
 
 sign[j]=comboBox[j]->currentIndex();
 
 }
-for(int j=0;j<cEquation;j++)
-{
-if(sign[j]!=0){ //add New vars (if in equation have <= or >=
-   massive->AddColumn(coeffSystems,vars,cEquation);
-   coeffSystems[j][vars]=sign[j]==2?1:-1;
-   massive->AddElement(coeff,vars);
-   vars++;
-}
-if(coeffSystems[j][vars]<0){//if <0
-    for(int i=0;i<vars+1;i++){
-        coeffSystems[j][i]*=-1;
-    }
-}
-}
+
 for(int i=0;i<cEquation;i++)
 {
 delete []LineEdits[i];
@@ -108,17 +114,37 @@ delete comboBox[i];
 delete []LineEdits;
 delete []Labels;
 ui->pushButton->hide();
-ShowInputEquation();
+Show();
 }
 
 void Solution::PaintTable()
 {
 
 table=new Table();
-connect(this,SIGNAL(createTable(int, int,Type,double**,double*)),table,SLOT(addInformation(int, int,Type,double**,double*)));
-createTable(cEquation,vars,Type::reshenie,coeffSystems,coeff);
+connect(this,SIGNAL(createTable(int, int,Type,int,double**,double*)),table,SLOT(addInformation(int, int,Type,int,double**,double*)));
+createTable(cEquation,vars,Type::reshenie,checkMin,coeffSystems,coeff);
 table->show();
 this->close();
+
+}
+
+void Solution::Kanon()
+{
+    for(int j=0;j<cEquation;j++)
+    {
+    if(sign[j]!=0){ //add New vars (if in equation have <= or >=
+       massive->AddColumn(coeffSystems,vars,cEquation);
+       coeffSystems[j][vars]=sign[j]==2?1:-1;
+       massive->AddElement(coeff,vars);
+       vars++;
+    }
+    if(coeffSystems[j][vars]<0){//if <0
+        for(int i=0;i<vars+1;i++){
+            coeffSystems[j][i]*=-1;
+        }
+    }
+    }
+    ShowInputEquation();
 
 }
 
@@ -160,8 +186,8 @@ LineEdits[j][i].setParent(this);
     }
     ui->pushButton->setGeometry((vars+1)/2 + 70,150+cEquation*30,60,25);
     ui->pushButton->show();
-    connect(ui->pushButton,SIGNAL(clicked(bool)),SLOT(GetCoeffSystem()));
-
+   // connect(ui->pushButton,SIGNAL(clicked(bool)),SLOT(Show()));
+ connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(GetCoeffSystem()));
 
 }
 
@@ -194,9 +220,21 @@ void Solution::ShowInputEquation()
     {
         char chars[12];
         if(coeff[i]<0 or i==0){
-        sprintf(chars, "%.2f * X%d ",coeff[i],i+1);
+            if(coeff[i]-((int)coeff[i])==0){
+                sprintf(chars, "%.0f * X%d ",coeff[i],i+1);
+            }
+        else{
+                sprintf(chars, "%.2f * X%d ",coeff[i],i+1);
+            }
         }
-        else  sprintf(chars, "+ %.2f * X%d ",coeff[i],i+1);
+        else {
+            if(coeff[i]-((int)coeff[i])==0){
+                sprintf(chars, "+ %.0f * X%d ",coeff[i],i+1);
+            }
+            else{
+            sprintf(chars, "+ %.2f * X%d ",coeff[i],i+1);
+            }
+        }
         Zx->setText(Zx->text()+(QString)chars);
     }
     Labels =new QLabel*[cEquation];
@@ -209,20 +247,108 @@ void Solution::ShowInputEquation()
      for(int j=0;j<vars;j++)
      {
          if(coeffSystems[i][j]<0 or j==0){
-         sprintf(chars, "%.2f * X%d ",coeffSystems[i][j],j+1);
+             if(coeffSystems[i][j]-((int)coeffSystems[i][j])==0){
+                 sprintf(chars, "%.0f * X%d ",coeffSystems[i][j],j+1);
+             }
+        else{
+                 sprintf(chars, "%.2f * X%d ",coeffSystems[i][j],j+1);
+             }
          }
-         else  sprintf(chars, "+ %.2f * X%d ",coeffSystems[i][j],j+1);
+         else {
+             if(coeffSystems[i][j]-((int)coeffSystems[i][j])==0){
+                 sprintf(chars, "+ %.0f * X%d ",coeffSystems[i][j],j+1);
+             }
+             else{
+             sprintf(chars, "+ %.2f * X%d ",coeffSystems[i][j],j+1);
+             }
+         }
 
              Labels[i]->setText(Labels[i]->text()+(QString)chars);
 
      }
-     sprintf(chars, "= %.2f",coeffSystems[i][vars]);
+     if(coeffSystems[i][vars]-((int)coeffSystems[i][vars])==0){
+         sprintf(chars, "= %.0f",coeffSystems[i][vars]);
+     }
+     else {
+          sprintf(chars, "= %.2f",coeffSystems[i][vars]);
+     }
+     Labels[i]->setText(Labels[i]->text()+(QString)chars);
+     Labels[i]->show();
+
+    }
+    disconnect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(Kanon()));
+    connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(PaintTable()));
+    ui->pushButton->setGeometry((70+70*vars)/2-30,190 +(cEquation+1)*30,60,25);
+    ui->pushButton->show();
+}
+
+void Solution::Show()
+{
+    Zx =new QLabel("Z(X)=",this);
+    Zx->setGeometry(30,120,50+70*vars,15);
+    Zx->show();
+    for(int i=0;i<vars;i++)
+    {
+        char chars[12];
+        if(coeff[i]<0 or i==0){
+            if(coeff[i]-((int)coeff[i])==0){
+                sprintf(chars, "%.0f * X%d ",coeff[i],i+1);
+            }
+        else{
+                sprintf(chars, "%.2f * X%d ",coeff[i],i+1);
+            }
+        }
+        else {
+            if(coeff[i]-((int)coeff[i])==0){
+                sprintf(chars, "+ %.0f * X%d ",coeff[i],i+1);
+            }
+            else{
+            sprintf(chars, "+ %.2f * X%d ",coeff[i],i+1);
+            }
+        }
+        Zx->setText(Zx->text()+(QString)chars);
+    }
+    Labels =new QLabel*[cEquation];
+    for(int i=0;i<cEquation;i++){
+        Labels[i]=new QLabel("",this);
+        Labels[i]->setGeometry(30,190 +i*30,70+70*vars,15);
+    }
+    char chars[22];
+    for(int i=0;i<cEquation;i++){
+     for(int j=0;j<vars;j++)
+     {
+         if(coeffSystems[i][j]<0 or j==0){
+             if(coeffSystems[i][j]-((int)coeffSystems[i][j])==0){
+                 sprintf(chars, "%.0f * X%d ",coeffSystems[i][j],j+1);
+             }
+        else{
+                 sprintf(chars, "%.2f * X%d ",coeffSystems[i][j],j+1);
+             }
+         }
+         else {
+             if(coeffSystems[i][j]-((int)coeffSystems[i][j])==0){
+                 sprintf(chars, "+ %.0f * X%d ",coeffSystems[i][j],j+1);
+             }
+             else{
+             sprintf(chars, "+ %.2f * X%d ",coeffSystems[i][j],j+1);
+             }
+         }
+
+             Labels[i]->setText(Labels[i]->text()+(QString)chars);
+
+     }
+     if(coeffSystems[i][vars]-((int)coeffSystems[i][vars])==0){
+         sprintf(chars, "= %.0f",coeffSystems[i][vars]);
+     }
+     else {
+          sprintf(chars, "= %.2f",coeffSystems[i][vars]);
+     }
      Labels[i]->setText(Labels[i]->text()+(QString)chars);
      Labels[i]->show();
 
     }
     disconnect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(GetCoeffSystem()));
-    connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(PaintTable()));
+    connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(Kanon()));
     ui->pushButton->setGeometry((70+70*vars)/2-30,190 +(cEquation+1)*30,60,25);
     ui->pushButton->show();
 }
