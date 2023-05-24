@@ -5,7 +5,12 @@ Table::Table(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Table)
 {
+    this->setWindowFlags(Qt::WindowStaysOnTopHint);
     ui->setupUi(this);
+    this->activateWindow();
+    QDesktopWidget desktop;
+    QRect size=desktop.geometry();
+    this->setGeometry(size.x(),size.y(),size.width(),size.height());
     SimpleGod=new simplex();
     label=new QLabel("Решение найдено!",this);
    auto geo=this->geometry();
@@ -139,12 +144,14 @@ vectors[0].pop_front();
            for(int j=0;j<vars*2+3;j++){
                input[i][j].setParent(this);
                input[i][j].hide();
+               input[i][j].setAlignment(Qt::AlignCenter);
            }
        }
 
        for(int i=0;i<vars*2+4;i++)
        {
            text[i]=new QLabel(this);
+           text[i]->setAlignment(Qt::AlignCenter);
        }
        char chars[12];
        for(int j=0;j<cEquation;j++)//Циферки выводим
@@ -157,6 +164,7 @@ vectors[0].pop_front();
                }
                else sprintf(chars, "%5.0f",system[j][i]);
                input[j][i+1].setText(chars);
+
            }
        }
        break;
@@ -374,11 +382,13 @@ case Type::reshenie:
     //text[0][0].setFont();Todo Добавить шрифт
     text[0][0].setGeometry(x+sizeLine,y+sizeLine,sizeX-2*sizeLine,sizeY-2*sizeLine);
     text[0][0].setText("B");
+    text[0][0].setAlignment(Qt::AlignCenter);
     text[0][0].show();
 
     text[0][1].setParent(this);
     text[0][1].setGeometry(x+sizeX+sizeLine,y+sizeLine,sizeX-sizeLine*2,sizeY-sizeLine*2);
     text[0][1].setText("C");
+    text[0][1].setAlignment(Qt::AlignCenter);
     text[0][1].show();
 
     for(int i=2;i<vars+3;i++)//Заголовок
@@ -387,9 +397,12 @@ case Type::reshenie:
         //text[0][0].setFont();Todo Добавить шрифт
         text[0][i].setGeometry(x+(sizeX*i)+sizeLine,y+sizeLine,sizeX-sizeLine*2,sizeY-sizeLine*2);
         char chars[12];
-       sprintf(chars, "A%d",i-2);
+
+        sprintf(chars, "A%d",i-2);
         text[0][i].setText((QString)chars);
+        text[0][i].setAlignment(Qt::AlignCenter);
         text[0][i].show();
+
         //Добавляем Тетты
         text[0][i+vars].setParent(this);
         //text[0][0].setFont();Todo Добавить шрифт
@@ -397,6 +410,7 @@ case Type::reshenie:
 
        sprintf(chars, "O%d",i-2);//ToDo Добавить Тетту
         text[0][i+vars].setText((QString)chars);
+        text[0][i+vars].setAlignment(Qt::AlignCenter);
         text[0][i+vars].show();
     }
 //Delta
@@ -404,6 +418,7 @@ case Type::reshenie:
     //text[0][0].setFont();Todo Добавить шрифт
     text[cEquation+1][0].setGeometry(x+sizeLine,y+(cEquation+1)*sizeY+sizeLine,2*(sizeX-sizeLine),sizeY-2*sizeLine);
    text[cEquation+1][0].setText("Delta");
+    text[cEquation+1][0].setAlignment(Qt::AlignCenter);
     text[cEquation+1][0].show();
 
     char chars[12];
@@ -414,6 +429,7 @@ for(int j=0;j<cEquation;j++)//Циферки выводим
     //text[0][0].setFont();Todo Добавить шрифт
   text[j+1][0].setGeometry(x+sizeLine,y+sizeY*(j+1) +sizeLine,sizeX-sizeLine*2,sizeY-sizeLine*2);
   text[j+1][0].setText(basis[j]);
+ text[j+1][0].setAlignment(Qt::AlignCenter);
   text[j+1][0].show();
 
     for(int i=0;i<(2*vars+2);i++)
@@ -432,6 +448,7 @@ for(int j=0;j<cEquation;j++)//Циферки выводим
           else sprintf(chars, "%5.0f",system[j][i]);
     text[j+1][i+1].setText((QString)chars);
      }
+       text[j+1][i+1].setAlignment(Qt::AlignCenter);
         text[j+1][i+1].show();
     }
 }
@@ -446,6 +463,7 @@ for(int i=1;i<vars+2;i++)
  }
  else sprintf(chars, "%5.0f",system[cEquation][i]);
 text[1+cEquation][i+1].setText((QString)chars);
+ text[1+cEquation][i+1].setAlignment(Qt::AlignCenter);
     text[1+cEquation][i+1].show();
 }
     break;
