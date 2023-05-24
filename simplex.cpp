@@ -125,32 +125,27 @@ void simplex::getDelta(double **system, double* z,int vars, int cEquation)
 solution simplex::Resheno(double **system, int *basis, int vars, int cEquation,int checkMin)
 {
     bool flag=false;
+    bool optimal=true;
     if(checkMin==1){
     for(int i=2;i<vars+2;i++)
     {
         if(system[cEquation][i]<0){
             return solution::NotOptimal;
         }
+        if(system[cEquation][i]==0){// Смотрим базис ли это?
+           flag=true;
+           for(int j=0;j<cEquation;j++)
+           {
+               if(i-1==(basis[j])){
+                   flag=false;
+               }
+           }
+           if(flag==true)optimal=false;
     }
-    for(int i=2;i<vars+2;i++)
-    {
-         if(system[cEquation][i]==0){// Смотрим базис ли это?
-            flag=true;
-            for(int j=0;j<cEquation;j++)
-            {
-                if(i-1==(basis[j])){
-                    flag=false;
-                }
-            }
-            if(flag==true){
-                return solution::SomeSolution;
-            }
-        }
     }
-    return solution::Optimal;
 
-
-
+    if(optimal==false)return solution::SomeSolution;
+    else return solution::Optimal;
     }
     else{
         for(int i=2;i<vars+2;i++)
@@ -158,25 +153,23 @@ solution simplex::Resheno(double **system, int *basis, int vars, int cEquation,i
             if(system[cEquation][i]>0){
                 return solution::NotOptimal;
             }
+            if(system[cEquation][i]==0){// Смотрим базис ли это?
+               flag=true;
+               for(int j=0;j<cEquation;j++)
+               {
+                   if(i-1==(basis[j])){
+                       flag=false;
+                   }
+               }
+               if(flag==true)optimal=false;
         }
-        for(int i=2;i<vars+2;i++)
-        {
-             if(system[cEquation][i]==0){// Смотрим базис ли это?
-                flag=true;
-                for(int j=0;j<cEquation;j++)
-                {
-                    if(i-1==(basis[j])){
-                        flag=false;
-                    }
-                }
-                if(flag==true){
-                    return solution::SomeSolution;
-                }
-            }
         }
-        return solution::Optimal;
+        if(optimal==false)return solution::SomeSolution;
+        else return solution::Optimal;
+
+    }
 }
-}
+
 
 QVector<QVector<int>> simplex::GetMax(double **system,int* Basis, int vars, int cEquation,int checkMin)
 {
@@ -192,7 +185,7 @@ QVector<QVector<int>> simplex::GetMax(double **system,int* Basis, int vars, int 
      double Max;
      bool flag=false;
      int position;
-     int I;
+     int I=0;
      if(checkMin==1)//Ищем максимальное значение
      {
     for(int i=0;i<cEquation;i++)

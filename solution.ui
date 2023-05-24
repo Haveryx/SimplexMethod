@@ -150,6 +150,22 @@ border: 2px solid rgb(110,151,145);
     <string>Exit</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="back">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>330</y>
+     <width>241</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Назад</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

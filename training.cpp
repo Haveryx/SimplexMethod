@@ -17,6 +17,8 @@ errors=new int[5];
     table=new Table();
     table->hide();
     connect(this,SIGNAL(CreateTable(int, int,int *,Type,int,double**,double*)),table,SLOT(addInformation(int, int,int *,Type,int,double**,double*)));
+    ui->pushButton_2->setGeometry(size.width()-88,15,75,23);
+    ui->pushButton->setGeometry(size.width()-251,size.height()-170,241,61);
 
 }
 
@@ -49,7 +51,6 @@ void Training::on_pushButton_clicked()
 ShowEquation();
 
 ui->pushButton->show();
-ui->pushButton->setGeometry(40+(vars*65)/2 ,150,60,25);
 disconnect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(on_pushButton_clicked()));
 connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(GetCoeff()));
 
@@ -345,7 +346,6 @@ LineEdits[j][i].setParent(this);
         LineEdits[j][vars].show();
 
     }
-    ui->pushButton->setGeometry((150+(vars+1)*110)/2 + 70,150+cEquation*30,40,25);
     ui->pushButton->show();
    // connect(ui->pushButton,SIGNAL(clicked(bool)),SLOT(Show()));
  connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(GetCoeffSystem()));
@@ -379,7 +379,6 @@ void Training::Show()
     Repaint();
     disconnect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(GetCoeffSystem()));
     connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(KanonOne()));
-    ui->pushButton->setGeometry((70+170*vars)/2-30,190 +(cEquation+1)*50,241,61);
     ui->pushButton->show();
 }
 

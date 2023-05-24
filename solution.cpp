@@ -13,12 +13,16 @@ table->hide();
 QRect size=desktop.geometry();
 this->setGeometry(size.x(),size.y(),size.width(),size.height());
 checkMin=0;
+ui->back->setGeometry(10,size.height()-170,241,61);
+ui->back->hide();
+ui->pushButton->setGeometry(size.width()-251,size.height()-170,241,61);
+ui->pushButton_2->setGeometry(size.width()-88,15,75,23);
 }
 
 Solution::~Solution()
 {
     delete ui;
-    this->close();
+    delete this;
 }
 
 
@@ -35,17 +39,17 @@ void Solution::on_pushButton_clicked()
     vars=ui->lineEdit->text().toInt();
      }
     //hide all
-    delete ui->label_2;
-   delete ui->label;
-   delete ui->groupBox;
-   delete ui->lineEdit;
-   delete ui->lineEdit_2;
+     ui->label_2->hide();
+    ui->label->hide();
+   ui->groupBox->hide();
+   ui->lineEdit->hide();
+   ui->lineEdit_2->hide();
     ui->pushButton->hide();
+    ui->back->show();
     //Add Equation
 ShowEquation();
 
 ui->pushButton->show();
-ui->pushButton->setGeometry(40+(vars*65)/2 ,150,60,25);
 disconnect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(on_pushButton_clicked()));
 connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(GetCoeff()));
 
@@ -186,7 +190,6 @@ LineEdits[j][i].setParent(this);
        LineEdits[j][vars].setAlignment(Qt::AlignCenter);
        LineEdits[j][vars].show();
     }
-    ui->pushButton->setGeometry((vars+1)/2 + 70,150+cEquation*30,60,25);
     ui->pushButton->show();
    // connect(ui->pushButton,SIGNAL(clicked(bool)),SLOT(Show()));
  connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(GetCoeffSystem()));
@@ -291,7 +294,6 @@ void Solution::ShowInputEquation()
     }
     disconnect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(Kanon()));
     connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(PaintTable()));
-    ui->pushButton->setGeometry((70+70*vars)/2-30,190 +(cEquation+1)*30,60,25);
     ui->pushButton->show();
 }
 
@@ -382,11 +384,33 @@ void Solution::Show()
     }
     disconnect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(GetCoeffSystem()));
     connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(Kanon()));
-    ui->pushButton->setGeometry((70+70*vars)/2-30,190 +(cEquation+1)*30,60,25);
     ui->pushButton->show();
 }
 
 void Solution::on_pushButton_2_clicked()
 {
     this->close();
+}
+
+void Solution::on_back_clicked()
+{
+    delete Zx;
+
+    for(int i=0;i<vars;i++)
+    {
+     delete LineEdits[i];
+
+    delete Labels[i];
+
+    }
+    ui->label_2->show();
+      ui->label->show();
+     ui->groupBox->show();
+     ui->lineEdit->show();
+     ui->lineEdit_2->show();
+      ui->pushButton->show();
+   ui->back->hide();
+disconnect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(GetCoeff()));
+connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(on_pushButton_clicked()));
+
 }

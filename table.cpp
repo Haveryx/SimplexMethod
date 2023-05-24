@@ -5,9 +5,9 @@ Table::Table(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Table)
 {
-   // this->setWindowFlags(Qt::WindowStaysOnTopHint);
+    //this->setWindowFlags(Qt::WindowStaysOnTopHint);
     ui->setupUi(this);
-   // this->activateWindow();
+  //  this->activateWindow();
     QDesktopWidget desktop;
     QRect size=desktop.geometry();
     this->setGeometry(size.x(),size.y(),size.width(),size.height());
@@ -19,6 +19,7 @@ Table::Table(QWidget *parent) :
      label2->setGeometry(0,30,150,20);
      label->hide();
      label2->hide();
+     ui->pushButton_2->setGeometry(size.width()-88,15,75,23);
 errors=new int[5];
 }
 

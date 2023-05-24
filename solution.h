@@ -32,6 +32,8 @@ void PaintTable();
 void Kanon();
 void on_pushButton_2_clicked();
 
+void on_back_clicked();
+
 private:
 void GetSystems();
 void Show();
