@@ -152,7 +152,10 @@ vectors[0].pop_front();
 
            for(int i=1;i<vars+2;i++)
            {
+               if(system[j][i]-((int)system[j][i])!=0){
                sprintf(chars, "%5.2f",system[j][i]);
+               }
+               else sprintf(chars, "%5.0f",system[j][i]);
                input[j][i+1].setText(chars);
            }
        }
@@ -423,7 +426,10 @@ for(int j=0;j<cEquation;j++)//Циферки выводим
            text[j+1][i+1].setText("-");
       }
       else{
-   sprintf(chars, "%5.2f",system[j][i]);
+          if(system[j][i]-((int)system[j][i])!=0){
+          sprintf(chars, "%5.2f",system[j][i]);
+          }
+          else sprintf(chars, "%5.0f",system[j][i]);
     text[j+1][i+1].setText((QString)chars);
      }
         text[j+1][i+1].show();
@@ -435,7 +441,10 @@ for(int i=1;i<vars+2;i++)
     text[1+cEquation][i+1].setParent(this);
     //text[0][0].setFont();Todo Добавить шрифт
  text[1+cEquation][i+1].setGeometry(x+(sizeX*(i+1))+sizeLine,y+sizeY*(cEquation+1) +sizeLine,sizeX-sizeLine*2,sizeY-sizeLine*2);
-sprintf(chars, "%5.2f",system[cEquation][i]);
+ if(system[cEquation][i]-((int)system[cEquation][i])!=0){
+ sprintf(chars, "%5.2f",system[cEquation][i]);
+ }
+ else sprintf(chars, "%5.0f",system[cEquation][i]);
 text[1+cEquation][i+1].setText((QString)chars);
     text[1+cEquation][i+1].show();
 }
