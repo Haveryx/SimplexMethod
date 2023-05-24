@@ -33,8 +33,8 @@ public:
     explicit Table(QWidget *parent = 0);
     ~Table();
    public slots:
-    addInformation(int,int,Type,int,double**,double*);
- addInformation(int,int,int*,Type,int,double**,double*);
+    addInformation(int,int,int,double**,double*);
+ addInformation(int,int,int*,int,double**,double*);
 private:
     Ui::Table *ui;
     int cEquation=3,vars=3;

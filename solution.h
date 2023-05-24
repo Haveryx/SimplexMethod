@@ -21,7 +21,7 @@ public:
     ~Solution();
 signals:
 
-    void createTable(int, int,Type,int,double**,double*);
+    void createTable(int, int,int,double**,double*);
 private slots:
     void on_pushButton_clicked();
     void GetCoeff();

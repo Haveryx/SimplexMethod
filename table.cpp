@@ -31,7 +31,7 @@ Table::~Table()
      this->close();
 }
 
-Table::addInformation(int cEquation, int vars,Type type,int minimum,double** System,double* Z)
+Table::addInformation(int cEquation, int vars,int minimum,double** System,double* Z)
 {
     system=new double*[cEquation+1];
      count=new bool[cEquation];
@@ -52,13 +52,12 @@ QVector<int> p;
      z=new double[vars];
     this->cEquation=cEquation;
     this->vars=vars;
-    this->type=type;
+    this->type=Type::reshenie;
      checkMin=minimum;
     Massive massive;
     z=Z;
    massive.Union(system,System,vars,cEquation);
-   switch (type) {
-   case Type::reshenie:
+
        text=new QLabel*[cEquation+2];
        for(int i=0;i<cEquation+2;i++)
        {
@@ -76,23 +75,11 @@ SimpleGod->getTetta(system,Basis,vars,cEquation);
          vectors[i].pop_front();
      }
 }
-       break;
-   case Type::training:
-       text=new QLabel*[vars*2+1];
-       input=new QLineEdit*[cEquation];
-       for(int i=0;i<cEquation;i++)
-       {
-          input[i]=new QLineEdit[vars*2+1];
-       }
-       break;
-   default:
-       break;
-   }
 
    repaint();
 }
 
-Table::addInformation(int cEquation, int vars,int *errors,Type type,int minimum,double** System,double* Z)
+Table::addInformation(int cEquation, int vars,int *errors,int minimum,double** System,double* Z)
 {
     count=new bool[cEquation];
     for(int i=0;i<cEquation;i++)count[i]=false;
@@ -114,7 +101,7 @@ QVector<int> p;
      z=new double[vars];
     this->cEquation=cEquation;
     this->vars=vars;
-    this->type=type;
+    this->type=Type::training;
      for(int i=0;i<5;i++){
          this->errors[i]=errors[i];
      }
@@ -122,27 +109,6 @@ QVector<int> p;
     Massive massive;
     z=Z;
    massive.Union(system,System,vars,cEquation);
-   switch (type) {
-   case Type::reshenie:
-       text=new QLabel*[cEquation+2];
-       for(int i=0;i<cEquation+2;i++)
-       {
-           text[i]=new QLabel[vars*2+3];
-       }
-SimpleGod->getTetta(system,Basis,vars,cEquation);
-     vectors=SimpleGod->GetMin(system,Basis,vars,cEquation);
-     for(int i=0;i<cEquation;i++){
-     while(!vectors[i].empty()){
-         text[1+i][vectors[i].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
-         text[1+i][vectors[i].front()+1].installEventFilter(this);
-         actual.push_back(&text[1+i][vectors[i].front()+1]);
-         map[&text[1+i][vectors[i].front()+1]]=vectors[i].front();
-         vectors[i].pop_front();
-     }
-     }
-
-       break;
-   case Type::training:
        text=new QLabel*[vars*2+4];
        input=new QLineEdit*[cEquation+1];
        for(int i=0;i<cEquation+1;i++)
@@ -177,10 +143,8 @@ SimpleGod->getTetta(system,Basis,vars,cEquation);
 
            }
        }
-       break;
-   default:
-       break;
-   }
+
+
 
    repaint();
 }

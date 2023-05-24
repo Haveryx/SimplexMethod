@@ -16,7 +16,7 @@ errors=new int[5];
     for(int i=0;i<5;i++)errors[i]=0;
     table=new Table();
     table->hide();
-    connect(this,SIGNAL(CreateTable(int, int,int *,Type,int,double**,double*)),table,SLOT(addInformation(int, int,int *,Type,int,double**,double*)));
+    connect(this,SIGNAL(CreateTable(int, int,int *,int,double**,double*)),table,SLOT(addInformation(int, int,int *,int,double**,double*)));
     ui->pushButton_2->setGeometry(size.width()-88,15,75,23);
     ui->pushButton->setGeometry(size.width()-251,size.height()-170,241,61);
 
@@ -125,7 +125,7 @@ Show();
 
 void Training::PaintTable()
 {
-CreateTable(cEquation,vars,errors,Type::training,checkMin,coeffSystems,coeff);
+CreateTable(cEquation,vars,errors,checkMin,coeffSystems,coeff);
 table->show();
 this->close();
 

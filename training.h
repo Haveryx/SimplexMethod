@@ -22,7 +22,7 @@ public:
     explicit Training(QWidget *parent = 0);
     ~Training();
 signals:
-    void CreateTable(int, int,int*,Type,int,double**,double*);
+    void CreateTable(int, int,int*,int,double**,double*);
 private slots:
     void on_pushButton_clicked();
     void GetCoeff();
