@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 #include <QMainWindow>
 #include<solution.h>
-#include<table.h>
 #include"training.h"
 #include<QDesktopWidget>
 namespace Ui {
@@ -22,9 +21,9 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+
 private:
     Ui::MainWindow *ui;
-
     // QObject interface
 public:
 

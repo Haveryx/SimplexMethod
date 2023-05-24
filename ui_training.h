@@ -34,6 +34,7 @@ public:
     QRadioButton *radioButton_2;
     QLineEdit *lineEdit_2;
     QLabel *label_3;
+    QPushButton *pushButton_2;
 
     void setupUi(QWidget *Training)
     {
@@ -68,6 +69,9 @@ public:
 "QLabel#label_3{\n"
 "font: 75 18pt \"Times New Roman\";\n"
 "background-color: rgb(214,153,146);\n"
+"}\n"
+"QLabel{\n"
+"border: 2px solid rgb(110,151,145);\n"
 "}"));
         lineEdit = new QLineEdit(Training);
         lineEdit->setObjectName(QStringLiteral("lineEdit"));
@@ -75,9 +79,11 @@ public:
         label = new QLabel(Training);
         label->setObjectName(QStringLiteral("label"));
         label->setGeometry(QRect(40, 60, 291, 21));
+        label->setAlignment(Qt::AlignCenter);
         label_2 = new QLabel(Training);
         label_2->setObjectName(QStringLiteral("label_2"));
         label_2->setGeometry(QRect(40, 100, 281, 31));
+        label_2->setAlignment(Qt::AlignCenter);
         pushButton = new QPushButton(Training);
         pushButton->setObjectName(QStringLiteral("pushButton"));
         pushButton->setGeometry(QRect(290, 270, 241, 61));
@@ -104,6 +110,9 @@ public:
         label_3->setObjectName(QStringLiteral("label_3"));
         label_3->setEnabled(true);
         label_3->setGeometry(QRect(160, 10, 401, 21));
+        pushButton_2 = new QPushButton(Training);
+        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
+        pushButton_2->setGeometry(QRect(660, 0, 75, 23));
 
         retranslateUi(Training);
 
@@ -122,6 +131,7 @@ public:
         radioButton_2->setText(QApplication::translate("Training", "Max", nullptr));
         lineEdit_2->setText(QString());
         label_3->setText(QApplication::translate("Training", "\320\235\320\265 \320\277\321\200\320\270\320\262\320\265\320\264\320\265\320\275\320\276 \320\272 \320\272\320\260\320\275\320\276\320\275\320\270\321\207\320\265\321\201\320\272\320\276\320\274\321\203 \320\262\320\270\320\264\321\203", nullptr));
+        pushButton_2->setText(QApplication::translate("Training", "Exit", nullptr));
     } // retranslateUi
 
 };

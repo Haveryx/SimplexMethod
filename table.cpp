@@ -5,9 +5,9 @@ Table::Table(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Table)
 {
-    this->setWindowFlags(Qt::WindowStaysOnTopHint);
+   // this->setWindowFlags(Qt::WindowStaysOnTopHint);
     ui->setupUi(this);
-    this->activateWindow();
+   // this->activateWindow();
     QDesktopWidget desktop;
     QRect size=desktop.geometry();
     this->setGeometry(size.x(),size.y(),size.width(),size.height());
@@ -27,11 +27,14 @@ Table::~Table()
 {
     delete ui;
     delete SimpleGod;
+     this->close();
 }
 
 Table::addInformation(int cEquation, int vars,Type type,int minimum,double** System,double* Z)
 {
     system=new double*[cEquation+1];
+     count=new bool[cEquation];
+      for(int i=0;i<cEquation;i++)count[i]=false;
 QVector<int> p;
     for(int i=0;i<cEquation+1;i++)
     {
@@ -62,14 +65,16 @@ QVector<int> p;
        }
 SimpleGod->getTetta(system,Basis,vars,cEquation);
      vectors=SimpleGod->GetMin(system,Basis,vars,cEquation);
-     while(!vectors[0].empty()){
-text[1][vectors[0].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
-text[1][vectors[0].front()+1].installEventFilter(this);
-actual.push_back(&text[1][vectors[0].front()+1]);
-map[&text[1][vectors[0].front()+1]]=vectors[0].front();
-vectors[0].pop_front();
+     for(int i=0;i<cEquation;i++)
+     {
+     while(!vectors[i].empty()){
+         text[1+i][vectors[i].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
+         text[1+i][vectors[i].front()+1].installEventFilter(this);
+         actual.push_back(&text[1+i][vectors[i].front()+1]);
+         map[&text[1+i][vectors[i].front()+1]]=vectors[i].front();
+         vectors[i].pop_front();
      }
-
+}
        break;
    case Type::training:
        text=new QLabel*[vars*2+1];
@@ -88,6 +93,8 @@ vectors[0].pop_front();
 
 Table::addInformation(int cEquation, int vars,int *errors,Type type,int minimum,double** System,double* Z)
 {
+    count=new bool[cEquation];
+    for(int i=0;i<cEquation;i++)count[i]=false;
 
     system=new double*[cEquation+1];
 QVector<int> p;
@@ -123,12 +130,14 @@ QVector<int> p;
        }
 SimpleGod->getTetta(system,Basis,vars,cEquation);
      vectors=SimpleGod->GetMin(system,Basis,vars,cEquation);
-     while(!vectors[0].empty()){
-text[1][vectors[0].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
-text[1][vectors[0].front()+1].installEventFilter(this);
-actual.push_back(&text[1][vectors[0].front()+1]);
-map[&text[1][vectors[0].front()+1]]=vectors[0].front();
-vectors[0].pop_front();
+     for(int i=0;i<cEquation;i++){
+     while(!vectors[i].empty()){
+         text[1+i][vectors[i].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
+         text[1+i][vectors[i].front()+1].installEventFilter(this);
+         actual.push_back(&text[1+i][vectors[i].front()+1]);
+         map[&text[1+i][vectors[i].front()+1]]=vectors[i].front();
+         vectors[i].pop_front();
+     }
      }
 
        break;
@@ -226,15 +235,23 @@ void Table::NotColor()
 void Table::NextStep()
 {
     int Reshenie=0;
-    if(Position<cEquation){
+    bool flags=false;
+    for(int i=0;i<cEquation;i++){
+        if(count[i]==false){
+            flags=true;
+        }
+    }
+    if(flags==true){
         SimpleGod->getTetta(system,Basis,vars,cEquation);
              vectors=SimpleGod->GetMin(system,Basis,vars,cEquation);
-             while(!vectors[Position].empty()){
-        text[1+Position][vectors[Position].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
-        text[1+Position][vectors[Position].front()+1].installEventFilter(this);
-        actual.push_back(&text[1+Position][vectors[Position].front()+1]);
-        map[&text[1+Position][vectors[Position].front()+1]]=vectors[Position].front();
-        vectors[Position].pop_front();
+             for(int i=0;i<cEquation;i++){
+             while(!vectors[i].empty()){
+                 text[1+i][vectors[i].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
+                 text[1+i][vectors[i].front()+1].installEventFilter(this);
+                 actual.push_back(&text[1+i][vectors[i].front()+1]);
+                 map[&text[1+i][vectors[i].front()+1]]=vectors[i].front();
+                 vectors[i].pop_front();
+             }
 
              }
     }
@@ -278,6 +295,7 @@ else{
 if(Reshenie==0){
     label->setText("Нет решения");
      label->show();
+     AllNotColor();
 }
             break;
         case solution::SomeSolution:
@@ -550,10 +568,17 @@ Basis[position]=map[actual[i]]-1-vars;
 basis[position]=(QString)chars;
 system[position][0]=z[map[actual[i]]-2-vars];
 actual.clear();//ToDo добавить продолжение
+count[position]=true;
 Position++;
+
 NextStep();
            }
        }
 }
     return false;
+}
+
+void Table::on_pushButton_2_clicked()
+{
+    this->close();
 }

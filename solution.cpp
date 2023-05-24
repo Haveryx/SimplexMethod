@@ -8,7 +8,8 @@ Solution::Solution(QWidget *parent) :
     ui->setupUi(this);
 massive=new Massive();
 QDesktopWidget desktop;
-
+table=new Table();
+table->hide();
 QRect size=desktop.geometry();
 this->setGeometry(size.x(),size.y(),size.width(),size.height());
 checkMin=0;
@@ -17,7 +18,10 @@ checkMin=0;
 Solution::~Solution()
 {
     delete ui;
+    this->close();
 }
+
+
 
 void Solution::on_pushButton_clicked()
 {
@@ -117,7 +121,6 @@ Show();
 void Solution::PaintTable()
 {
 
-table=new Table();
 connect(this,SIGNAL(createTable(int, int,Type,int,double**,double*)),table,SLOT(addInformation(int, int,Type,int,double**,double*)));
 createTable(cEquation,vars,Type::reshenie,checkMin,coeffSystems,coeff);
 table->show();
@@ -381,4 +384,9 @@ void Solution::Show()
     connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(Kanon()));
     ui->pushButton->setGeometry((70+70*vars)/2-30,190 +(cEquation+1)*30,60,25);
     ui->pushButton->show();
+}
+
+void Solution::on_pushButton_2_clicked()
+{
+    this->close();
 }

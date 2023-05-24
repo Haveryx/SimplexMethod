@@ -39,6 +39,7 @@ private:
     Ui::Table *ui;
     int cEquation=3,vars=3;
     int* errors;
+    bool* count;
     QPainter* painter;
     const int sizeX=80,sizeY=40;
     Type type=Type::none;
@@ -70,6 +71,8 @@ protected:
     // QObject interface
 public:
     bool eventFilter(QObject *watched, QEvent *event);
+private slots:
+    void on_pushButton_2_clicked();
 };
 
 #endif // TABLE_H

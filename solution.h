@@ -20,6 +20,7 @@ public:
     explicit Solution(QWidget *parent = 0);
     ~Solution();
 signals:
+
     void createTable(int, int,Type,int,double**,double*);
 private slots:
     void on_pushButton_clicked();
@@ -29,6 +30,8 @@ private slots:
 void GetCoeffSystem();
 void PaintTable();
 void Kanon();
+void on_pushButton_2_clicked();
+
 private:
 void GetSystems();
 void Show();

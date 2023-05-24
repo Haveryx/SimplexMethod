@@ -26,6 +26,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
 void MainWindow::on_pushButton_clicked()
 {
     Training* training=new Training();

@@ -42,6 +42,9 @@ border: 2px solid rgb(110,151,145);
 QLabel#label_3{
 font: 75 18pt &quot;Times New Roman&quot;;
 background-color: rgb(214,153,146);
+}
+QLabel{
+border: 2px solid rgb(110,151,145);
 }</string>
   </property>
   <widget class="QLineEdit" name="lineEdit">
@@ -69,6 +72,9 @@ background-color: rgb(214,153,146);
    <property name="text">
     <string>Введите кол-во переменных</string>
    </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
@@ -81,6 +87,9 @@ background-color: rgb(214,153,146);
    </property>
    <property name="text">
     <string>Введите кол-во уравнений</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
    </property>
   </widget>
   <widget class="QPushButton" name="pushButton">
@@ -155,6 +164,19 @@ background-color: rgb(214,153,146);
    </property>
    <property name="text">
     <string>Не приведено к каноническому виду</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_2">
+   <property name="geometry">
+    <rect>
+     <x>660</x>
+     <y>0</y>
+     <width>75</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Exit</string>
    </property>
   </widget>
  </widget>

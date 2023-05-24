@@ -30,10 +30,16 @@ private slots:
     void on_radioButton_clicked();
 void GetCoeffSystem();
 void PaintTable();
-void Kanon();
-void CheckSign();
+void KanonOne();
+void KanonTwo();
+void CheckPlus();
+void CheckMinus();
+
 void Unsigned();
-void NextStep();
+void StepOne();
+void StepTwo();
+void on_pushButton_2_clicked();
+
 private:
 void GetSystems();
 void Show();

@@ -33,6 +33,7 @@ public:
     QLineEdit *lineEdit_2;
     QLabel *label;
     QLabel *label_2;
+    QPushButton *pushButton_2;
 
     void setupUi(QWidget *Solution)
     {
@@ -95,6 +96,9 @@ public:
         label_2 = new QLabel(Solution);
         label_2->setObjectName(QStringLiteral("label_2"));
         label_2->setGeometry(QRect(20, 160, 281, 31));
+        pushButton_2 = new QPushButton(Solution);
+        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
+        pushButton_2->setGeometry(QRect(650, 0, 75, 23));
 
         retranslateUi(Solution);
 
@@ -112,6 +116,7 @@ public:
         lineEdit_2->setText(QString());
         label->setText(QApplication::translate("Solution", "\320\222\320\262\320\265\320\264\320\270\321\202\320\265 \320\272\320\276\320\273-\320\262\320\276 \320\277\320\265\321\200\320\265\320\274\320\265\320\275\320\275\321\213\321\205", nullptr));
         label_2->setText(QApplication::translate("Solution", "\320\222\320\262\320\265\320\264\320\270\321\202\320\265 \320\272\320\276\320\273-\320\262\320\276 \321\203\321\200\320\260\320\262\320\275\320\265\320\275\320\270\320\271", nullptr));
+        pushButton_2->setText(QApplication::translate("Solution", "Exit", nullptr));
     } // retranslateUi
 
 };

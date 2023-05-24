@@ -17,12 +17,16 @@ errors=new int[5];
     table=new Table();
     table->hide();
     connect(this,SIGNAL(CreateTable(int, int,int *,Type,int,double**,double*)),table,SLOT(addInformation(int, int,int *,Type,int,double**,double*)));
+
 }
 
 Training::~Training()
 {
     delete ui;
+     this->close();
 }
+
+
 void Training::on_pushButton_clicked()
 {
     //Read Consts
@@ -126,24 +130,18 @@ this->close();
 
 }
 
-void Training::Kanon()
+void Training::KanonOne()
 {
-    button=new QPushButton*[cEquation];
     button_two=new QPushButton*[cEquation];
     for(int i=0;i<cEquation;i++)
     {
-        button[i]=new QPushButton(this);
-        button[i]->setGeometry(100+170*(vars+1),190 +i*50,170,50);
-        button[i]->setText("Добавить переменную");
-        button[i]->show();
 
         button_two[i]=new QPushButton(this);
         button_two[i]->setGeometry(100+170*(vars+2),190 +i*50,170,50);
         button_two[i]->setText("Умножить на -1");
         button_two[i]->show();
-        disconnect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(Kanon()));
-        connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(NextStep()));
-        connect(button[i],SIGNAL(clicked(bool)),SLOT(CheckSign()));
+        disconnect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(KanonOne()));
+        connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(StepOne()));
         connect(button_two[i],SIGNAL(clicked(bool)),SLOT(Unsigned()));
 
     }
@@ -152,7 +150,35 @@ void Training::Kanon()
 
 }
 
-void Training::CheckSign()
+void Training::KanonTwo()
+{
+ui->label_3->hide();
+    for(int i=0;i<cEquation;i++)
+    {
+        delete button_two[i];
+    }
+    button=new QPushButton*[cEquation];
+    button_two=new QPushButton*[cEquation];
+    for(int i=0;i<cEquation;i++)
+    {
+        button[i]=new QPushButton(this);
+        button[i]->setGeometry(100+170*(vars+1),190 +i*50,200,50);
+        button[i]->setText("Добавить переменную со знаком -");
+        button[i]->show();
+
+        button_two[i]=new QPushButton(this);
+        button_two[i]->setGeometry(300+170*(vars+1),190 +i*50,200,50);
+        button_two[i]->setText("Добавить переменную со знаком +");
+        button_two[i]->show();
+        disconnect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(StepOne()));
+        connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(StepTwo()));
+        connect(button[i],SIGNAL(clicked(bool)),SLOT(CheckMinus()));
+        connect(button_two[i],SIGNAL(clicked(bool)),SLOT(CheckPlus()));
+
+    }
+}
+
+void Training::CheckMinus()
 {
     auto Button=QObject::sender();
     int position=0;
@@ -163,14 +189,14 @@ void Training::CheckSign()
             i=cEquation;
         }
     }
-    if(sign[position]==0){
+    if(sign[position]!=1){
         button[position]->setStyleSheet("background-color: rgb(214,153,146);");
         errors[0]++;
     }
     else{
         ui->label_3->hide();
         massive->AddColumn(coeffSystems,vars,cEquation);
-        coeffSystems[position][vars]=sign[position]==2?1:-1;
+        coeffSystems[position][vars]=-1;
         massive->AddElement(coeff,vars);
         vars++;
         sign[position]=0;
@@ -183,6 +209,38 @@ void Training::CheckSign()
         Repaint();
     }
 
+}
+
+void Training::CheckPlus()
+{
+    auto Button=QObject::sender();
+    int position=0;
+    for(int i=0;i<cEquation;i++)
+    {
+        if(Button==button_two[i]){
+            position=i;
+            i=cEquation;
+        }
+    }
+    if(sign[position]!=2){
+        button_two[position]->setStyleSheet("background-color: rgb(214,153,146);");
+        errors[0]++;
+    }
+    else{
+        ui->label_3->hide();
+        massive->AddColumn(coeffSystems,vars,cEquation);
+        coeffSystems[position][vars]=1;
+        massive->AddElement(coeff,vars);
+        vars++;
+        sign[position]=0;
+        button_two[position]->setStyleSheet("background-color: rgb(71,250,148);");
+        for(int i=0;i<cEquation;i++){
+          delete Labels[i];
+  }
+        delete []Labels;
+        delete Zx;
+        Repaint();
+    }
 }
 
 void Training::Unsigned()
@@ -216,23 +274,39 @@ void Training::Unsigned()
     }
 }
 
-void Training::NextStep()
+void Training::StepOne()
 {
     bool flag=false;
     for(int i=0;i<cEquation;i++)
     {
-        if(sign[i]!=0)flag=true;
+       // if(sign[i]!=0)flag=true;
         if(coeffSystems[i][vars]<0)flag=true;
     }
     if(flag==true){ui->label_3->show();
         errors[0]++;
     }
     else {
-        PaintTable();
+       KanonTwo();
     }
 
 
 
+}
+
+void Training::StepTwo()
+{
+    bool flag=false;
+    for(int i=0;i<cEquation;i++)
+    {
+        if(sign[i]!=0)flag=true;
+
+    }
+    if(flag==true){ui->label_3->show();
+        errors[0]++;
+    }
+    else {
+       PaintTable();
+    }
 }
 
 void Training::GetSystems()
@@ -251,27 +325,27 @@ int i;
         for( i=0;i<vars;i++)
         {
 LineEdits[j][i].setParent(this);
-            LineEdits[j][i].setGeometry(70 +i*65,120 + j*30,30,15);
+            LineEdits[j][i].setGeometry(95 +i*110,120 + j*30,40,15);
             LineEdits[j][i].show();
             char chars[12];
             sprintf(chars, "X%d",i+1);
            Labels[j][i].setParent(this);
            Labels[j][i].setText((QString)chars);
-           Labels[j][i].setGeometry(105+i*65,120 +j*30,20,15);
+           Labels[j][i].setGeometry(150+i*110,120 +j*30,40,15);//TODO вот тут
            Labels[j][i].show();
         }
       comboBox[j]=new QComboBox(this);
       comboBox[j]->addItem("=");
       comboBox[j]->addItem(">=");
       comboBox[j]->addItem("<=");
-      comboBox[j]->setGeometry(105+i*65 ,120 +j*30,40,15);
+      comboBox[j]->setGeometry(150+vars*110 ,120 +j*30,40,15);
       comboBox[j]->show();
         LineEdits[j][vars].setParent(this);
-        LineEdits[j][vars].setGeometry(170 +i*65,120 + j*30,30,15);
+        LineEdits[j][vars].setGeometry(150 +(vars+1)*110,120 + j*30,40,15);
         LineEdits[j][vars].show();
 
     }
-    ui->pushButton->setGeometry((vars+1)/2 + 70,150+cEquation*30,60,25);
+    ui->pushButton->setGeometry((150+(vars+1)*110)/2 + 70,150+cEquation*30,40,25);
     ui->pushButton->show();
    // connect(ui->pushButton,SIGNAL(clicked(bool)),SLOT(Show()));
  connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(GetCoeffSystem()));
@@ -281,19 +355,19 @@ LineEdits[j][i].setParent(this);
 void Training::ShowEquation()
 {
     Zx =new QLabel("Z(X)=",this);
-    Zx->setGeometry(30,120,47,15);
+    Zx->setGeometry(30,120,50,15);
     Zx->show();
     LineEdits =new   QLineEdit*[vars] ;
     Labels=new QLabel*[vars];
     for(int i=0;i<vars;i++)
     {
      LineEdits[i]=new QLineEdit(this);
-     LineEdits[i]->setGeometry(70 +i*65,120,30,15);
+     LineEdits[i]->setGeometry(95 +i*110,120,40,15);
      LineEdits[i]->show();
      char chars[12];
     sprintf(chars, "X%d",i+1);
     Labels[i]=new QLabel((QString)chars,this);
-    Labels[i]->setGeometry(105+i*65,120,20,15);
+    Labels[i]->setGeometry(150+i*110,120,40,15);
     Labels[i]->show();
     }
 
@@ -304,7 +378,7 @@ void Training::Show()
 {
     Repaint();
     disconnect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(GetCoeffSystem()));
-    connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(Kanon()));
+    connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(KanonOne()));
     ui->pushButton->setGeometry((70+170*vars)/2-30,190 +(cEquation+1)*50,241,61);
     ui->pushButton->show();
 }
@@ -312,7 +386,7 @@ void Training::Show()
 void Training::Repaint()
 {
     Zx =new QLabel("Z(X)=",this);
-    Zx->setGeometry(30,120,50+150*vars,50);
+    Zx->setGeometry(30,120,50+50*vars,50);
     Zx->show();
     for(int i=0;i<vars;i++)
     {
@@ -338,7 +412,7 @@ void Training::Repaint()
     Labels =new QLabel*[cEquation];
     for(int i=0;i<cEquation;i++){
         Labels[i]=new QLabel("",this);
-        Labels[i]->setGeometry(30,190 +i*50,70+170*vars,50);
+        Labels[i]->setGeometry(30,190 +i*60,70+50*vars,50);
     }
     char chars[22];
     for(int i=0;i<cEquation;i++){
@@ -391,4 +465,9 @@ void Training::Repaint()
      Labels[i]->show();
 
     }
+}
+
+void Training::on_pushButton_2_clicked()
+{
+    this->close();
 }
