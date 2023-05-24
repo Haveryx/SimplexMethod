@@ -215,7 +215,7 @@ QVector<QVector<int>> simplex::GetMax(double **system,int* Basis, int vars, int 
     Vector[I].push_back(position);
     for(int i=0;i<cEquation;i++){
  for(auto j=Vector[i].begin();j<Vector[i].end();j++){
-     if((-1*system[i][*j]*system[cEquation][Vector[i].front()-vars])!=Max)Vector[i].erase(j);
+     if(((-1*system[i][*j]*system[cEquation][(*j)-vars])!=Max) ||(system[cEquation][(*j)-vars]>=0))Vector[i].erase(j);
  }
     }
     return Vector;
@@ -248,7 +248,7 @@ QVector<QVector<int>> simplex::GetMax(double **system,int* Basis, int vars, int 
          Vector[I].push_back(position);
          for(int i=0;i<cEquation;i++){
       for(auto j=Vector[i].begin();j<Vector[i].end();j++){
-          if((-1*system[i][*j]*system[cEquation][Vector[i].front()-vars])!=Max)Vector[i].erase(j);
+          if((-1*system[i][*j]*system[cEquation][(*j)-vars])!=Max||(system[cEquation][(*j)-vars]<=0))Vector[i].erase(j);
       }
          }
          return Vector;

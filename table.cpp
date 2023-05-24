@@ -247,13 +247,24 @@ void Table::NextStep()
              vectors=SimpleGod->GetMin(system,Basis,vars,cEquation);
              for(int i=0;i<cEquation;i++){
              while(!vectors[i].empty()){
+                 if(SimpleGod->checkBlackList(blackList,i,vectors[i].front())==false){
                  text[1+i][vectors[i].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
                  text[1+i][vectors[i].front()+1].installEventFilter(this);
                  actual.push_back(&text[1+i][vectors[i].front()+1]);
                  map[&text[1+i][vectors[i].front()+1]]=vectors[i].front();
                  vectors[i].pop_front();
+                 Reshenie++;
+                 }
+                 else{
+                      vectors[i].pop_front();
+                 }
              }
 
+             }
+             if(Reshenie==0){
+                 label->setText("Нет решения");
+                  label->show();
+                  AllNotColor();
              }
     }
     else{
