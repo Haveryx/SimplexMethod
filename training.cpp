@@ -9,11 +9,14 @@ Training::Training(QWidget *parent) :
     ui->label_3->hide();
     massive=new Massive();
     QDesktopWidget desktop;
-
+errors=new int[5];
     QRect size=desktop.geometry();
     this->setGeometry(size.x(),size.y(),size.width(),size.height());
     checkMin=0;
     for(int i=0;i<5;i++)errors[i]=0;
+    table=new Table();
+    table->hide();
+    connect(this,SIGNAL(CreateTable(int, int,int *,Type,int,double**,double*)),table,SLOT(addInformation(int, int,int *,Type,int,double**,double*)));
 }
 
 Training::~Training()
@@ -117,10 +120,7 @@ Show();
 
 void Training::PaintTable()
 {
-
-table=new Table();
-connect(this,SIGNAL(createTable(int, int,int error[5],int,double**,double*)),table,SLOT(addInformation(int, int,int error[5],int,double**,double*)));
-createTable(cEquation,vars,errors,checkMin,coeffSystems,coeff);
+CreateTable(cEquation,vars,errors,Type::training,checkMin,coeffSystems,coeff);
 table->show();
 this->close();
 

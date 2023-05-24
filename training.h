@@ -22,7 +22,7 @@ public:
     explicit Training(QWidget *parent = 0);
     ~Training();
 signals:
-    void createTable(int, int,int error[5],int,double**,double*);
+    void CreateTable(int, int,int*,Type,int,double**,double*);
 private slots:
     void on_pushButton_clicked();
     void GetCoeff();
@@ -51,7 +51,7 @@ Table* table;
     QLabel * Zx;
     Massive* massive;
    int checkMin;
-   int errors[5];
+   int *errors;
 };
 
 #endif // TRAINING_H

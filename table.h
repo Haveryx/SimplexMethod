@@ -17,7 +17,8 @@ enum Minimal
 };
 enum class Type{
     reshenie,
-    training
+    training,
+    none
 };
 
 namespace Ui {
@@ -32,21 +33,20 @@ public:
     explicit Table(QWidget *parent = 0);
     ~Table();
    public slots:
-    addInformation(int,int,int,double**,double*);
-      addInformation(int,int,int errors[8],int,double**,double*);
-
+    addInformation(int,int,Type,int,double**,double*);
+ addInformation(int,int,int*,Type,int,double**,double*);
 private:
     Ui::Table *ui;
     int cEquation=3,vars=3;
+    int* errors;
     QPainter* painter;
     const int sizeX=80,sizeY=40;
-    Type type=Type::reshenie;
+    Type type=Type::none;
    QLabel** text;
    QLineEdit ** input;
    int sizeLine=2;
    int y,x;
    int checkMin;
-   int errors[5];
    int Position=0;
    void AllNotColor();
    void SetColorBasis();

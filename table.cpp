@@ -14,7 +14,7 @@ Table::Table(QWidget *parent) :
      label2->setGeometry(0,30,150,20);
      label->hide();
      label2->hide();
-
+errors=new int[5];
 }
 
 
@@ -24,7 +24,7 @@ Table::~Table()
     delete SimpleGod;
 }
 
-Table::addInformation(int cEquation, int vars,int minimum,double** System,double* Z)
+Table::addInformation(int cEquation, int vars,Type type,int minimum,double** System,double* Z)
 {
     system=new double*[cEquation+1];
 QVector<int> p;
@@ -43,18 +43,19 @@ QVector<int> p;
      z=new double[vars];
     this->cEquation=cEquation;
     this->vars=vars;
+    this->type=type;
      checkMin=minimum;
     Massive massive;
     z=Z;
    massive.Union(system,System,vars,cEquation);
-
-
+   switch (type) {
+   case Type::reshenie:
        text=new QLabel*[cEquation+2];
        for(int i=0;i<cEquation+2;i++)
        {
            text[i]=new QLabel[vars*2+3];
        }
-     SimpleGod->getTetta(system,Basis,vars,cEquation);
+SimpleGod->getTetta(system,Basis,vars,cEquation);
      vectors=SimpleGod->GetMin(system,Basis,vars,cEquation);
      while(!vectors[0].empty()){
 text[1][vectors[0].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
@@ -64,15 +65,25 @@ map[&text[1][vectors[0].front()+1]]=vectors[0].front();
 vectors[0].pop_front();
      }
 
-
-
-    type=Type::reshenie;
+       break;
+   case Type::training:
+       text=new QLabel*[vars*2+1];
+       input=new QLineEdit*[cEquation];
+       for(int i=0;i<cEquation;i++)
+       {
+          input[i]=new QLineEdit[vars*2+1];
+       }
+       break;
+   default:
+       break;
+   }
 
    repaint();
 }
 
-Table::addInformation(int cEquation, int vars,int errors[],int minimum,double** System,double* Z )
+Table::addInformation(int cEquation, int vars,int *errors,Type type,int minimum,double** System,double* Z)
 {
+
     system=new double*[cEquation+1];
 QVector<int> p;
     for(int i=0;i<cEquation+1;i++)
@@ -90,21 +101,69 @@ QVector<int> p;
      z=new double[vars];
     this->cEquation=cEquation;
     this->vars=vars;
+    this->type=type;
      for(int i=0;i<5;i++){
-     this->errors[i]=errors[i];
+         this->errors[i]=errors[i];
      }
      checkMin=minimum;
     Massive massive;
     z=Z;
    massive.Union(system,System,vars,cEquation);
-    text=new QLabel*[vars*2+1];
-    input=new QLineEdit*[cEquation];
-    for(int i=0;i<cEquation;i++)
-    {
-       input[i]=new QLineEdit[vars*2+1];
-    }
-        type=Type::training;
+   switch (type) {
+   case Type::reshenie:
+       text=new QLabel*[cEquation+2];
+       for(int i=0;i<cEquation+2;i++)
+       {
+           text[i]=new QLabel[vars*2+3];
+       }
+SimpleGod->getTetta(system,Basis,vars,cEquation);
+     vectors=SimpleGod->GetMin(system,Basis,vars,cEquation);
+     while(!vectors[0].empty()){
+text[1][vectors[0].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
+text[1][vectors[0].front()+1].installEventFilter(this);
+actual.push_back(&text[1][vectors[0].front()+1]);
+map[&text[1][vectors[0].front()+1]]=vectors[0].front();
+vectors[0].pop_front();
+     }
+
+       break;
+   case Type::training:
+       text=new QLabel*[vars*2+4];
+       input=new QLineEdit*[cEquation+1];
+       for(int i=0;i<cEquation+1;i++)
+       {
+          input[i]=new QLineEdit[vars*2+3];
+       }
+       for(int i=0;i<cEquation+1;i++)
+       {
+           for(int j=0;j<vars*2+3;j++){
+               input[i][j].setParent(this);
+               input[i][j].hide();
+           }
+       }
+
+       for(int i=0;i<vars*2+4;i++)
+       {
+           text[i]=new QLabel(this);
+       }
+       char chars[12];
+       for(int j=0;j<cEquation;j++)//Циферки выводим
+       {
+
+           for(int i=1;i<vars+2;i++)
+           {
+               sprintf(chars, "%5.2f",system[j][i]);
+               input[j][i+1].setText(chars);
+           }
+       }
+       break;
+   default:
+       break;
+   }
+
+   repaint();
 }
+
 
 void Table::AllNotColor()
 {
@@ -343,6 +402,7 @@ case Type::reshenie:
     text[cEquation+1][0].setGeometry(x+sizeLine,y+(cEquation+1)*sizeY+sizeLine,2*(sizeX-sizeLine),sizeY-2*sizeLine);
    text[cEquation+1][0].setText("Delta");
     text[cEquation+1][0].show();
+
     char chars[12];
 
 for(int j=0;j<cEquation;j++)//Циферки выводим
@@ -382,6 +442,59 @@ text[1+cEquation][i+1].setText((QString)chars);
     break;
 case Type::training:
 
+    //text[0][0].setFont();Todo Добавить шрифт
+    text[0]->setGeometry(x+sizeLine,y+sizeLine,sizeX-2*sizeLine,sizeY-2*sizeLine);
+    text[0]->setText("B");
+    text[0]->show();
+
+    text[1]->setGeometry(x+sizeX+sizeLine,y+sizeLine,sizeX-sizeLine*2,sizeY-sizeLine*2);
+    text[1]->setText("C");
+    text[1]->show();
+
+    for(int i=2;i<vars+3;i++)//Заголовок
+    {
+
+        //text[0][0].setFont();Todo Добавить шрифт
+        text[i]->setGeometry(x+(sizeX*i)+sizeLine,y+sizeLine,sizeX-sizeLine*2,sizeY-sizeLine*2);
+        char chars[12];
+       sprintf(chars, "A%d",i-2);
+        text[i]->setText((QString)chars);
+        text[i]->show();
+        //Добавляем Тетты
+        //text[0][0].setFont();Todo Добавить шрифт
+        text[i+vars]->setGeometry(x+(sizeX*(i+vars))+sizeLine,y+sizeLine,sizeX-sizeLine*2,sizeY-sizeLine*2);
+
+       sprintf(chars, "O%d",i-2);//ToDo Добавить Тетту
+        text[i+vars]->setText((QString)chars);
+        text[i+vars]->show();
+    }
+//Delta
+    //text[0][0].setFont();Todo Добавить шрифт
+    text[vars*2+3]->setGeometry(x+sizeLine,y+(cEquation+1)*sizeY+sizeLine,2*(sizeX-sizeLine),sizeY-2*sizeLine);
+   text[vars*2+3]->setText("Delta");
+    text[vars*2+3]->show();
+    for(int j=0;j<cEquation;j++)//Циферки выводим
+    {
+
+        //text[0][0].setFont();Todo Добавить шрифт
+      input[j][0].setGeometry(x+sizeLine,y+sizeY*(j+1) +sizeLine,sizeX-sizeLine*2,sizeY-sizeLine*2);
+     input[j][0].show();
+
+        for(int i=0;i<(2*vars+2);i++)
+        {
+
+            //text[0][0].setFont();Todo Добавить шрифт
+          input[j][i+1].setGeometry(x+(sizeX*(i+1))+sizeLine,y+sizeY*(j+1) +sizeLine,sizeX-sizeLine*2,sizeY-sizeLine*2);
+            input[j][i+1].show();
+        }
+    }
+    //Выводим delta
+    for(int i=1;i<vars+2;i++)
+    {
+        //text[0][0].setFont();Todo Добавить шрифт
+    input[cEquation][i+1].setGeometry(x+(sizeX*(i+1))+sizeLine,y+sizeY*(cEquation+1) +sizeLine,sizeX-sizeLine*2,sizeY-sizeLine*2);
+        input[cEquation][i+1].show();
+    }
     break;
 default:
     break;
