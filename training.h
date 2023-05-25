@@ -9,7 +9,15 @@
 #include"simplex.h"
 #include<QDesktopWidget>
 #include<QPushButton>
-
+/*
+ * Список ошибок
+ * 1) Канонический вид
+ * 2)Подсчет тетт
+ * 3)Выбор минимальных Тетт
+ * 4)Выбор базиса
+ * 5)Гаусс
+ * 6)Дельты
+ */
 namespace Ui {
 class Training;
 }

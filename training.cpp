@@ -11,11 +11,11 @@ Training::Training(QWidget *parent) :
     ui->label_3->hide();
     massive=new Massive();
     QDesktopWidget desktop;
-errors=new int[5];
+errors=new int[6];
     QRect size=desktop.geometry();
     this->setGeometry(size.x(),size.y(),size.width(),size.height());
     checkMin=0;
-    for(int i=0;i<5;i++)errors[i]=0;
+    for(int i=0;i<6;i++)errors[i]=0;
     table=new Table();
     table->hide();
     connect(this,SIGNAL(CreateTable(int, int,int *,int,double**,double*)),table,SLOT(addInformation(int, int,int *,int,double**,double*)));
@@ -265,6 +265,7 @@ void Training::Unsigned()
         ui->label_3->hide();
         for(int i=0;i<vars+1;i++){
             coeffSystems[position][i]*=-1;
+            if(sign[position]!=0)sign[position]=(sign[position]==1)?2:1;
       }
         for(int i=0;i<cEquation;i++){
             delete Labels[i];

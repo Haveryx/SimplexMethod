@@ -115,7 +115,7 @@ connect(next,SIGNAL(clicked(bool)),SLOT(CheckTetta()));
     this->cEquation=cEquation;
     this->vars=vars;
     this->type=Type::training;
-     for(int i=0;i<5;i++){
+     for(int i=0;i<6;i++){
          this->errors[i]=errors[i];
      }
      checkMin=minimum;
@@ -159,12 +159,11 @@ connect(next,SIGNAL(clicked(bool)),SLOT(CheckTetta()));
            }
        }
 
-SimpleGod->getTetta(system,Basis,vars,cEquation);
+
 
 
    repaint();
 }
-
 
 void Table::AllNotColor()
 {
@@ -344,8 +343,6 @@ else{
     }
 }
 
-
-
 int Table::CheckPosition(QLabel *labelOne, QLabel **LabelTwo)
 {
     for(int i=1;i<cEquation+1;i++)
@@ -356,6 +353,44 @@ int Table::CheckPosition(QLabel *labelOne, QLabel **LabelTwo)
         }
     }
     return -1;
+}
+
+void Table::GetInputTetta()
+{
+    bool flag=true;
+    double ** CheckInput=new double*[cEquation+1];
+    for(int i=0;i<cEquation+1;i++)
+    {
+        CheckInput[i]=new double[2*vars+2];
+    }
+    for(int i=0;i<cEquation;i++)
+    {
+        for(int j=2+vars;j<2*vars+2;j++){
+
+            CheckInput[i][j]=(input[i][j+1].text()=="-")? INFINITY:input[i][j+1].text().toDouble();
+            input[i][j+1].setStyleSheet("background-color: rgb(255,255,255);");
+            if(std::abs(CheckInput[i][j]-system[i][j])>0.05){
+                flag=false;
+                errors[1]++;
+                input[i][j+1].setStyleSheet("background-color: rgb(214,153,146);");
+          }
+            else{
+                system[i][j]=CheckInput[i][j];
+            }
+        }
+
+    }
+    if(flag==true){
+        next->setText("Выбираем минимальные тетты");
+        disconnect(next,SIGNAL(clicked(bool)),this,SLOT(CheckTetta()));
+ CheckMinTetta();
+
+    }
+    for(int i=0;i<cEquation+1;i++)
+    {
+        delete []CheckInput[i];
+    }
+    delete []CheckInput;
 }
 
 void Table::paintEvent(QPaintEvent *)
@@ -544,6 +579,7 @@ default:
 
 bool Table::eventFilter(QObject *watched, QEvent *event)
 {
+    if(type==Type::reshenie){
    for(int i=0;i<actual.size();i++)
     {
     if(watched==actual[i])
@@ -574,7 +610,51 @@ NextStep();
 
    }
    return false;
+    }
+    else{
+        bool flag=true;
+     for( int i=0;i<actualInput.size();i++)
+         {
+         if(watched==actualInput[i])
+            {
+                if(event->type() == QEvent::MouseButtonPress)
+                {
+
+               actualInput[i]->setStyleSheet("background-color: rgb(71,250,148);");
+                flag=false;
+countMinTetta++;
+                }
+    }
 }
+                if(flag==true)
+                {
+
+
+                    for(int i=0;i<cEquation;i++)
+                    {
+                        for(int j=vars+3;j<vars*2+3;j++)
+                        {
+                            if(watched==&input[i][j])
+                            {
+                                if(event->type() == QEvent::MouseButtonPress)
+                                {
+                flag=false;
+
+                                }
+                }
+
+                }
+                }
+                    if(flag==false){
+                        errors[2]++;
+QLineEdit* line=(QLineEdit*)watched;
+line->setStyleSheet("background-color: rgb(214,153,146);");
+
+                    }
+                }
+                }
+
+                }
 
 void Table::on_pushButton_2_clicked()
 {
@@ -583,5 +663,52 @@ void Table::on_pushButton_2_clicked()
 
 void Table::CheckTetta()
 {
+SimpleGod->getTetta(system,Basis,vars,cEquation);
+GetInputTetta();
 
+}
+
+void Table::CheckAllMin()
+{
+
+    if(actualInput.size()==countMinTetta){
+        next->setStyleSheet("background-color: rgb(71,250,148);");
+        countMinTetta=0;
+    }
+    else{
+        next->setStyleSheet("background-color: rgb(214,153,146);");
+    }
+}
+
+void Table::CheckMinTetta()
+{
+    vectors=SimpleGod->GetMin(system,Basis,vars,cEquation);
+   SetReadOnly();
+   for(int i=0;i<cEquation;i++)
+   {
+       for(int j=vars+3;j<vars*2+3;j++)
+       {
+    input[i][j].installEventFilter(this);
+       }
+   }
+    for(int i=0;i<cEquation;i++)
+    {
+    while(!vectors[i].empty()){
+
+        actualInput.push_back(&input[i][vectors[i].front()+1]);
+        vectors[i].pop_front();
+    }
+    }
+    connect(next,SIGNAL(clicked(bool)),SLOT(CheckAllMin()));
+}
+
+void Table::SetReadOnly()
+{
+    for(int i=0;i<cEquation;i++)
+    {
+        for(int j=0;j<2*vars+3;j++)
+        {
+            input[i][j].setReadOnly(true);
+        }
+    }
 }

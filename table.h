@@ -11,6 +11,7 @@
 #include<QDesktopWidget>
 #include<QMap>
 #include<QPushButton>
+
 enum Minimal
 {
     min,
@@ -40,6 +41,7 @@ private:
     Ui::Table *ui;
     int cEquation=3,vars=3;
     int* errors;
+    int countMinTetta=0;
     bool* count;
     QPainter* painter;
     const int sizeX=80,sizeY=40;
@@ -60,6 +62,7 @@ private:
    double** system,*z;
    simplex* SimpleGod;
 QVector<QLabel*> actual;
+QVector<QLineEdit*>actualInput;
 QLabel* label,*label2;
 QMap<QLabel*,int> map;
  QVector<QVector<int>> vectors,blackList;
@@ -67,7 +70,9 @@ void ColorColumn(int j);
 void NotColor();
 void NextStep();
 int CheckPosition(QLabel* labelOne,QLabel** LabelTwo);
-
+void GetInputTetta();
+ void SetReadOnly();
+ void CheckMinTetta();
 protected:
     void paintEvent(QPaintEvent*) override;
 
@@ -77,6 +82,9 @@ public:
 private slots:
     void on_pushButton_2_clicked();
     void CheckTetta();
+void CheckAllMin();
+
+
 };
 
 #endif // TABLE_H
