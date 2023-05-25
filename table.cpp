@@ -252,7 +252,7 @@ void Table::NextStep()
         solution j=SimpleGod->Resheno(system,Basis,vars,cEquation,checkMin);
         switch (j) {
         case solution::Optimal:
-
+     label2->hide();
            label->show();
             AllNotColor();
             SetColorBasis();

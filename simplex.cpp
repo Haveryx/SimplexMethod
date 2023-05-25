@@ -275,7 +275,10 @@ QVector<QVector<int> > simplex::SomeSolution(double **system, int *Basis, int va
                 if(Basis[j]==i-1)flag=true;
             }
             if(flag==false){
+                if(GetMin(system,i+vars,cEquation)!=0){
                 Vector[GetMin(system,i+vars,cEquation)].push_back(i+vars);
+                }
+
             }
         }
     }
@@ -290,7 +293,7 @@ int simplex::GetMin(double **system, int j, int cEquation)
     int position=0;
     for(int i=1;i<cEquation;i++)
     {
-        if(Min>system[i][j]){
+        if(Min>system[i][j] && Min!=INFINITY){
             position=i;
             Min=system[i][j];
         }
