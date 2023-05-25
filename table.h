@@ -10,6 +10,7 @@
 #include<Qvector>
 #include<QDesktopWidget>
 #include<QMap>
+#include<QPushButton>
 enum Minimal
 {
     min,
@@ -33,8 +34,8 @@ public:
     explicit Table(QWidget *parent = 0);
     ~Table();
    public slots:
-    addInformation(int,int,int,double**,double*);
- addInformation(int,int,int*,int,double**,double*);
+    void addInformation(int,int,int,double**,double*);
+ void addInformation(int,int,int*,int,double**,double*);
 private:
     Ui::Table *ui;
     int cEquation=3,vars=3;
@@ -45,6 +46,7 @@ private:
     Type type=Type::none;
    QLabel** text;
    QLineEdit ** input;
+   QPushButton* next;
    int sizeLine=2;
    int y,x;
    int checkMin;
@@ -65,6 +67,7 @@ void ColorColumn(int j);
 void NotColor();
 void NextStep();
 int CheckPosition(QLabel* labelOne,QLabel** LabelTwo);
+
 protected:
     void paintEvent(QPaintEvent*) override;
 
@@ -73,6 +76,7 @@ public:
     bool eventFilter(QObject *watched, QEvent *event);
 private slots:
     void on_pushButton_2_clicked();
+    void CheckTetta();
 };
 
 #endif // TABLE_H

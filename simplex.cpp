@@ -108,9 +108,9 @@ void simplex::getDelta(double **system, double* z,int vars, int cEquation)
     {
         system[cEquation][i]=0;
     }
-    for(int i=0;i<cEquation;i++)
+    for(int j=1;j<vars+2;j++)
     {
-        for(int j=1;j<vars+2;j++)
+         for(int i=0;i<cEquation;i++)
         {
             system[cEquation][j]+=(system[i][0]*system[i][j]);
         }
@@ -215,7 +215,7 @@ QVector<QVector<int>> simplex::GetMax(double **system,int* Basis, int vars, int 
     Vector[I].push_back(position);
     for(int i=0;i<cEquation;i++){
  for(auto j=Vector[i].begin();j<Vector[i].end();j++){
-     if(((-1*system[i][*j]*system[cEquation][(*j)-vars])!=Max) ||(system[cEquation][(*j)-vars]>=0))Vector[i].erase(j);
+     if(((-1*system[i][*j]*system[cEquation][(*j)-vars])>Max) ||(system[cEquation][(*j)-vars]>=0))Vector[i].erase(j);
  }
     }
     return Vector;
@@ -248,13 +248,14 @@ QVector<QVector<int>> simplex::GetMax(double **system,int* Basis, int vars, int 
          Vector[I].push_back(position);
          for(int i=0;i<cEquation;i++){
       for(auto j=Vector[i].begin();j<Vector[i].end();j++){
-          if((-1*system[i][*j]*system[cEquation][(*j)-vars])!=Max||(system[cEquation][(*j)-vars]<=0))Vector[i].erase(j);
+          if(((-1*system[i][*j]*system[cEquation][(*j)-vars])>Max) ||(system[cEquation][(*j)-vars]<=0))Vector[i].erase(j);
       }
          }
          return Vector;
+          }
      }
 
-}
+
 
 QVector<QVector<int> > simplex::SomeSolution(double **system, int *Basis, int vars, int cEquation)
 {
@@ -299,11 +300,10 @@ int simplex::GetMin(double **system, int j, int cEquation)
 
 bool simplex::checkBlackList(QVector<QVector<int> > blackList, int position, int data)
 {
-    bool flag=false;
   for(int i=0;i<blackList[position].size();i++)
     {
-      if(blackList[position][i]==data)flag=true;
+      if(blackList[position][i]==data)return true;
 
     }
-    return flag;
+    return false;
 }

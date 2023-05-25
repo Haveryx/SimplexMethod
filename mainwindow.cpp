@@ -5,9 +5,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-    this->setWindowFlags(Qt::WindowStaysOnTopHint);
+    //this->setWindowFlags(Qt::WindowStaysOnTopHint);
     ui->setupUi(this);
-    this->activateWindow();
+  //  this->activateWindow();
     QDesktopWidget desktop;
 
     QRect size=desktop.geometry();

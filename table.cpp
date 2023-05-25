@@ -10,16 +10,26 @@ Table::Table(QWidget *parent) :
   //  this->activateWindow();
     QDesktopWidget desktop;
     QRect size=desktop.geometry();
+
     this->setGeometry(size.x(),size.y(),size.width(),size.height());
+
     SimpleGod=new simplex();
+
     label=new QLabel("Решение найдено!",this);
-   auto geo=this->geometry();
+
    label->setGeometry(0,5,150,20);
     label2=new QLabel("Однако есть ещё одно решение!",this);
      label2->setGeometry(0,30,150,20);
      label->hide();
      label2->hide();
+
      ui->pushButton_2->setGeometry(size.width()-88,15,75,23);
+
+     next=new QPushButton(this);
+     next->setText("Далее");
+     next->setGeometry(size.width()-251,size.height()-170,241,61);
+     next->hide();
+
 errors=new int[5];
 }
 
@@ -31,7 +41,7 @@ Table::~Table()
      this->close();
 }
 
-Table::addInformation(int cEquation, int vars,int minimum,double** System,double* Z)
+void Table::addInformation(int cEquation, int vars,int minimum,double** System,double* Z)
 {
     system=new double*[cEquation+1];
      count=new bool[cEquation];
@@ -79,13 +89,16 @@ SimpleGod->getTetta(system,Basis,vars,cEquation);
    repaint();
 }
 
-Table::addInformation(int cEquation, int vars,int *errors,int minimum,double** System,double* Z)
+void Table::addInformation(int cEquation, int vars,int *errors,int minimum,double** System,double* Z)
 {
+    next->show();
+
     count=new bool[cEquation];
     for(int i=0;i<cEquation;i++)count[i]=false;
 
     system=new double*[cEquation+1];
 QVector<int> p;
+connect(next,SIGNAL(clicked(bool)),SLOT(CheckTetta()));
     for(int i=0;i<cEquation+1;i++)
     {
         system[i]=new double[vars*2+2];
@@ -128,6 +141,7 @@ QVector<int> p;
        {
            text[i]=new QLabel(this);
            text[i]->setAlignment(Qt::AlignCenter);
+
        }
        char chars[12];
        for(int j=0;j<cEquation;j++)//Циферки выводим
@@ -135,15 +149,17 @@ QVector<int> p;
 
            for(int i=1;i<vars+2;i++)
            {
-               if(system[j][i]-((int)system[j][i])!=0){
+               if(system[j][i]*100-((int)system[j][i])*100!=0){
                sprintf(chars, "%5.2f",system[j][i]);
                }
                else sprintf(chars, "%5.0f",system[j][i]);
                input[j][i+1].setText(chars);
+               input[j][i+1].setReadOnly(true);
 
            }
        }
 
+SimpleGod->getTetta(system,Basis,vars,cEquation);
 
 
    repaint();
@@ -328,6 +344,8 @@ else{
     }
 }
 
+
+
 int Table::CheckPosition(QLabel *labelOne, QLabel **LabelTwo)
 {
     for(int i=1;i<cEquation+1;i++)
@@ -337,6 +355,7 @@ int Table::CheckPosition(QLabel *labelOne, QLabel **LabelTwo)
             if(labelOne==&LabelTwo[i][j])return i;
         }
     }
+    return -1;
 }
 
 void Table::paintEvent(QPaintEvent *)
@@ -436,7 +455,7 @@ for(int j=0;j<cEquation;j++)//Циферки выводим
            text[j+1][i+1].setText("-");
       }
       else{
-          if(system[j][i]-((int)system[j][i])!=0){
+          if(system[j][i]-((int)system[j][i])*100!=0){
           sprintf(chars, "%5.2f",system[j][i]);
           }
           else sprintf(chars, "%5.0f",system[j][i]);
@@ -452,7 +471,7 @@ for(int i=1;i<vars+2;i++)
     text[1+cEquation][i+1].setParent(this);
     //text[0][0].setFont();Todo Добавить шрифт
  text[1+cEquation][i+1].setGeometry(x+(sizeX*(i+1))+sizeLine,y+sizeY*(cEquation+1) +sizeLine,sizeX-sizeLine*2,sizeY-sizeLine*2);
- if(system[cEquation][i]-((int)system[cEquation][i])!=0){
+ if(system[cEquation][i]*100-((int)system[cEquation][i])*100!=0){
  sprintf(chars, "%5.2f",system[cEquation][i]);
  }
  else sprintf(chars, "%5.0f",system[cEquation][i]);
@@ -533,13 +552,14 @@ bool Table::eventFilter(QObject *watched, QEvent *event)
            {
 
 auto position=(CheckPosition(actual[i],text) -1);
+if(position!=-2){
 SimpleGod->getBasis(system,vars,cEquation,position,map[actual[i]]-vars);
 NotColor();
 ColorColumn(map[actual[i]]+1-vars);
 
 char chars[12];
 sprintf(chars, "A%d",map[actual[i]]-1-vars);
-blackList[position].push_back(map[actual[i]]-1);
+blackList[position].push_back(map[actual[i]]);
 Basis[position]=map[actual[i]]-1-vars;
 basis[position]=(QString)chars;
 system[position][0]=z[map[actual[i]]-2-vars];
@@ -551,10 +571,17 @@ NextStep();
            }
        }
 }
-    return false;
+
+   }
+   return false;
 }
 
 void Table::on_pushButton_2_clicked()
 {
     this->close();
+}
+
+void Table::CheckTetta()
+{
+
 }

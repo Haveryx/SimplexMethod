@@ -5,7 +5,9 @@ Training::Training(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Training)
 {
+    //this->setWindowFlags(Qt::WindowStaysOnTopHint);
     ui->setupUi(this);
+  //  this->activateWindow();
     ui->label_3->hide();
     massive=new Massive();
     QDesktopWidget desktop;
