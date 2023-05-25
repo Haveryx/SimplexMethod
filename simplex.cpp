@@ -12,7 +12,7 @@ void simplex::getTetta(double **system,int* basis, int vars, int cEquation)
     {
         for(int i=2+vars;i<2*vars+2;i++)
         {
-            if((system[j][1]!=0) && (system[j][1]!=INFINITY)){
+            if((system[j][1]!=0) && (system[j][1]!=INFINITY) && (system[j][i-vars]!=0)){
             system[j][i]=(system[j][1]/system[j][i-vars]>=0 )?system[j][1]/system[j][i-vars]:INFINITY;
             }
             else system[j][i]=INFINITY;
