@@ -42,7 +42,7 @@ private:
     int cEquation=3,vars=3;
     int* errors;
     int countMinTetta=0;
-    bool* count;
+    bool* count,checked=false;
     QPainter* painter;
     const int sizeX=80,sizeY=40;
     Type type=Type::none;
@@ -70,9 +70,13 @@ void ColorColumn(int j);
 void NotColor();
 void NextStep();
 int CheckPosition(QLabel* labelOne,QLabel** LabelTwo);
+int CheckPosition(QLineEdit* lineOne,QLineEdit** lineTwo);
+int CheckString(QLineEdit* lineOne,QLineEdit** lineTwo);
 void GetInputTetta();
  void SetReadOnly();
+ void SetWrite(int StringOne,int StringTwo,int ColumnOne,int ColumnTwo);
  void CheckMinTetta();
+ void AllInputNotColor();
 protected:
     void paintEvent(QPaintEvent*) override;
 
@@ -82,6 +86,7 @@ public:
 private slots:
     void on_pushButton_2_clicked();
     void CheckTetta();
+    void CheckBasis();
 void CheckAllMin();
 
 

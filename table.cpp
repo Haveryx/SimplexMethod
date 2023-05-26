@@ -355,6 +355,30 @@ int Table::CheckPosition(QLabel *labelOne, QLabel **LabelTwo)
     return -1;
 }
 
+int Table::CheckPosition(QLineEdit *lineOne, QLineEdit **lineTwo)
+{
+    for(int i=0;i<cEquation;i++)
+    {
+        for(int j=vars+3;j<vars*2+3;j++)
+        {
+          if(lineOne==&lineTwo[i][j])return i;
+        }
+    }
+    return -1;
+}
+
+int Table::CheckString(QLineEdit *lineOne, QLineEdit **lineTwo)
+{
+    for(int i=0;i<cEquation;i++)
+    {
+        for(int j=vars+3;j<vars*2+3;j++)
+        {
+          if(lineOne==&lineTwo[i][j])return j;
+        }
+    }
+    return -1;
+}
+
 void Table::GetInputTetta()
 {
     bool flag=true;
@@ -374,14 +398,20 @@ void Table::GetInputTetta()
                 errors[1]++;
                 input[i][j+1].setStyleSheet("background-color: rgb(214,153,146);");
           }
-            else{
-                system[i][j]=CheckInput[i][j];
-            }
+
         }
 
     }
     if(flag==true){
         next->setText("Выбираем минимальные тетты");
+
+            for(int i=0;i<cEquation;i++)
+            {
+                for(int j=2;j<vars+2;j++){
+             system[i][j]=CheckInput[i][j];
+                }
+
+        }
         disconnect(next,SIGNAL(clicked(bool)),this,SLOT(CheckTetta()));
  CheckMinTetta();
 
@@ -613,20 +643,39 @@ NextStep();
     }
     else{
         bool flag=true;
+        if(checked) //Чтобы лишних ошибок не было
+        {
      for( int i=0;i<actualInput.size();i++)
          {
          if(watched==actualInput[i])
             {
                 if(event->type() == QEvent::MouseButtonPress)
                 {
-
+if(countMinTetta==-2000){//Если -2000 то клик означает выбор
+    flag=false;
+    checked=false;
+    char chars[12];
+    int string=CheckString(actualInput[i],input);
+    sprintf(chars, "A%d",string-vars-2);
+    int Pos=CheckPosition(actualInput[i],input);
+    if(Pos!=-1){
+    input[Pos][0].setText((QString)chars);
+    }
+    SimpleGod->getBasis(system,vars,cEquation,Pos,string-vars-1);
+    SetWrite(0,cEquation,2,vars+3);
+    AllInputNotColor();
+next->setText("Проверить приведение базису");
+    connect(next,SIGNAL(clicked(bool)),this,SLOT(CheckBasis()));
+}
+else{
                actualInput[i]->setStyleSheet("background-color: rgb(71,250,148);");
                 flag=false;
 countMinTetta++;
+}
                 }
     }
 }
-                if(flag==true)
+                if(flag==true) //Проверка может клик вообще не в тему
                 {
 
 
@@ -653,7 +702,7 @@ line->setStyleSheet("background-color: rgb(214,153,146);");
                     }
                 }
                 }
-
+}
                 }
 
 void Table::on_pushButton_2_clicked()
@@ -668,20 +717,54 @@ GetInputTetta();
 
 }
 
+void Table::CheckBasis()
+{
+    bool flag=true;
+    double ** CheckInput=new double*[cEquation];
+    for(int i=0;i<cEquation;i++)
+    {
+        CheckInput[i]=new double[2*vars+2];
+    }
+    for(int i=0;i<cEquation;i++)
+    {
+        for(int j=1;j<vars+1;j++){
+
+            CheckInput[i][j]=(input[i][j+1].text()=="-")? INFINITY:input[i][j+1].text().toDouble();
+            input[i][j+1].setStyleSheet("background-color: rgb(255,255,255);");
+            if(std::abs(CheckInput[i][j]-system[i][j])>0.05){
+                flag=false;
+                errors[1]++;
+                input[i][j+1].setStyleSheet("background-color: rgb(214,153,146);");
+          }
+
+        }
+
+}
+    if(flag==true){
+        for(int i=0;i<cEquation;i++)
+        {
+            for(int j=2;j<vars+2;j++){
+         system[i][j]=CheckInput[i][j];
+            }
+        }
+    }
+}
 void Table::CheckAllMin()
 {
 
     if(actualInput.size()==countMinTetta){
-        next->setStyleSheet("background-color: rgb(71,250,148);");
-        countMinTetta=0;
+     setStyleSheet("background-color: rgb(255,255,255);");
+        disconnect(next,SIGNAL(clicked(bool)),this,SLOT(CheckAllMin()));
+       countMinTetta=-2000;
     }
     else{
-        next->setStyleSheet("background-color: rgb(214,153,146);");
+      next->setStyleSheet("background-color: rgb(214,153,146);");
     }
 }
 
 void Table::CheckMinTetta()
 {
+    checked=true;
     vectors=SimpleGod->GetMin(system,Basis,vars,cEquation);
    SetReadOnly();
    for(int i=0;i<cEquation;i++)
@@ -702,6 +785,17 @@ void Table::CheckMinTetta()
     connect(next,SIGNAL(clicked(bool)),SLOT(CheckAllMin()));
 }
 
+void Table::AllInputNotColor()
+{
+    for(int i=0;i<cEquation+1;i++)
+    {
+        for(int j=0;j<3+2*vars;j++)
+        {
+            input[i][j].setStyleSheet("background-color: rgb(255,255,255);");
+        }
+    }
+}
+
 void Table::SetReadOnly()
 {
     for(int i=0;i<cEquation;i++)
@@ -709,6 +803,17 @@ void Table::SetReadOnly()
         for(int j=0;j<2*vars+3;j++)
         {
             input[i][j].setReadOnly(true);
+        }
+    }
+}
+
+void Table::SetWrite(int StringOne,int StringTwo,int ColumnOne,int ColumnTwo)
+{
+    for(int i=StringOne;i<StringTwo;i++)
+    {
+        for(int j=ColumnOne;j<ColumnTwo;j++)
+        {
+            input[i][j].setReadOnly(false);
         }
     }
 }
