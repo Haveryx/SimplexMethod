@@ -901,18 +901,26 @@ if(SimpleGod->checkBlackList(blackList,i,vectors[i].front())==false){
     if(reshenie!=0){
     connect(next,SIGNAL(clicked(bool)),SLOT(CheckAllMin()));
     }
-    else if(Solution==solution::NotOptimal){
-        label->setText("Нет решения");
-         label->show();
+    else{
+        if(Solution==solution::NotOptimal){
+      //  label->setText("Нет решения");
+      //   label->show();
+            for(int i=3;i<vars+3;i++)
+            {
+                  input[cEquation][i].setStyleSheet("background-color: rgb(214,153,146);");
+            }
+         next->hide();
     }
     else if(Solution==solution::SomeSolution){
-        label2->hide();
-        label->show();
+      //  label2->hide();
+         next->hide();
+       // label->show();
         for(int i=3;i<vars+3;i++)
         {
               input[cEquation][i].setStyleSheet("background-color: rgb(71,250,148);");
         }
     }
+}
 }
 
 void Table::AllInputNotColor()
