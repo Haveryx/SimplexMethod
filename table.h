@@ -11,6 +11,8 @@
 #include<QDesktopWidget>
 #include<QMap>
 #include<QPushButton>
+//Удалить потом
+#include<QDebug>
 
 enum Minimal
 {
@@ -52,7 +54,7 @@ private:
    int sizeLine=2;
    int y,x;
    int checkMin;
-   int Position=0;
+   int Position=0,string=0;
    void AllNotColor();
    void SetColorBasis();
    void SetColorBasis(int* basis);

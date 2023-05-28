@@ -407,7 +407,7 @@ void Table::GetInputTetta()
 
             for(int i=0;i<cEquation;i++)
             {
-                for(int j=2;j<vars+2;j++){
+                for(int j=2+vars;j<2*vars+2;j++){
              system[i][j]=CheckInput[i][j];
                 }
 
@@ -416,7 +416,7 @@ void Table::GetInputTetta()
  CheckMinTetta();
 
     }
-    for(int i=0;i<cEquation+1;i++)
+  for(int i=0;i<cEquation+1;i++)
     {
         delete []CheckInput[i];
     }
@@ -651,20 +651,21 @@ NextStep();
             {
                 if(event->type() == QEvent::MouseButtonPress)
                 {
-if(countMinTetta==-2000){//Если -2000 то клик означает выбор
+if(countMinTetta==-2000){//Если -2000 то клик означает выбор базиса
     flag=false;
     checked=false;
     char chars[12];
-    int string=CheckString(actualInput[i],input);
+     string=CheckString(actualInput[i],input);
     sprintf(chars, "A%d",string-vars-2);
-    int Pos=CheckPosition(actualInput[i],input);
-    if(Pos!=-1){
-    input[Pos][0].setText((QString)chars);
+  Position=CheckPosition(actualInput[i],input);
+    if(Position!=-1){
+    input[Position][0].setText((QString)chars);
     }
-    SimpleGod->getBasis(system,vars,cEquation,Pos,string-vars-1);
+
     SetWrite(0,cEquation,2,vars+3);
     AllInputNotColor();
 next->setText("Проверить приведение базису");
+SimpleGod->getBasis(system,vars,cEquation,Position,string-vars-1);
     connect(next,SIGNAL(clicked(bool)),this,SLOT(CheckBasis()));
 }
 else{
@@ -721,33 +722,34 @@ void Table::CheckBasis()
 {
     bool flag=true;
     double ** CheckInput=new double*[cEquation];
-    for(int i=0;i<cEquation;i++)
+       for(int i=0;i<cEquation;i++)
     {
         CheckInput[i]=new double[2*vars+2];
     }
     for(int i=0;i<cEquation;i++)
     {
-        for(int j=1;j<vars+1;j++){
+        for(int j=1;j<vars+2;j++){
 
             CheckInput[i][j]=(input[i][j+1].text()=="-")? INFINITY:input[i][j+1].text().toDouble();
             input[i][j+1].setStyleSheet("background-color: rgb(255,255,255);");
             if(std::abs(CheckInput[i][j]-system[i][j])>0.05){
                 flag=false;
-                errors[1]++;
+                errors[3]++;
                 input[i][j+1].setStyleSheet("background-color: rgb(214,153,146);");
           }
 
         }
-
-}
+    }
     if(flag==true){
         for(int i=0;i<cEquation;i++)
         {
-            for(int j=2;j<vars+2;j++){
+            for(int j=1;j<vars+2;j++){
          system[i][j]=CheckInput[i][j];
             }
         }
     }
+
+
 }
 void Table::CheckAllMin()
 {
