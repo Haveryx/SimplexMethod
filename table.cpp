@@ -530,7 +530,7 @@ for(int j=0;j<cEquation;j++)//Циферки выводим
            text[j+1][i+1].setText("-");
       }
       else{
-          if(system[j][i]-((int)system[j][i])*100!=0){
+          if(system[j][i]-((int)system[j][i])!=0){
           sprintf(chars, "%5.2f",system[j][i]);
           }
           else sprintf(chars, "%5.0f",system[j][i]);
@@ -546,7 +546,7 @@ for(int i=1;i<vars+2;i++)
     text[1+cEquation][i+1].setParent(this);
     //text[0][0].setFont();Todo Добавить шрифт
  text[1+cEquation][i+1].setGeometry(x+(sizeX*(i+1))+sizeLine,y+sizeY*(cEquation+1) +sizeLine,sizeX-sizeLine*2,sizeY-sizeLine*2);
- if(system[cEquation][i]*100-((int)system[cEquation][i])*100!=0){
+ if(system[cEquation][i]-((int)system[cEquation][i])!=0){
  sprintf(chars, "%5.2f",system[cEquation][i]);
  }
  else sprintf(chars, "%5.0f",system[cEquation][i]);
@@ -859,6 +859,7 @@ ui->Optimal->show();
 
 void Table::CheckMinTetta()
 {
+    int reshenie=0;
        next->setStyleSheet("background-color: rgb(255,255,255);");
     checked=true;
     switch (Solution) {
@@ -874,6 +875,8 @@ void Table::CheckMinTetta()
     }
 
    SetReadOnly();
+
+
    for(int i=0;i<cEquation;i++)
    {
        for(int j=vars+3;j<vars*2+3;j++)
@@ -883,15 +886,33 @@ void Table::CheckMinTetta()
 
        }
    }
+   //Проверяем есть ли вообще решения или уже все?
     for(int i=0;i<cEquation;i++)
     {
     while(!vectors[i].empty()){
-
-        actualInput.push_back(&input[i][vectors[i].front()+1]);
+if(SimpleGod->checkBlackList(blackList,i,vectors[i].front())==false){
+    actualInput.push_back(&input[i][vectors[i].front()+1]);
         vectors[i].pop_front();
+        reshenie++;
     }
     }
+
+    }
+    if(reshenie!=0){
     connect(next,SIGNAL(clicked(bool)),SLOT(CheckAllMin()));
+    }
+    else if(Solution==solution::NotOptimal){
+        label->setText("Нет решения");
+         label->show();
+    }
+    else if(Solution==solution::SomeSolution){
+        label2->hide();
+        label->show();
+        for(int i=3;i<vars+3;i++)
+        {
+              input[cEquation][i].setStyleSheet("background-color: rgb(71,250,148);");
+        }
+    }
 }
 
 void Table::AllInputNotColor()
