@@ -11,6 +11,8 @@
 #include<QDesktopWidget>
 #include<QMap>
 #include<QPushButton>
+//Потом удалить
+#include<QDebug>
 #define INFINITI 33554432
 
 enum Minimal

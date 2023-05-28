@@ -125,13 +125,14 @@ void simplex::getDelta(double **system, double* z,int vars, int cEquation)
 solution simplex::Resheno(double **system, int *basis, int vars, int cEquation,int checkMin)
 {
     bool flag=false;
-    bool optimal=true;
     if(checkMin==1){
     for(int i=2;i<vars+2;i++)
     {
         if(system[cEquation][i]<0){
             return solution::NotOptimal;
         }
+    }
+     for(int i=2;i<vars+2;i++){
         if(system[cEquation][i]==0){// Смотрим базис ли это?
            flag=true;
            for(int j=0;j<cEquation;j++)
@@ -140,12 +141,14 @@ solution simplex::Resheno(double **system, int *basis, int vars, int cEquation,i
                    flag=false;
                }
            }
-           if(flag==true)optimal=false;
+           if(flag==true){
+               return solution::SomeSolution;
+           }
+
     }
     }
 
-    if(optimal==false)return solution::SomeSolution;
-    else return solution::Optimal;
+   return solution::Optimal;
     }
     else{
         for(int i=2;i<vars+2;i++)
@@ -153,6 +156,8 @@ solution simplex::Resheno(double **system, int *basis, int vars, int cEquation,i
             if(system[cEquation][i]>0){
                 return solution::NotOptimal;
             }
+        }
+         for(int i=2;i<vars+2;i++){
             if(system[cEquation][i]==0){// Смотрим базис ли это?
                flag=true;
                for(int j=0;j<cEquation;j++)
@@ -161,13 +166,13 @@ solution simplex::Resheno(double **system, int *basis, int vars, int cEquation,i
                        flag=false;
                    }
                }
-               if(flag==true)optimal=false;
-        }
-        }
-        if(optimal==false)return solution::SomeSolution;
-        else return solution::Optimal;
+               if(flag==true)return solution::SomeSolution;
 
-    }
+        }
+        }
+
+       return solution::Optimal;
+        }
 }
 
 
@@ -275,7 +280,7 @@ QVector<QVector<int> > simplex::SomeSolution(double **system, int *Basis, int va
                 if(Basis[j]==i-1)flag=true;
             }
             if(flag==false){
-                if(GetMin(system,i+vars,cEquation)!=0){
+                if(GetMin(system,i+vars,cEquation)!=-1){
                 Vector[GetMin(system,i+vars,cEquation)].push_back(i+vars);
                 }
 
@@ -293,12 +298,15 @@ int simplex::GetMin(double **system, int j, int cEquation)
     int position=0;
     for(int i=1;i<cEquation;i++)
     {
-        if(Min>system[i][j] && Min!=INFINITY){
+        if(Min>system[i][j] ){
             position=i;
             Min=system[i][j];
         }
     }
+    if(Min!=INFINITY){
     return position;
+    }
+    else return 0;
 }
 
 bool simplex::checkBlackList(QVector<QVector<int> > blackList, int position, int data)

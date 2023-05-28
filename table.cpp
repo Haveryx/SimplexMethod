@@ -641,7 +641,6 @@ basis[position]=(QString)chars;
 system[position][0]=z[map[actual[i]]-2-vars];
 actual.clear();//ToDo добавить продолжение
 count[position]=true;
-actual.clear();//Эксперементалочка
 Position++;
 
 NextStep();
@@ -669,6 +668,7 @@ if(countMinTetta==-2000){//Если -2000 то клик означает выб�
      string=CheckString(actualInput[i],input);
     sprintf(chars, "A%d",string-vars-2);
   Position=CheckPosition(actualInput[i],input);
+  blackList[Position].push_back(string-1);
   Basis[Position]=string-vars-2;
   count[Position]=true;
     if(Position!=-1){
@@ -861,13 +861,26 @@ void Table::CheckMinTetta()
 {
        next->setStyleSheet("background-color: rgb(255,255,255);");
     checked=true;
-    vectors=SimpleGod->GetMin(system,Basis,vars,cEquation);
+    switch (Solution) {
+    case solution::NotOptimal:
+        vectors=SimpleGod->GetMax(system,Basis,vars,cEquation,checkMin);
+        break;
+    case solution::SomeSolution:
+        vectors=SimpleGod->SomeSolution(system,Basis,vars,cEquation);
+        break;
+    default:
+        vectors=SimpleGod->GetMin(system,Basis,vars,cEquation);
+        break;
+    }
+
    SetReadOnly();
    for(int i=0;i<cEquation;i++)
    {
        for(int j=vars+3;j<vars*2+3;j++)
        {
+
     input[i][j].installEventFilter(this);
+
        }
    }
     for(int i=0;i<cEquation;i++)
@@ -939,10 +952,16 @@ void Table::on_NotOptimal_clicked()
         ui->SomeSolution->hide();
         ui->NotOptimal->hide();
         ui->Optimal->hide();
-
+        next->setText("Проверить тетты");
+        next->show();
+        disconnect(next,SIGNAL(clicked(bool)),this,SLOT(CheckDelta()));
+        countMinTetta=0;
+        SetReadOnly();
+        SetWrite(0,cEquation,vars+3,2*vars+3);
+       connect(next,SIGNAL(clicked(bool)),this,SLOT(CheckTetta()));
     }
     else{
-        ui->Optimal->setStyleSheet("background-color: rgb(214,153,146);");
+        ui->NotOptimal->setStyleSheet("background-color: rgb(214,153,146);");
     }
 }
 
@@ -958,8 +977,16 @@ void Table::on_SomeSolution_clicked()
         ui->SomeSolution->hide();
         ui->NotOptimal->hide();
         ui->Optimal->hide();
+
+        next->setText("Проверить тетты");
+        next->show();
+        disconnect(next,SIGNAL(clicked(bool)),this,SLOT(CheckDelta()));
+        countMinTetta=0;
+        SetReadOnly();
+        SetWrite(0,cEquation,vars+3,2*vars+3);
+       connect(next,SIGNAL(clicked(bool)),this,SLOT(CheckTetta()));
     }
     else{
-        ui->Optimal->setStyleSheet("background-color: rgb(214,153,146);");
+         ui->SomeSolution->setStyleSheet("background-color: rgb(214,153,146);");
     }
 }
