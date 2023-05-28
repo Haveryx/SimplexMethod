@@ -902,7 +902,7 @@ if(SimpleGod->checkBlackList(blackList,i,vectors[i].front())==false){
     connect(next,SIGNAL(clicked(bool)),SLOT(CheckAllMin()));
     }
     else{
-        if(Solution==solution::NotOptimal){
+        /*if(Solution==solution::NotOptimal){
       //  label->setText("Нет решения");
       //   label->show();
             for(int i=3;i<vars+3;i++)
@@ -912,14 +912,12 @@ if(SimpleGod->checkBlackList(blackList,i,vectors[i].front())==false){
          next->hide();
     }
     else if(Solution==solution::SomeSolution){
-      //  label2->hide();
-         next->hide();
-       // label->show();
         for(int i=3;i<vars+3;i++)
         {
               input[cEquation][i].setStyleSheet("background-color: rgb(71,250,148);");
         }
-    }
+    }*/
+        next->hide();
 }
 }
 
