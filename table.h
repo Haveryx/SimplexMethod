@@ -11,8 +11,7 @@
 #include<QDesktopWidget>
 #include<QMap>
 #include<QPushButton>
-//Удалить потом
-#include<QDebug>
+#define INFINITI 33554432
 
 enum Minimal
 {
@@ -48,6 +47,7 @@ private:
     QPainter* painter;
     const int sizeX=80,sizeY=40;
     Type type=Type::none;
+    solution Solution=solution::None;
    QLabel** text;
    QLineEdit ** input;
    QPushButton* next;
@@ -90,8 +90,13 @@ private slots:
     void CheckTetta();
     void CheckBasis();
 void CheckAllMin();
+void CheckC();
+void CheckDelta();
 
 
+void on_Optimal_clicked();
+void on_NotOptimal_clicked();
+void on_SomeSolution_clicked();
 };
 
 #endif // TABLE_H

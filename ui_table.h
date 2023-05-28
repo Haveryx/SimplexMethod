@@ -20,6 +20,9 @@ class Ui_Table
 {
 public:
     QPushButton *pushButton_2;
+    QPushButton *Optimal;
+    QPushButton *NotOptimal;
+    QPushButton *SomeSolution;
 
     void setupUi(QWidget *Table)
     {
@@ -29,6 +32,15 @@ public:
         pushButton_2 = new QPushButton(Table);
         pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
         pushButton_2->setGeometry(QRect(680, 0, 75, 23));
+        Optimal = new QPushButton(Table);
+        Optimal->setObjectName(QStringLiteral("Optimal"));
+        Optimal->setGeometry(QRect(120, 0, 80, 21));
+        NotOptimal = new QPushButton(Table);
+        NotOptimal->setObjectName(QStringLiteral("NotOptimal"));
+        NotOptimal->setGeometry(QRect(330, 0, 101, 21));
+        SomeSolution = new QPushButton(Table);
+        SomeSolution->setObjectName(QStringLiteral("SomeSolution"));
+        SomeSolution->setGeometry(QRect(459, 0, 141, 21));
 
         retranslateUi(Table);
 
@@ -39,6 +51,9 @@ public:
     {
         Table->setWindowTitle(QApplication::translate("Table", "Form", nullptr));
         pushButton_2->setText(QApplication::translate("Table", "Exit", nullptr));
+        Optimal->setText(QApplication::translate("Table", "\320\236\320\277\321\202\320\270\320\274\320\260\320\273\321\214\320\275\320\276", nullptr));
+        NotOptimal->setText(QApplication::translate("Table", "\320\235\320\265 \320\276\320\277\321\202\320\270\320\274\320\260\320\273\321\214\320\275\320\276", nullptr));
+        SomeSolution->setText(QApplication::translate("Table", "\320\225\321\201\321\202\321\214 \320\265\321\211\320\265 \320\276\320\264\320\275\320\276 \321\200\320\265\321\210\320\265\320\275\320\270\320\265", nullptr));
     } // retranslateUi
 
 };

@@ -8,6 +8,7 @@
 #include"table.h"
 #include"simplex.h"
 #include<QDesktopWidget>
+#define INFINITI 33554432
 namespace Ui {
 class Solution;
 }

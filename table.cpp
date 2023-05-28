@@ -24,6 +24,15 @@ Table::Table(QWidget *parent) :
      label2->hide();
 
      ui->pushButton_2->setGeometry(size.width()-88,15,75,23);
+ auto StartPosition=(size.width()-429)/6;
+ ui->Optimal->setGeometry(StartPosition,15,80,21);
+ ui->Optimal->hide();
+
+ ui->NotOptimal->setGeometry(StartPosition*2+80,15,120,21);
+ ui->NotOptimal->hide();
+
+ ui->SomeSolution->setGeometry(StartPosition*3+200,15,141,21);
+ ui->SomeSolution->hide();
 
      next=new QPushButton(this);
      next->setText("Далее");
@@ -154,14 +163,14 @@ connect(next,SIGNAL(clicked(bool)),SLOT(CheckTetta()));
                }
                else sprintf(chars, "%5.0f",system[j][i]);
                input[j][i+1].setText(chars);
-               input[j][i+1].setReadOnly(true);
 
            }
        }
 
 
 
-
+SetReadOnly();
+SetWrite(0,cEquation,3+vars,2*vars+3);
    repaint();
 }
 
@@ -381,6 +390,7 @@ int Table::CheckString(QLineEdit *lineOne, QLineEdit **lineTwo)
 
 void Table::GetInputTetta()
 {
+      next->setStyleSheet("background-color: rgb(255,255,255);");
     bool flag=true;
     double ** CheckInput=new double*[cEquation+1];
     for(int i=0;i<cEquation+1;i++)
@@ -631,6 +641,7 @@ basis[position]=(QString)chars;
 system[position][0]=z[map[actual[i]]-2-vars];
 actual.clear();//ToDo добавить продолжение
 count[position]=true;
+actual.clear();//Эксперементалочка
 Position++;
 
 NextStep();
@@ -658,14 +669,17 @@ if(countMinTetta==-2000){//Если -2000 то клик означает выб�
      string=CheckString(actualInput[i],input);
     sprintf(chars, "A%d",string-vars-2);
   Position=CheckPosition(actualInput[i],input);
+  Basis[Position]=string-vars-2;
+  count[Position]=true;
     if(Position!=-1){
     input[Position][0].setText((QString)chars);
+    actualInput.clear();
     }
 
     SetWrite(0,cEquation,2,vars+3);
     AllInputNotColor();
+    SimpleGod->getBasis(system,vars,cEquation,Position,string-vars-1);
 next->setText("Проверить приведение базису");
-SimpleGod->getBasis(system,vars,cEquation,Position,string-vars-1);
     connect(next,SIGNAL(clicked(bool)),this,SLOT(CheckBasis()));
 }
 else{
@@ -720,6 +734,7 @@ GetInputTetta();
 
 void Table::CheckBasis()
 {
+      next->setStyleSheet("background-color: rgb(255,255,255);");
     bool flag=true;
     double ** CheckInput=new double*[cEquation];
        for(int i=0;i<cEquation;i++)
@@ -747,13 +762,17 @@ void Table::CheckBasis()
          system[i][j]=CheckInput[i][j];
             }
         }
+        next->setText("Проверить C");
+        SetWrite(Position,Position+1,1,2);
+            disconnect(next,SIGNAL(clicked(bool)),this,SLOT(CheckBasis()));
+            connect(next,SIGNAL(clicked(bool)),this,SLOT(CheckC()));
     }
 
 
 }
 void Table::CheckAllMin()
 {
-
+   next->setStyleSheet("background-color: rgb(255,255,255);");
     if(actualInput.size()==countMinTetta){
      setStyleSheet("background-color: rgb(255,255,255);");
         disconnect(next,SIGNAL(clicked(bool)),this,SLOT(CheckAllMin()));
@@ -764,8 +783,83 @@ void Table::CheckAllMin()
     }
 }
 
+void Table::CheckC()
+{
+    next->setStyleSheet("background-color: rgb(255,255,255);");
+    double C=(input[Position][1].text()=="-")? INFINITY:input[Position][1].text().toDouble();
+    input[Position][1].setStyleSheet("background-color: rgb(255,255,255);");
+    if(std::abs(C-z[string-vars-3])>0.05){
+        errors[4]++;
+         input[Position][1].setStyleSheet("background-color: rgb(214,153,146);");
+    }
+    else{
+        system[Position][0]=C;
+        //Проверяем заполнин ли базис
+        bool flags=false;
+        for(int i=0;i<cEquation;i++){
+            if(count[i]==false){
+                flags=true;
+            }
+        }
+        if(flags){//Если не заполнен базис начинаем с начала
+            next->setText("Проверить тетты");
+            countMinTetta=0;
+
+            SetReadOnly();
+            SetWrite(0,cEquation,vars+3,2*vars+3);
+            disconnect(next,SIGNAL(clicked(bool)),this,SLOT(CheckC()));
+            connect(next,SIGNAL(clicked(bool)),SLOT(CheckTetta()));
+
+        }
+        else{
+            next->setText("Проверить дельту");
+            countMinTetta=0;
+
+            SetReadOnly();
+            SetWrite(cEquation,cEquation+1,2,vars+3);
+            disconnect(next,SIGNAL(clicked(bool)),this,SLOT(CheckC()));
+            connect(next,SIGNAL(clicked(bool)),SLOT(CheckDelta()));
+        }
+
+    }
+}
+
+void Table::CheckDelta()
+{
+    SimpleGod->getDelta(system,z,vars,cEquation);
+    next->setStyleSheet("background-color: rgb(255,255,255);");
+  bool flag=true;
+  double ** CheckInput=new double*[cEquation+1];
+  for(int i=0;i<cEquation+1;i++)
+  {
+      CheckInput[i]=new double[2*vars+2];
+  }
+
+
+  for(int j=1;j<vars+2;j++){
+
+         CheckInput[cEquation][j]=(input[cEquation][j+1].text()=="-")? INFINITY:input[cEquation][j+1].text().toDouble();
+         input[cEquation][j+1].setStyleSheet("background-color: rgb(255,255,255);");
+         if(std::abs(CheckInput[cEquation][j]-system[cEquation][j])>0.05){
+             flag=false;
+             errors[1]++;
+             input[cEquation][j+1].setStyleSheet("background-color: rgb(214,153,146);");
+
+
+     }
+  }
+  if(flag==true){
+     Solution= SimpleGod->Resheno(system,Basis,vars,cEquation,checkMin);
+next->hide();
+ui->SomeSolution->show();
+ui->NotOptimal->show();
+ui->Optimal->show();
+  }
+}
+
 void Table::CheckMinTetta()
 {
+       next->setStyleSheet("background-color: rgb(255,255,255);");
     checked=true;
     vectors=SimpleGod->GetMin(system,Basis,vars,cEquation);
    SetReadOnly();
@@ -800,7 +894,7 @@ void Table::AllInputNotColor()
 
 void Table::SetReadOnly()
 {
-    for(int i=0;i<cEquation;i++)
+    for(int i=0;i<cEquation+1;i++)
     {
         for(int j=0;j<2*vars+3;j++)
         {
@@ -817,5 +911,55 @@ void Table::SetWrite(int StringOne,int StringTwo,int ColumnOne,int ColumnTwo)
         {
             input[i][j].setReadOnly(false);
         }
+    }
+}
+
+void Table::on_Optimal_clicked()
+{
+    if(Solution==solution::Optimal)
+    {
+        for(int i=3;i<vars+3;i++)
+        {
+              input[cEquation][i].setStyleSheet("background-color: rgb(71,250,148);");
+        }
+        ui->SomeSolution->hide();
+        ui->NotOptimal->hide();
+        ui->Optimal->hide();
+    }
+    else{
+        ui->Optimal->setStyleSheet("background-color: rgb(214,153,146);");
+    }
+}
+
+void Table::on_NotOptimal_clicked()
+{
+    if(Solution==solution::NotOptimal)
+    {
+
+        ui->SomeSolution->hide();
+        ui->NotOptimal->hide();
+        ui->Optimal->hide();
+
+    }
+    else{
+        ui->Optimal->setStyleSheet("background-color: rgb(214,153,146);");
+    }
+}
+
+
+void Table::on_SomeSolution_clicked()
+{
+    if(Solution==solution::SomeSolution)
+    {
+        for(int i=3;i<vars+3;i++)
+        {
+              input[cEquation][i].setStyleSheet("background-color: rgb(71,250,148);");
+        }
+        ui->SomeSolution->hide();
+        ui->NotOptimal->hide();
+        ui->Optimal->hide();
+    }
+    else{
+        ui->Optimal->setStyleSheet("background-color: rgb(214,153,146);");
     }
 }
