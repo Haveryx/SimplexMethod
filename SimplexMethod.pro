@@ -30,7 +30,9 @@ SOURCES += \
     massive.cpp \
     table.cpp \
     simplex.cpp \
-    training.cpp
+    training.cpp \
+    results.cpp \
+    rating.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -38,10 +40,14 @@ HEADERS += \
     massive.h \
     table.h \
     simplex.h \
-    training.h
+    training.h \
+    results.h \
+    rating.h
 
 FORMS += \
         mainwindow.ui \
     solution.ui \
     table.ui \
-    training.ui
+    training.ui \
+    results.ui \
+    rating.ui

@@ -264,9 +264,9 @@ void Training::Unsigned()
     else{
         ui->label_3->hide();
         for(int i=0;i<vars+1;i++){
-            coeffSystems[position][i]*=-1;
-            if(sign[position]!=0)sign[position]=(sign[position]==1)?2:1;
+            coeffSystems[position][i]*=-1; 
       }
+        if(sign[position]!=0)sign[position]=(sign[position]==1)?2:1;
         for(int i=0;i<cEquation;i++){
             delete Labels[i];
         }

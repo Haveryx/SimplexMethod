@@ -31,7 +31,9 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()
 {
     Training* training=new Training();
+    Solution* solution=new Solution();
     this->hide();
+    solution->show();
     training->show();
 }
 

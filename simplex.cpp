@@ -311,10 +311,12 @@ int simplex::GetMin(double **system, int j, int cEquation)
 
 bool simplex::checkBlackList(QVector<QVector<int> > blackList, int position, int data)
 {
+    if(!blackList[position].isEmpty()){
   for(int i=0;i<blackList[position].size();i++)
     {
       if(blackList[position][i]==data)return true;
 
+    }
     }
     return false;
 }

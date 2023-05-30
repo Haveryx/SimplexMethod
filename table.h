@@ -11,8 +11,7 @@
 #include<QDesktopWidget>
 #include<QMap>
 #include<QPushButton>
-//Потом удалить
-#include<QDebug>
+#include"results.h"
 #define INFINITI 33554432
 
 enum Minimal
@@ -37,6 +36,9 @@ class Table : public QWidget
 public:
     explicit Table(QWidget *parent = 0);
     ~Table();
+signals:
+    void PushInfo(QVector<double*>,int);
+    void PushInfo(QVector<double *>, int,int*);
    public slots:
     void addInformation(int,int,int,double**,double*);
  void addInformation(int,int,int*,int,double**,double*);
@@ -46,19 +48,21 @@ private:
     int* errors;
     int countMinTetta=0;
     bool* count,checked=false;
-    QPainter* painter;
     const int sizeX=80,sizeY=40;
     Type type=Type::none;
     solution Solution=solution::None;
-   QLabel** text;
+   QLabel** text,** Z;
    QLineEdit ** input;
    QPushButton* next;
+   QPainter* painter;
+   Results* results;
    int sizeLine=2;
    int y,x;
    int checkMin;
    int Position=0,string=0;
    void AllNotColor();
    void SetColorBasis();
+   void NotColorBasis(int*basis);
    void SetColorBasis(int* basis);
    QString* basis;
    int  * Basis;
@@ -66,12 +70,14 @@ private:
    double** system,*z;
    simplex* SimpleGod;
 QVector<QLabel*> actual;
+QVector<double*> result;
 QVector<QLineEdit*>actualInput;
 QLabel* label,*label2;
 QMap<QLabel*,int> map;
  QVector<QVector<int>> vectors,blackList;
 void ColorColumn(int j);
 void NotColor();
+void PushResult();
 void NextStep();
 int CheckPosition(QLabel* labelOne,QLabel** LabelTwo);
 int CheckPosition(QLineEdit* lineOne,QLineEdit** lineTwo);
