@@ -11,11 +11,11 @@ Training::Training(QWidget *parent) :
     ui->label_3->hide();
     massive=new Massive();
     QDesktopWidget desktop;
-errors=new int[6];
+errors=new int[7];
     QRect size=desktop.geometry();
     this->setGeometry(size.x(),size.y(),size.width(),size.height());
     checkMin=0;
-    for(int i=0;i<6;i++)errors[i]=0;
+    for(int i=0;i<7;i++)errors[i]=0;
     table=new Table();
     table->hide();
     connect(this,SIGNAL(CreateTable(int, int,int *,int,double**,double*)),table,SLOT(addInformation(int, int,int *,int,double**,double*)));
@@ -34,6 +34,7 @@ Training::~Training()
 void Training::on_pushButton_clicked()
 {
     //Read Consts
+
     if(ui->lineEdit_2->text().length()==0)cEquation=0;
     else{
     cEquation=ui->lineEdit_2->text().toInt();
@@ -63,6 +64,7 @@ void Training::GetCoeff()
 coeff=new double[vars+cEquation];//процедура увеличения памяти достаточно затратная,поэтому выделим её сразу с запасом
 for(int i=0;i<vars;i++)
 {
+    LineEdits[i]->setText( LineEdits[i]->text().replace(",","."));
     if(LineEdits[i]->text().length()==0)coeff[i]=0;
     else{
     coeff[i]=LineEdits[i]->text().toDouble();
@@ -102,6 +104,7 @@ for(int j=0;j<cEquation;j++)
 
     for(int i=0;i<=vars;i++)
     {
+        LineEdits[j][i].setText(LineEdits[j][i].text().replace(",","."));
         if(LineEdits[j][i].text().length()==0) coeffSystems[j][i]=0;
         else{
     coeffSystems[j][i]= LineEdits[j][i].text().toDouble();

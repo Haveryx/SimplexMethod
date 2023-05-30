@@ -44,7 +44,7 @@ Table::Table(QWidget *parent) :
      next->setGeometry(size.width()-251,size.height()-170,241,61);
      next->hide();
 
-errors=new int[5];
+errors=new int[7];
 }
 
 
@@ -173,7 +173,7 @@ connect(next,SIGNAL(clicked(bool)),SLOT(CheckTetta()));
     this->cEquation=cEquation;
     this->vars=vars;
     this->type=Type::training;
-     for(int i=0;i<6;i++){
+     for(int i=0;i<7;i++){
          this->errors[i]=errors[i];
      }
      checkMin=minimum;
@@ -486,6 +486,7 @@ void Table::GetInputTetta()
     {
         for(int j=2+vars;j<2*vars+2;j++){
 
+           input[i][j+1].setText(input[i][j+1].text().replace(",","."));
             CheckInput[i][j]=(input[i][j+1].text()=="-")? INFINITY:input[i][j+1].text().toDouble();
             input[i][j+1].setStyleSheet("background-color: rgb(255,255,255);");
             if(std::abs(CheckInput[i][j]-system[i][j])>0.05){
@@ -843,7 +844,7 @@ void Table::CheckBasis()
     for(int i=0;i<cEquation;i++)
     {
         for(int j=1;j<vars+2;j++){
-
+            input[i][j+1].setText(input[i][j+1].text().replace(",","."));
             CheckInput[i][j]=(input[i][j+1].text()=="-")? INFINITY:input[i][j+1].text().toDouble();
             input[i][j+1].setStyleSheet("background-color: rgb(255,255,255);");
             if(std::abs(CheckInput[i][j]-system[i][j])>0.05){
@@ -887,6 +888,7 @@ void Table::CheckAllMin()
 void Table::CheckC()
 {
     next->setStyleSheet("background-color: rgb(255,255,255);");
+     input[Position][1].setText(input[Position][1].text().replace(",","."));
     double C=(input[Position][1].text()=="-")? INFINITY:input[Position][1].text().toDouble();
     input[Position][1].setStyleSheet("background-color: rgb(255,255,255);");
     if(std::abs(C-z[string-vars-3])>0.05){
@@ -939,6 +941,7 @@ void Table::CheckDelta()
 
   for(int j=1;j<vars+2;j++){
 
+         input[cEquation][j+1].setText(input[cEquation][j+1].text().replace(",","."));
          CheckInput[cEquation][j]=(input[cEquation][j+1].text()=="-")? INFINITY:input[cEquation][j+1].text().toDouble();
          input[cEquation][j+1].setStyleSheet("background-color: rgb(255,255,255);");
          if(std::abs(CheckInput[cEquation][j]-system[cEquation][j])>0.05){
@@ -1084,6 +1087,7 @@ void Table::on_Optimal_clicked()
     }
     else{
         ui->Optimal->setStyleSheet("background-color: rgb(214,153,146);");
+         errors[6]++;
     }
 }
 
@@ -1105,6 +1109,7 @@ void Table::on_NotOptimal_clicked()
     }
     else{
         ui->NotOptimal->setStyleSheet("background-color: rgb(214,153,146);");
+         errors[6]++;
     }
 }
 
@@ -1131,5 +1136,6 @@ void Table::on_SomeSolution_clicked()
     }
     else{
          ui->SomeSolution->setStyleSheet("background-color: rgb(214,153,146);");
+         errors[6]++;
     }
 }

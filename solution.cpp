@@ -62,6 +62,7 @@ void Solution::GetCoeff()
 coeff=new double[vars+cEquation];//процедура увеличения памяти достаточно затратная,поэтому выделим её сразу с запасом
 for(int i=0;i<vars;i++)
 {
+   LineEdits[i]->setText(LineEdits[i]->text().replace(",","."));
     if(LineEdits[i]->text().length()==0)coeff[i]=0;
     else{
     coeff[i]=LineEdits[i]->text().toDouble();
@@ -101,6 +102,7 @@ for(int j=0;j<cEquation;j++)
 
     for(int i=0;i<=vars;i++)
     {
+         LineEdits[j][i].setText(LineEdits[j][i].text().replace(",","."));
         if(LineEdits[j][i].text().length()==0) coeffSystems[j][i]=0;
         else{
     coeffSystems[j][i]= LineEdits[j][i].text().toDouble();

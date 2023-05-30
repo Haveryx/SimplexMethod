@@ -27,12 +27,18 @@ void Rating::addError(int *error)
     ui->label_9->setText((QString)chars);
 
     sprintf(chars, "%d",error[3]);
-    ui->label_11->setText((QString)chars);
+    ui->label_16->setText((QString)chars);
 
     sprintf(chars, "%d",error[4]);
+    ui->label_11->setText((QString)chars);
+
+    sprintf(chars, "%d",error[5]);
     ui->label_13->setText((QString)chars);
 
-    for(int i=0;i<5;i++)
+    sprintf(chars, "%d",error[6]);
+    ui->label_15->setText((QString)chars);
+
+    for(int i=0;i<7;i++)
     {
         sum+=error[i];
     }
