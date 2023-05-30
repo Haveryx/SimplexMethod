@@ -14,7 +14,8 @@ class Rating : public QWidget
 public:
     explicit Rating(QWidget *parent = 0);
     ~Rating();
-
+public slots:
+    void addError(int*);
 private:
     Ui::Rating *ui;
 };

@@ -23,17 +23,34 @@ QString Results::CheckOstatok(double &Data)
     return (QString)chars;
 }
 
-void Results::AddInfo(QVector<double *> resultat, int cEquation)
+void Results::ShowRaiting()
 {
-ShowResult(resultat,cEquation);
+    rating=new Rating();
+    connect(this,SIGNAL(ShowRaiting(int*)),rating,SLOT(addError(int*)));
+    ShowRaiting(error);
+    rating->show();
+    this->close();
+
 }
 
-void Results::AddInfo(QVector<double *> resultat, int cEquation, int *errors)
+void Results::AddInfo(QVector<double *> resultat, int vars)
 {
-ShowResult(resultat,cEquation);
+ShowResult(resultat,vars);
 }
 
-void Results::ShowResult(QVector<double *> resultat, int cEquation)
+void Results::AddInfo(QVector<double *> resultat, int vars, int *errors)
+{
+ShowResult(resultat,vars);
+QPushButton* button=new QPushButton(this);
+error=new int[6];
+for(int i=0;i<6;i++)error[i]=errors[i];
+button->setGeometry(this->geometry().height()-50,this->geometry().width()-100,30,50);
+button->setText("Далее");
+connect(button,SIGNAL(clicked(bool)),this,SLOT(ShowRaiting()));
+button->show();
+}
+
+void Results::ShowResult(QVector<double *> resultat, int vars)
 {
 
     if(!resultat.empty()){
@@ -41,21 +58,23 @@ void Results::ShowResult(QVector<double *> resultat, int cEquation)
 
         for(int i=0;i<resultat.size();i++){
             QString string="Z=";
-            string+=CheckOstatok(resultat[i][cEquation])+" при X=( ";
+            string+=CheckOstatok(resultat[i][vars])+" при X=(";
             label[i]=new QLabel(ui->groupBox);
-            label[i]->setGeometry(0,10+i*40,30,20);//ToDo Добавить размеры
-            for(int j=0;j<cEquation;j++){
-                if(j==cEquation-1)string+=CheckOstatok(resultat[i][j])+")";
+            label[i]->setGeometry(0,40+i*80,521,40);//ToDo Добавить размеры
+            for(int j=0;j<vars;j++){
+                if(j==vars-1)string+=CheckOstatok(resultat[i][j])+")";
                 else string+=CheckOstatok(resultat[i][j])+", ";
             }
             label[i]->setText(string);
+            label[i]->setAlignment(Qt::AlignCenter);
             label[i]->show();
         }
 
     }
     else{
          QLabel *label=new QLabel(ui->groupBox);
-         label->setGeometry(0,10,30,20);//ToDo Добавить размеры
+         label->setGeometry(0,10,521,40);//ToDo Добавить размеры
+         label->setAlignment(Qt::AlignCenter);
          label->setText("Нет решения!!");
     }
 }

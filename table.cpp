@@ -283,7 +283,6 @@ void Table::NotColor()
 void Table::PushResult()
 {
     double* resultat=new double[vars+1];
-    double otvet=0;
     for(int i=0;i<vars;i++)
     {
         resultat[i]=0;
@@ -291,9 +290,8 @@ void Table::PushResult()
     for(int i=0;i<cEquation;i++)
     {
         resultat[Basis[i]-1]=system[i][1];
-        otvet+=system[i][1];
     }
-    resultat[vars]=otvet;
+    resultat[vars]=system[cEquation][1];
     result.push_back(resultat);
 }
 
@@ -345,7 +343,7 @@ void Table::NextStep()
                   text[cEquation+1][i].setStyleSheet("background-color: rgb(71,250,148);");
             }
             PushResult();
-            PushInfo(result,cEquation);
+            PushInfo(result,vars);
             results->show();
              this->close();
             break;
@@ -376,7 +374,7 @@ if(Reshenie==0){
     label->setText("Нет решения");
      label->show();
      AllNotColor();
-     PushInfo(result,cEquation);
+     PushInfo(result,vars);
      results->show();
       this->close();
 }
@@ -420,7 +418,7 @@ else{
                   label->show();
                   AllNotColor();
                   SetColorBasis();
-                  PushInfo(result,cEquation);
+                  PushInfo(result,vars);
                   results->show();
                   this->close();
                   for(int i=3;i<vars+3;i++)
@@ -1017,7 +1015,7 @@ vectors[i].pop_front();
                   input[cEquation][i].setStyleSheet("background-color: rgb(214,153,146);");
             }
          next->hide();
-         PushInfo(result,cEquation,errors);
+         PushInfo(result,vars,errors);
          results->show();
          this->close();
     }
@@ -1027,7 +1025,7 @@ vectors[i].pop_front();
               input[cEquation][i].setStyleSheet("background-color: rgb(71,250,148);");
         }
         next->hide();
-        PushInfo(result,cEquation,errors);
+        PushInfo(result,vars,errors);
         results->show();
        this->close();
     }
@@ -1080,7 +1078,7 @@ void Table::on_Optimal_clicked()
         ui->NotOptimal->hide();
         ui->Optimal->hide();
         PushResult();
-        PushInfo(result,cEquation,errors);
+        PushInfo(result,vars,errors);
         results->show();
         this->close();
     }
