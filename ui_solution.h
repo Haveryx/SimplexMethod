@@ -66,6 +66,9 @@ public:
 "border: 2px solid rgb(110,151,145);\n"
 "\n"
 "}\n"
+"QLineEdit{\n"
+"font: 75 18pt \"Times New Roman\";\n"
+"}\n"
 ""));
         groupBox = new QGroupBox(Solution);
         groupBox->setObjectName(QStringLiteral("groupBox"));

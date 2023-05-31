@@ -49,6 +49,9 @@ background-color: rgb(214,153,146);
 QLabel{
 font: 75 18pt &quot;Times New Roman&quot;;
 background-color: rgb(212, 188, 181);
+}
+QLineEdit{
+font: 75 18pt &quot;Times New Roman&quot;;
 }</string>
   </property>
   <widget class="QLineEdit" name="lineEdit">

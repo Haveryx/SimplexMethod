@@ -152,8 +152,9 @@ void Solution::Kanon()
     {
     if(sign[j]!=0){ //add New vars (if in equation have <= or >=
        massive->AddColumn(coeffSystems,vars,cEquation);
-       coeffSystems[j][vars]=sign[j]==2?1:-1;
+       coeffSystems[j][vars]=(sign[j]==2)?1:-1;
        massive->AddElement(coeff,vars);
+       sign[j]=0;
        vars++;
     }
     if(coeffSystems[j][vars]<0){//if <0

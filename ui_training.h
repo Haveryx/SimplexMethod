@@ -76,6 +76,9 @@ public:
 "QLabel{\n"
 "font: 75 18pt \"Times New Roman\";\n"
 "background-color: rgb(212, 188, 181);\n"
+"}\n"
+"QLineEdit{\n"
+"font: 75 18pt \"Times New Roman\";\n"
 "}"));
         lineEdit = new QLineEdit(Training);
         lineEdit->setObjectName(QStringLiteral("lineEdit"));

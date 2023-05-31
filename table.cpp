@@ -21,13 +21,14 @@ Table::Table(QWidget *parent) :
     SimpleGod=new simplex();
 
     label=new QLabel("Решение найдено!",this);
-
-   label->setGeometry(0,5,150,20);
+    label->setGeometry(0,5,150,20);
+    label->setAlignment(Qt::AlignCenter);
 
     label2=new QLabel("Однако есть ещё одно решение!",this);
-     label2->setGeometry(0,30,250,20);
-     //label->hide();
-    // label2->hide();
+    label2->setGeometry(0,30,300,20);
+    label2->setAlignment(Qt::AlignCenter);
+    label->hide();
+     label2->hide();
  auto StartPosition=(size.width()-648)/5;
 
      ui->pushButton_2->setGeometry(StartPosition*4+573,15,75,41);
@@ -329,6 +330,9 @@ void Table::NextStep()
                  label->setText("Нет решения");
                   label->show();
                   AllNotColor();
+                  PushInfo(result,vars);
+                  results->show();
+                   this->close();
              }
     }
     else{
@@ -726,7 +730,7 @@ if(position!=-2){
     NotColorBasis(Basis);
 SimpleGod->getBasis(system,vars,cEquation,position,map[actual[i]]-vars);
 NotColor();
-ColorColumn(map[actual[i]]+1-vars);
+//ColorColumn(map[actual[i]]+1-vars);
 
 char chars[12];
 sprintf(chars, "A%d",map[actual[i]]-1-vars);
