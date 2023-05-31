@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>742</width>
+    <width>932</width>
     <height>512</height>
    </rect>
   </property>
@@ -17,15 +17,16 @@
    <string notr="true">/*Training{
 background-color: rgb(212, 188, 181);
 }
+*/
 QPushButton{
 border-radius:8px;
-border: 2px solid rgb(51, 81, 83);
-background-color: rgb(155,93,86);
+border: 2px solid rgb(132, 139, 97);
+background-color: rgb(132, 139, 97);
 	font: 75 18pt &quot;Times New Roman&quot;;
 }
 QPushButton::hover{
 border: 2px solid rgb(51, 107, 83);
-background-color: rgb(152,143,250);
+background-color: rgb(117, 174, 143);
 }
 QLabel{
 font: 75 18pt &quot;Times New Roman&quot;;
@@ -38,22 +39,25 @@ border-radius:10px;
 border: 2px solid rgb(110,151,145);
 
 }
-*/
+QComboBox{
+background-color: rgb(117, 174, 143);
+}
 QLabel#label_3{
 font: 75 18pt &quot;Times New Roman&quot;;
 background-color: rgb(214,153,146);
 }
 QLabel{
-border: 2px solid rgb(110,151,145);
+font: 75 18pt &quot;Times New Roman&quot;;
+background-color: rgb(212, 188, 181);
 }</string>
   </property>
   <widget class="QLineEdit" name="lineEdit">
    <property name="geometry">
     <rect>
-     <x>360</x>
-     <y>60</y>
+     <x>390</x>
+     <y>50</y>
      <width>151</width>
-     <height>31</height>
+     <height>51</height>
     </rect>
    </property>
    <property name="text">
@@ -63,10 +67,10 @@ border: 2px solid rgb(110,151,145);
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>60</y>
+     <x>30</x>
+     <y>50</y>
      <width>291</width>
-     <height>21</height>
+     <height>51</height>
     </rect>
    </property>
    <property name="text">
@@ -80,9 +84,9 @@ border: 2px solid rgb(110,151,145);
    <property name="geometry">
     <rect>
      <x>40</x>
-     <y>100</y>
+     <y>160</y>
      <width>281</width>
-     <height>31</height>
+     <height>51</height>
     </rect>
    </property>
    <property name="text">
@@ -109,9 +113,9 @@ border: 2px solid rgb(110,151,145);
    <property name="geometry">
     <rect>
      <x>580</x>
-     <y>30</y>
-     <width>161</width>
-     <height>141</height>
+     <y>50</y>
+     <width>141</width>
+     <height>161</height>
     </rect>
    </property>
    <property name="title">
@@ -140,10 +144,10 @@ border: 2px solid rgb(110,151,145);
   <widget class="QLineEdit" name="lineEdit_2">
    <property name="geometry">
     <rect>
-     <x>360</x>
-     <y>100</y>
+     <x>390</x>
+     <y>160</y>
      <width>151</width>
-     <height>31</height>
+     <height>51</height>
     </rect>
    </property>
    <property name="text">

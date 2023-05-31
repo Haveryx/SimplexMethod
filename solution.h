@@ -42,6 +42,7 @@ void ShowEquation();
 void ShowInputEquation();
 
     Ui::Solution *ui;
+    QRect size; //Размеры монитора
     QLineEdit ** LineEdits;
 Table* table;
     QLabel** Labels;

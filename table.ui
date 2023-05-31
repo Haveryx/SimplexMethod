@@ -13,6 +13,24 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">QPushButton{
+border-radius:8px;
+border: 2px solid rgb(132, 139, 97);
+background-color: rgb(132, 139, 97);
+	font: 75 18pt &quot;Times New Roman&quot;;
+}
+QPushButton::hover{
+border: 2px solid rgb(51, 107, 83);
+background-color: rgb(117, 174, 143);
+}
+QLabel{
+font: 75 18pt &quot;Times New Roman&quot;;
+}
+QLineEdit{
+font: 75 18pt &quot;Times New Roman&quot;;
+}</string>
+  </property>
   <widget class="QPushButton" name="pushButton_2">
    <property name="geometry">
     <rect>
@@ -29,10 +47,10 @@
   <widget class="QPushButton" name="Optimal">
    <property name="geometry">
     <rect>
-     <x>120</x>
+     <x>39</x>
      <y>0</y>
-     <width>80</width>
-     <height>21</height>
+     <width>161</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="text">
@@ -42,10 +60,10 @@
   <widget class="QPushButton" name="NotOptimal">
    <property name="geometry">
     <rect>
-     <x>330</x>
+     <x>260</x>
      <y>0</y>
-     <width>101</width>
-     <height>21</height>
+     <width>171</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="text">
@@ -55,10 +73,10 @@
   <widget class="QPushButton" name="SomeSolution">
    <property name="geometry">
     <rect>
-     <x>459</x>
+     <x>440</x>
      <y>0</y>
-     <width>141</width>
-     <height>21</height>
+     <width>241</width>
+     <height>41</height>
     </rect>
    </property>
    <property name="text">

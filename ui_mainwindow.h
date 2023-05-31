@@ -34,7 +34,7 @@ public:
         MainWindow->resize(782, 441);
         MainWindow->setStyleSheet(QLatin1String("/*QMainWindow{\n"
 "background-color: rgb(227, 225, 237);\n"
-"}\n"
+"}*/\n"
 "QPushButton{\n"
 "border-radius:8px;\n"
 "border: 2px solid rgb(132, 139, 97);\n"
@@ -45,7 +45,7 @@ public:
 "border: 2px solid rgb(51, 107, 83);\n"
 "background-color: rgb(117, 174, 143);\n"
 "}\n"
-"*/"));
+""));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         pushButton = new QPushButton(centralWidget);
@@ -56,7 +56,7 @@ public:
         pushButton_2->setGeometry(QRect(260, 210, 241, 61));
         pushButton_3 = new QPushButton(centralWidget);
         pushButton_3->setObjectName(QStringLiteral("pushButton_3"));
-        pushButton_3->setGeometry(QRect(690, 0, 75, 23));
+        pushButton_3->setGeometry(QRect(690, 0, 75, 41));
         MainWindow->setCentralWidget(centralWidget);
         statusBar = new QStatusBar(MainWindow);
         statusBar->setObjectName(QStringLiteral("statusBar"));

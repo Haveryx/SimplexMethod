@@ -40,19 +40,20 @@ public:
     {
         if (Training->objectName().isEmpty())
             Training->setObjectName(QStringLiteral("Training"));
-        Training->resize(742, 512);
+        Training->resize(932, 512);
         Training->setStyleSheet(QLatin1String("/*Training{\n"
 "background-color: rgb(212, 188, 181);\n"
 "}\n"
+"*/\n"
 "QPushButton{\n"
 "border-radius:8px;\n"
-"border: 2px solid rgb(51, 81, 83);\n"
-"background-color: rgb(155,93,86);\n"
+"border: 2px solid rgb(132, 139, 97);\n"
+"background-color: rgb(132, 139, 97);\n"
 "	font: 75 18pt \"Times New Roman\";\n"
 "}\n"
 "QPushButton::hover{\n"
 "border: 2px solid rgb(51, 107, 83);\n"
-"background-color: rgb(152,143,250);\n"
+"background-color: rgb(117, 174, 143);\n"
 "}\n"
 "QLabel{\n"
 "font: 75 18pt \"Times New Roman\";\n"
@@ -65,31 +66,34 @@ public:
 "border: 2px solid rgb(110,151,145);\n"
 "\n"
 "}\n"
-"*/\n"
+"QComboBox{\n"
+"background-color: rgb(117, 174, 143);\n"
+"}\n"
 "QLabel#label_3{\n"
 "font: 75 18pt \"Times New Roman\";\n"
 "background-color: rgb(214,153,146);\n"
 "}\n"
 "QLabel{\n"
-"border: 2px solid rgb(110,151,145);\n"
+"font: 75 18pt \"Times New Roman\";\n"
+"background-color: rgb(212, 188, 181);\n"
 "}"));
         lineEdit = new QLineEdit(Training);
         lineEdit->setObjectName(QStringLiteral("lineEdit"));
-        lineEdit->setGeometry(QRect(360, 60, 151, 31));
+        lineEdit->setGeometry(QRect(390, 50, 151, 51));
         label = new QLabel(Training);
         label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(40, 60, 291, 21));
+        label->setGeometry(QRect(30, 50, 291, 51));
         label->setAlignment(Qt::AlignCenter);
         label_2 = new QLabel(Training);
         label_2->setObjectName(QStringLiteral("label_2"));
-        label_2->setGeometry(QRect(40, 100, 281, 31));
+        label_2->setGeometry(QRect(40, 160, 281, 51));
         label_2->setAlignment(Qt::AlignCenter);
         pushButton = new QPushButton(Training);
         pushButton->setObjectName(QStringLiteral("pushButton"));
         pushButton->setGeometry(QRect(290, 270, 241, 61));
         groupBox = new QGroupBox(Training);
         groupBox->setObjectName(QStringLiteral("groupBox"));
-        groupBox->setGeometry(QRect(580, 30, 161, 141));
+        groupBox->setGeometry(QRect(580, 50, 141, 161));
         verticalLayout = new QVBoxLayout(groupBox);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         radioButton = new QRadioButton(groupBox);
@@ -105,7 +109,7 @@ public:
 
         lineEdit_2 = new QLineEdit(Training);
         lineEdit_2->setObjectName(QStringLiteral("lineEdit_2"));
-        lineEdit_2->setGeometry(QRect(360, 100, 151, 31));
+        lineEdit_2->setGeometry(QRect(390, 160, 151, 51));
         label_3 = new QLabel(Training);
         label_3->setObjectName(QStringLiteral("label_3"));
         label_3->setEnabled(true);

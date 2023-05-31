@@ -40,19 +40,20 @@ public:
     {
         if (Solution->objectName().isEmpty())
             Solution->setObjectName(QStringLiteral("Solution"));
-        Solution->resize(737, 423);
+        Solution->resize(795, 681);
         Solution->setStyleSheet(QLatin1String("/*Solution{\n"
 "background-color: rgb(212, 188, 181);\n"
 "}\n"
+"*/\n"
 "QPushButton{\n"
 "border-radius:8px;\n"
-"border: 2px solid rgb(51, 81, 83);\n"
-"background-color: rgb(155,93,86);\n"
+"border: 2px solid rgb(132, 139, 97);\n"
+"background-color: rgb(132, 139, 97);\n"
 "	font: 75 18pt \"Times New Roman\";\n"
 "}\n"
 "QPushButton::hover{\n"
 "border: 2px solid rgb(51, 107, 83);\n"
-"background-color: rgb(152,143,250);\n"
+"background-color: rgb(117, 174, 143);\n"
 "}\n"
 "QLabel{\n"
 "font: 75 18pt \"Times New Roman\";\n"
@@ -65,7 +66,7 @@ public:
 "border: 2px solid rgb(110,151,145);\n"
 "\n"
 "}\n"
-"*/"));
+""));
         groupBox = new QGroupBox(Solution);
         groupBox->setObjectName(QStringLiteral("groupBox"));
         groupBox->setGeometry(QRect(560, 90, 161, 141));

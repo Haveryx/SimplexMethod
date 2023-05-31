@@ -12,8 +12,19 @@ Training::Training(QWidget *parent) :
     massive=new Massive();
     QDesktopWidget desktop;
 errors=new int[7];
-    QRect size=desktop.geometry();
+     size=desktop.geometry();
     this->setGeometry(size.x(),size.y(),size.width(),size.height());
+   int StartPositionX=(int)(size.width()-734)/3;
+     int StartPositionY=(int)(size.height()-162)/2;
+ui->label->setGeometry(StartPositionX,StartPositionY,291,51);
+ui->lineEdit->setGeometry(StartPositionX+442,StartPositionY,151,51);
+
+ui->label_2->setGeometry(StartPositionX,StartPositionY+102,291,51);
+ui->lineEdit_2->setGeometry(StartPositionX+442,StartPositionY+102,151,51);
+
+ui->groupBox->setGeometry(StartPositionX*2+593,StartPositionY,141,153);
+
+
     checkMin=0;
     for(int i=0;i<7;i++)errors[i]=0;
     table=new Table();
@@ -138,12 +149,14 @@ this->close();
 
 void Training::KanonOne()
 {
+    int startX=(size.width()-80-120*vars)/2;
+    int startY=(size.height()-50-70*(cEquation+2))/2;
     button_two=new QPushButton*[cEquation];
     for(int i=0;i<cEquation;i++)
     {
 
         button_two[i]=new QPushButton(this);
-        button_two[i]->setGeometry(100+170*(vars+2),190 +i*50,170,50);
+        button_two[i]->setGeometry(startX+100+120*vars,startY+210 +i*70,200,50);
         button_two[i]->setText("Умножить на -1");
         button_two[i]->show();
         disconnect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(KanonOne()));
@@ -165,16 +178,18 @@ ui->label_3->hide();
     }
     button=new QPushButton*[cEquation];
     button_two=new QPushButton*[cEquation];
+    int startX=(size.width()-80-120*vars)/2;
+    int startY=(size.height()-50-70*(cEquation+2))/2;
     for(int i=0;i<cEquation;i++)
     {
         button[i]=new QPushButton(this);
-        button[i]->setGeometry(100+170*(vars+1),190 +i*50,200,50);
-        button[i]->setText("Добавить переменную со знаком -");
+        button[i]->setGeometry(startX+100+120*vars,startY+210 +i*70,300,50);
+        button[i]->setText("Добавить переменную с -");
         button[i]->show();
 
         button_two[i]=new QPushButton(this);
-        button_two[i]->setGeometry(300+170*(vars+1),190 +i*50,200,50);
-        button_two[i]->setText("Добавить переменную со знаком +");
+        button_two[i]->setGeometry(startX+420+120*vars,startY+210 +i*70,300,50);
+        button_two[i]->setText("Добавить переменную с +");
         button_two[i]->show();
         disconnect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(StepOne()));
         connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(StepTwo()));
@@ -196,8 +211,11 @@ void Training::CheckMinus()
         }
     }
     if(sign[position]!=1){
+        if(button[position]->styleSheet()=="background-color: rgb(214,153,146);")button[position]->setStyleSheet("background-color: rgb(255,255,255);");
+        else{
         button[position]->setStyleSheet("background-color: rgb(214,153,146);");
         errors[0]++;
+        }
     }
     else{
         ui->label_3->hide();
@@ -229,8 +247,11 @@ void Training::CheckPlus()
         }
     }
     if(sign[position]!=2){
-        button_two[position]->setStyleSheet("background-color: rgb(214,153,146);");
+        if(button_two[position]->styleSheet()=="background-color: rgb(214,153,146);")button_two[position]->setStyleSheet("background-color: rgb(255,255,255);");
+        else{
+            button_two[position]->setStyleSheet("background-color: rgb(214,153,146);");
         errors[0]++;
+        }
     }
     else{
         ui->label_3->hide();
@@ -261,8 +282,11 @@ void Training::Unsigned()
         }
     }
     if(coeffSystems[position][vars]>0){
+        if(button_two[position]->styleSheet()=="background-color: rgb(214,153,146);")button_two[position]->setStyleSheet("background-color: rgb(255,255,255);");
+        else{
         button_two[position]->setStyleSheet("background-color: rgb(214,153,146);");
         errors[0]++;
+        }
     }
     else{
         ui->label_3->hide();
@@ -293,7 +317,11 @@ void Training::StepOne()
         errors[0]++;
     }
     else {
-       KanonTwo();
+        for(int i=0;i<cEquation;i++)
+        {
+            if(button_two[i]->styleSheet()=="background-color: rgb(214,153,146);")flag=true;
+        }
+       if(flag==false)KanonTwo();
     }
 
 
@@ -312,7 +340,12 @@ void Training::StepTwo()
         errors[0]++;
     }
     else {
-       PaintTable();
+        for(int i=0;i<cEquation;i++)
+        {
+            if(button_two[i]->styleSheet()=="background-color: rgb(214,153,146);")flag=true;
+            if(button[i]->styleSheet()=="background-color: rgb(214,153,146);")flag=true;
+        }
+       if(flag==false)PaintTable();
     }
 }
 
@@ -327,28 +360,32 @@ void Training::GetSystems()
        Labels[i]=new QLabel[vars];
    }
 int i;
+int startPositionX=(size.width()-190-130*(vars-1))/2;
+int startPositionY=(size.height()-25*cEquation*2-1)/2;
     for(int j=0;j<cEquation;j++)
     {
         for( i=0;i<vars;i++)
         {
 LineEdits[j][i].setParent(this);
-            LineEdits[j][i].setGeometry(95 +i*110,120 + j*30,40,15);
+            LineEdits[j][i].setGeometry(startPositionX+i*130,startPositionY+ j*50,50,25);
+            LineEdits[j][i].setAlignment(Qt::AlignCenter);
             LineEdits[j][i].show();
             char chars[12];
             sprintf(chars, "X%d",i+1);
            Labels[j][i].setParent(this);
            Labels[j][i].setText((QString)chars);
-           Labels[j][i].setGeometry(150+i*110,120 +j*30,40,15);//TODO вот тут
+           Labels[j][i].setGeometry(startPositionX+70+i*130,startPositionY+ j*50,40,25);//TODO вот тут
            Labels[j][i].show();
         }
       comboBox[j]=new QComboBox(this);
       comboBox[j]->addItem("=");
-      comboBox[j]->addItem(">=");
-      comboBox[j]->addItem("<=");
-      comboBox[j]->setGeometry(150+vars*110 ,120 +j*30,40,15);
+      comboBox[j]->addItem("≥");
+      comboBox[j]->addItem("≤");
+      comboBox[j]->setGeometry(startPositionX+130+130*(vars-1),startPositionY+ j*50,40,25);
       comboBox[j]->show();
         LineEdits[j][vars].setParent(this);
-        LineEdits[j][vars].setGeometry(150 +(vars+1)*110,120 + j*30,40,15);
+        LineEdits[j][vars].setGeometry(startPositionX+190+130*(vars-1),startPositionY+ j*50,50,25);
+        LineEdits[j][vars].setAlignment(Qt::AlignCenter);
         LineEdits[j][vars].show();
 
     }
@@ -360,20 +397,23 @@ LineEdits[j][i].setParent(this);
 
 void Training::ShowEquation()
 {
-    Zx =new QLabel("Z(X)=",this);
-    Zx->setGeometry(30,120,50,15);
+    Zx =new QLabel("Z(X) =",this);
+    int startPositionX=(size.width()-260-(vars-1)*180)/2;
+    int startPositionY=(size.height()-30)/2;
+    Zx->setGeometry(startPositionX,startPositionY,80,30);
     Zx->show();
     LineEdits =new   QLineEdit*[vars] ;
     Labels=new QLabel*[vars];
     for(int i=0;i<vars;i++)
     {
      LineEdits[i]=new QLineEdit(this);
-     LineEdits[i]->setGeometry(95 +i*110,120,40,15);
+     LineEdits[i]->setGeometry(startPositionX+105+i*180,startPositionY,80,30);
+     LineEdits[i]->setAlignment(Qt::AlignCenter);
      LineEdits[i]->show();
      char chars[12];
     sprintf(chars, "X%d",i+1);
     Labels[i]=new QLabel((QString)chars,this);
-    Labels[i]->setGeometry(150+i*110,120,40,15);
+    Labels[i]->setGeometry(startPositionX+210+i*180,startPositionY,50,30);
     Labels[i]->show();
     }
 
@@ -390,26 +430,29 @@ void Training::Show()
 
 void Training::Repaint()
 {
+    int startX=(size.width()-80-120*vars)/2;
+    int startY=(size.height()-50-70*(cEquation+2))/2;
     Zx =new QLabel("Z(X)=",this);
-    Zx->setGeometry(30,120,50+50*vars,50);
+    Zx->setGeometry(startX,startY,80+120*vars,70);
+    Zx->setAlignment(Qt::AlignCenter);
     Zx->show();
     for(int i=0;i<vars;i++)
     {
         char chars[12];
         if(coeff[i]<0 or i==0){
             if(coeff[i]-((int)coeff[i])==0){
-                sprintf(chars, "%.0f * X%d ",coeff[i],i+1);
+                sprintf(chars, "%2.0f * X%d ",coeff[i],i+1);
             }
         else{
-                sprintf(chars, "%.2f * X%d ",coeff[i],i+1);
+                sprintf(chars, "%2.2f * X%d ",coeff[i],i+1);
             }
         }
         else {
             if(coeff[i]-((int)coeff[i])==0){
-                sprintf(chars, "+ %.0f * X%d ",coeff[i],i+1);
+                sprintf(chars, "+ %2.0f * X%d ",coeff[i],i+1);
             }
             else{
-            sprintf(chars, "+ %.2f * X%d ",coeff[i],i+1);
+            sprintf(chars, "+ %2.2f * X%d ",coeff[i],i+1);
             }
         }
         Zx->setText(Zx->text()+(QString)chars);
@@ -417,7 +460,8 @@ void Training::Repaint()
     Labels =new QLabel*[cEquation];
     for(int i=0;i<cEquation;i++){
         Labels[i]=new QLabel("",this);
-        Labels[i]->setGeometry(30,190 +i*60,70+50*vars,50);
+        Labels[i]->setGeometry(startX,startY+210+i*70,80+120*vars,50);
+        Labels[i]->setAlignment(Qt::AlignCenter);
     }
     char chars[22];
     for(int i=0;i<cEquation;i++){
@@ -425,18 +469,18 @@ void Training::Repaint()
      {
          if(coeffSystems[i][j]<0 or j==0){
              if(coeffSystems[i][j]-((int)coeffSystems[i][j])==0){
-                 sprintf(chars, "%.0f * X%d ",coeffSystems[i][j],j+1);
+                 sprintf(chars, "%2.0f * X%d ",coeffSystems[i][j],j+1);
              }
         else{
-                 sprintf(chars, "%.2f * X%d ",coeffSystems[i][j],j+1);
+                 sprintf(chars, "%2.2f * X%d ",coeffSystems[i][j],j+1);
              }
          }
          else {
              if(coeffSystems[i][j]-((int)coeffSystems[i][j])==0){
-                 sprintf(chars, "+ %.0f * X%d ",coeffSystems[i][j],j+1);
+                 sprintf(chars, "+ %2.0f * X%d ",coeffSystems[i][j],j+1);
              }
              else{
-             sprintf(chars, "+ %.2f * X%d ",coeffSystems[i][j],j+1);
+             sprintf(chars, "+ %2.2f * X%d ",coeffSystems[i][j],j+1);
              }
          }
 
@@ -445,24 +489,24 @@ void Training::Repaint()
      }
      if(coeffSystems[i][vars]-((int)coeffSystems[i][vars])==0){
          if(sign[i]==0){
-         sprintf(chars, "= %.0f",coeffSystems[i][vars]);
+         sprintf(chars, "= %2.0f",coeffSystems[i][vars]);
          }
          else if(sign[i]==1){
-              sprintf(chars, ">= %.0f",coeffSystems[i][vars]);
+              sprintf(chars, "≥ %2.0f",coeffSystems[i][vars]);
          }
          else{
-             sprintf(chars, "<= %.0f",coeffSystems[i][vars]);
+             sprintf(chars, "≤ %2.0f",coeffSystems[i][vars]);
          }
      }
      else {
          if(sign[i]==0){
-         sprintf(chars, "= %.2f",coeffSystems[i][vars]);
+         sprintf(chars, "= %2.2f",coeffSystems[i][vars]);
          }
          else if(sign[i]==1){
-              sprintf(chars, ">= %.2f",coeffSystems[i][vars]);
+              sprintf(chars, "≥ %2.2f",coeffSystems[i][vars]);
          }
          else{
-             sprintf(chars, "<= %.2f",coeffSystems[i][vars]);
+             sprintf(chars, "≤ %2.2f",coeffSystems[i][vars]);
          }
 
      }

@@ -56,18 +56,19 @@ void Show();
 void Repaint();
 void ShowEquation();
 void ShowInputEquation();
-    QLineEdit ** LineEdits;
-Table* table;
-    QLabel** Labels;
-    Ui::Training *ui;
-    QPushButton ** button,**button_two;
-    QComboBox ** comboBox;
-    int vars=0,cEquation=0;
-    double* coeff,** coeffSystems,*sign;
-    QLabel * Zx;
-    Massive* massive;
-   int checkMin;
-   int *errors;
+QRect size; //Размеры монитора
+    QLineEdit ** LineEdits; //Куда вводим данные
+Table* table; //Форма с таблицей
+    QLabel** Labels; //Вывод введенных данный
+    Ui::Training *ui; //Указатель на текущую форму
+    QPushButton ** button,**button_two; //Кнопки
+    QComboBox ** comboBox; //<=,=,>=
+    int vars=0,cEquation=0;//Количество уравнений и переменных
+    double* coeff,** coeffSystems,*sign; //Коэфициенты системы, целевой функции, а так же знаки (>=,=,<=)
+    QLabel * Zx; //Вывод целевой функции
+    Massive* massive; //Класс с методами для работы с массивами
+   int checkMin; //тип задачи (Минимум, максимум)
+   int *errors;//ошибки
 };
 
 #endif // TRAINING_H

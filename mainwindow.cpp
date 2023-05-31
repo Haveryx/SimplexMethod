@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     int PositionY=(int)(size.height()-91)/2;
     ui->pushButton->setGeometry(PositionX,PositionY,241,61);
      ui->pushButton_2->setGeometry(PositionX,PositionY+101,241,61);
-     ui->pushButton_3->setGeometry(size.width()-88,15,75,23);
+     ui->pushButton_3->setGeometry(size.width()-88,15,75,41);
 
 
 

@@ -16,7 +16,7 @@
   <property name="styleSheet">
    <string notr="true">/*QMainWindow{
 background-color: rgb(227, 225, 237);
-}
+}*/
 QPushButton{
 border-radius:8px;
 border: 2px solid rgb(132, 139, 97);
@@ -27,7 +27,7 @@ QPushButton::hover{
 border: 2px solid rgb(51, 107, 83);
 background-color: rgb(117, 174, 143);
 }
-*/</string>
+</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QPushButton" name="pushButton">
@@ -62,7 +62,7 @@ background-color: rgb(117, 174, 143);
       <x>690</x>
       <y>0</y>
       <width>75</width>
-      <height>23</height>
+      <height>41</height>
      </rect>
     </property>
     <property name="text">

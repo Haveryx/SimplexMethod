@@ -29,18 +29,34 @@ public:
         if (Table->objectName().isEmpty())
             Table->setObjectName(QStringLiteral("Table"));
         Table->resize(762, 496);
+        Table->setStyleSheet(QLatin1String("QPushButton{\n"
+"border-radius:8px;\n"
+"border: 2px solid rgb(132, 139, 97);\n"
+"background-color: rgb(132, 139, 97);\n"
+"	font: 75 18pt \"Times New Roman\";\n"
+"}\n"
+"QPushButton::hover{\n"
+"border: 2px solid rgb(51, 107, 83);\n"
+"background-color: rgb(117, 174, 143);\n"
+"}\n"
+"QLabel{\n"
+"font: 75 18pt \"Times New Roman\";\n"
+"}\n"
+"QLineEdit{\n"
+"font: 75 18pt \"Times New Roman\";\n"
+"}"));
         pushButton_2 = new QPushButton(Table);
         pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
         pushButton_2->setGeometry(QRect(680, 0, 75, 23));
         Optimal = new QPushButton(Table);
         Optimal->setObjectName(QStringLiteral("Optimal"));
-        Optimal->setGeometry(QRect(120, 0, 80, 21));
+        Optimal->setGeometry(QRect(39, 0, 161, 41));
         NotOptimal = new QPushButton(Table);
         NotOptimal->setObjectName(QStringLiteral("NotOptimal"));
-        NotOptimal->setGeometry(QRect(330, 0, 101, 21));
+        NotOptimal->setGeometry(QRect(260, 0, 171, 41));
         SomeSolution = new QPushButton(Table);
         SomeSolution->setObjectName(QStringLiteral("SomeSolution"));
-        SomeSolution->setGeometry(QRect(459, 0, 141, 21));
+        SomeSolution->setGeometry(QRect(440, 0, 241, 41));
 
         retranslateUi(Table);
 

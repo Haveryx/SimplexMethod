@@ -42,8 +42,8 @@ void Results::AddInfo(QVector<double *> resultat, int vars, int *errors)
 {
 ShowResult(resultat,vars);
 QPushButton* button=new QPushButton(this);
-error=new int[6];
-for(int i=0;i<6;i++)error[i]=errors[i];
+error=new int[7];
+for(int i=0;i<7;i++)error[i]=errors[i];
 button->setGeometry(861,591,50,50);
 button->setText("Далее");
 connect(button,SIGNAL(clicked(bool)),this,SLOT(ShowRaiting()));

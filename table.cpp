@@ -23,20 +23,22 @@ Table::Table(QWidget *parent) :
     label=new QLabel("Решение найдено!",this);
 
    label->setGeometry(0,5,150,20);
-    label2=new QLabel("Однако есть ещё одно решение!",this);
-     label2->setGeometry(0,30,150,20);
-     label->hide();
-     label2->hide();
 
-     ui->pushButton_2->setGeometry(size.width()-88,15,75,23);
- auto StartPosition=(size.width()-429)/6;
- ui->Optimal->setGeometry(StartPosition,15,80,21);
+    label2=new QLabel("Однако есть ещё одно решение!",this);
+     label2->setGeometry(0,30,250,20);
+     //label->hide();
+    // label2->hide();
+ auto StartPosition=(size.width()-648)/5;
+
+     ui->pushButton_2->setGeometry(StartPosition*4+573,15,75,41);
+
+ ui->Optimal->setGeometry(StartPosition,15,161,41);
  ui->Optimal->hide();
 
- ui->NotOptimal->setGeometry(StartPosition*2+80,15,120,21);
+ ui->NotOptimal->setGeometry(StartPosition*2+161,15,171,41);
  ui->NotOptimal->hide();
 
- ui->SomeSolution->setGeometry(StartPosition*3+200,15,141,21);
+ ui->SomeSolution->setGeometry(StartPosition*3+332,15,241,41);
  ui->SomeSolution->hide();
 
      next=new QPushButton(this);
@@ -585,7 +587,7 @@ case Type::reshenie:
         //text[0][0].setFont();Todo Добавить шрифт
         text[0][i+vars].setGeometry(x+(sizeX*(i+vars))+sizeLine,y+sizeLine,sizeX-sizeLine*2,sizeY-sizeLine*2);
 
-       sprintf(chars, "O%d",i-2);//ToDo Добавить Тетту
+       sprintf(chars, "θ%d",i-2);//ToDo Добавить Тетту
         text[0][i+vars].setText((QString)chars);
         text[0][i+vars].setAlignment(Qt::AlignCenter);
         text[0][i+vars].show();
@@ -593,7 +595,7 @@ case Type::reshenie:
 //Delta
     //text[0][0].setFont();Todo Добавить шрифт
     text[cEquation+1][0].setGeometry(x+sizeLine,y+(cEquation+1)*sizeY+sizeLine,2*(sizeX-sizeLine),sizeY-2*sizeLine);
-   text[cEquation+1][0].setText("Delta");
+   text[cEquation+1][0].setText("∆k");
     text[cEquation+1][0].setAlignment(Qt::AlignCenter);
     text[cEquation+1][0].show();
 
@@ -670,14 +672,14 @@ case Type::training:
         //text[0][0].setFont();Todo Добавить шрифт
         text[i+vars]->setGeometry(x+(sizeX*(i+vars))+sizeLine,y+sizeLine,sizeX-sizeLine*2,sizeY-sizeLine*2);
 
-       sprintf(chars, "O%d",i-2);//ToDo Добавить Тетту
+       sprintf(chars, "θ%d",i-2);//ToDo Добавить Тетту
         text[i+vars]->setText((QString)chars);
         text[i+vars]->show();
     }
 //Delta
     //text[0][0].setFont();Todo Добавить шрифт
     text[vars*2+3]->setGeometry(x+sizeLine,y+(cEquation+1)*sizeY+sizeLine,2*(sizeX-sizeLine),sizeY-2*sizeLine);
-   text[vars*2+3]->setText("Delta");
+   text[vars*2+3]->setText("∆");
     text[vars*2+3]->show();
     for(int j=0;j<cEquation;j++)//Циферки выводим
     {
@@ -800,17 +802,24 @@ return true;
                             {
                                 if(event->type() == QEvent::MouseButtonPress)
                                 {
-                flag=false;
+                                    QLineEdit* line=(QLineEdit*)watched;
+                if(line->styleSheet()=="background-color: rgb(214,153,146);")flag=true;
+                else{
+                    flag=false;
 
                                 }
+                delete line;
+
                 }
 
                 }
                 }
+                    }
                     if(flag==false){
                         errors[2]++;
 QLineEdit* line=(QLineEdit*)watched;
 line->setStyleSheet("background-color: rgb(214,153,146);");
+ delete line;
 return true;
 
                     }
@@ -878,6 +887,18 @@ void Table::CheckAllMin()
      next->setText("Выбираем базис");
         disconnect(next,SIGNAL(clicked(bool)),this,SLOT(CheckAllMin()));
        countMinTetta=-2000;
+       vectors.clear();
+       switch (Solution) {
+       case solution::NotOptimal:
+           vectors=SimpleGod->GetMax(system,Basis,vars,cEquation,checkMin);
+           break;
+       case solution::SomeSolution:
+           vectors=SimpleGod->SomeSolution(system,Basis,vars,cEquation);
+           break;
+       default:
+           vectors=SimpleGod->GetMin(system,Basis,vars,cEquation);
+           break;
+       }
     }
     else{
       next->setStyleSheet("background-color: rgb(214,153,146);");
@@ -966,17 +987,8 @@ void Table::CheckMinTetta()
     int reshenie=0;
        next->setStyleSheet("background-color: rgb(255,255,255);");
     checked=true;
-    switch (Solution) {
-    case solution::NotOptimal:
-        vectors=SimpleGod->GetMax(system,Basis,vars,cEquation,checkMin);
-        break;
-    case solution::SomeSolution:
-        vectors=SimpleGod->SomeSolution(system,Basis,vars,cEquation);
-        break;
-    default:
         vectors=SimpleGod->GetMin(system,Basis,vars,cEquation);
-        break;
-    }
+
 
    SetReadOnly();
 
@@ -1077,6 +1089,10 @@ void Table::on_Optimal_clicked()
         {
               input[cEquation][i].setStyleSheet("background-color: rgb(71,250,148);");
         }
+        ui->SomeSolution->setStyleSheet("background-color: rgb(255,255,255);");
+        ui->NotOptimal->setStyleSheet("background-color: rgb(255,255,255);");
+        ui->Optimal->setStyleSheet("background-color: rgb(255,255,255);");
+
         ui->SomeSolution->hide();
         ui->NotOptimal->hide();
         ui->Optimal->hide();
@@ -1096,6 +1112,9 @@ void Table::on_NotOptimal_clicked()
     if(Solution==solution::NotOptimal)
     {
 
+        ui->SomeSolution->setStyleSheet("background-color: rgb(255,255,255);");
+        ui->NotOptimal->setStyleSheet("background-color: rgb(255,255,255);");
+        ui->Optimal->setStyleSheet("background-color: rgb(255,255,255);");
         ui->SomeSolution->hide();
         ui->NotOptimal->hide();
         ui->Optimal->hide();
@@ -1122,6 +1141,10 @@ void Table::on_SomeSolution_clicked()
         {
               input[cEquation][i].setStyleSheet("background-color: rgb(71,250,148);");
         }
+        ui->SomeSolution->setStyleSheet("background-color: rgb(255,255,255);");
+        ui->NotOptimal->setStyleSheet("background-color: rgb(255,255,255);");
+        ui->Optimal->setStyleSheet("background-color: rgb(255,255,255);");
+
         ui->SomeSolution->hide();
         ui->NotOptimal->hide();
         ui->Optimal->hide();

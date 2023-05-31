@@ -12,13 +12,23 @@ massive=new Massive();
 QDesktopWidget desktop;
 table=new Table();
 table->hide();
-QRect size=desktop.geometry();
+size=desktop.geometry();
 this->setGeometry(size.x(),size.y(),size.width(),size.height());
+int StartPositionX=(int)(size.width()-734)/3;
+int StartPositionY=(int)(size.height()-162)/2;
+ui->label->setGeometry(StartPositionX,StartPositionY,291,51);
+ui->lineEdit->setGeometry(StartPositionX+442,StartPositionY,151,51);
+
+ui->label_2->setGeometry(StartPositionX,StartPositionY+102,291,51);
+ui->lineEdit_2->setGeometry(StartPositionX+442,StartPositionY+102,151,51);
+
+ui->groupBox->setGeometry(StartPositionX*2+593,StartPositionY,141,153);
+
 checkMin=0;
 ui->back->setGeometry(10,size.height()-170,241,61);
 ui->back->hide();
-ui->pushButton->setGeometry(size.width()-251,size.height()-170,241,61);
 ui->pushButton_2->setGeometry(size.width()-88,15,75,23);
+ui->pushButton->setGeometry(size.width()-251,size.height()-170,241,61);
 }
 
 Solution::~Solution()
@@ -167,60 +177,63 @@ void Solution::GetSystems()
        Labels[i]=new QLabel[vars];
    }
 int i;
+int startPositionX=(size.width()-190-130*(vars-1))/2;
+int startPositionY=(size.height()-25*cEquation*2-1)/2;
     for(int j=0;j<cEquation;j++)
     {
         for( i=0;i<vars;i++)
         {
 LineEdits[j][i].setParent(this);
-            LineEdits[j][i].setGeometry(70 +i*65,120 + j*30,30,15);
+            LineEdits[j][i].setGeometry(startPositionX+i*130,startPositionY+ j*50,50,25);
             LineEdits[j][i].setAlignment(Qt::AlignCenter);
             LineEdits[j][i].show();
             char chars[12];
             sprintf(chars, "X%d",i+1);
            Labels[j][i].setParent(this);
            Labels[j][i].setText((QString)chars);
-           Labels[j][i].setGeometry(105+i*65,120 +j*30,20,15);
-           Labels[j][i].setAlignment(Qt::AlignCenter);
+           Labels[j][i].setGeometry(startPositionX+70+i*130,startPositionY+ j*50,40,25);//TODO вот тут
            Labels[j][i].show();
         }
       comboBox[j]=new QComboBox(this);
       comboBox[j]->addItem("=");
-      comboBox[j]->addItem(">=");
-      comboBox[j]->addItem("<=");
-      comboBox[j]->setGeometry(105+i*65 ,120 +j*30,40,15);
+      comboBox[j]->addItem("≥");
+      comboBox[j]->addItem("≤");
+      comboBox[j]->setGeometry(startPositionX+130+130*(vars-1),startPositionY+ j*50,40,25);
       comboBox[j]->show();
         LineEdits[j][vars].setParent(this);
-        LineEdits[j][vars].setGeometry(170 +i*65,120 + j*30,30,15);
-       LineEdits[j][vars].setAlignment(Qt::AlignCenter);
-       LineEdits[j][vars].show();
+        LineEdits[j][vars].setGeometry(startPositionX+190+130*(vars-1),startPositionY+ j*50,50,25);
+        LineEdits[j][vars].setAlignment(Qt::AlignCenter);
+        LineEdits[j][vars].show();
+
     }
     ui->pushButton->show();
-   // connect(ui->pushButton,SIGNAL(clicked(bool)),SLOT(Show()));
+
  connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(GetCoeffSystem()));
 
 }
 
 void Solution::ShowEquation()
 {
-    Zx =new QLabel("Z(X)=",this);
-    Zx->setGeometry(30,120,47,15);
-    Zx->setAlignment(Qt::AlignCenter);
+    Zx =new QLabel("Z(X) =",this);
+    int startPositionX=(size.width()-260-(vars-1)*180)/2;
+    int startPositionY=(size.height()-30)/2;
+    Zx->setGeometry(startPositionX,startPositionY,80,30);
     Zx->show();
     LineEdits =new   QLineEdit*[vars] ;
     Labels=new QLabel*[vars];
     for(int i=0;i<vars;i++)
     {
      LineEdits[i]=new QLineEdit(this);
-     LineEdits[i]->setGeometry(70 +i*65,120,30,15);
+     LineEdits[i]->setGeometry(startPositionX+105+i*180,startPositionY,80,30);
      LineEdits[i]->setAlignment(Qt::AlignCenter);
      LineEdits[i]->show();
      char chars[12];
     sprintf(chars, "X%d",i+1);
     Labels[i]=new QLabel((QString)chars,this);
-    Labels[i]->setGeometry(105+i*65,120,20,15);
-    Labels[i]->setAlignment(Qt::AlignCenter);
+    Labels[i]->setGeometry(startPositionX+210+i*180,startPositionY,50,30);
     Labels[i]->show();
     }
+
 }
 
 void Solution::ShowInputEquation()
@@ -230,72 +243,90 @@ void Solution::ShowInputEquation()
         delete Labels[i];
 }
       delete []Labels;
-    Zx =new QLabel("Z(X)=",this);
-    Zx->setGeometry(30,120,50+70*vars,15);
-    Zx->setAlignment(Qt::AlignCenter);
-    Zx->show();
-    for(int i=0;i<vars;i++)
-    {
-        char chars[12];
-        if(coeff[i]<0 or i==0){
-            if(coeff[i]-((int)coeff[i])==0){
-                sprintf(chars, "%.0f * X%d ",coeff[i],i+1);
-            }
-        else{
-                sprintf(chars, "%.2f * X%d ",coeff[i],i+1);
-            }
-        }
-        else {
-            if(coeff[i]-((int)coeff[i])==0){
-                sprintf(chars, "+ %.0f * X%d ",coeff[i],i+1);
-            }
-            else{
-            sprintf(chars, "+ %.2f * X%d ",coeff[i],i+1);
-            }
-        }
-        Zx->setText(Zx->text()+(QString)chars);
-        Zx->setAlignment(Qt::AlignCenter);
-    }
-    Labels =new QLabel*[cEquation];
-    for(int i=0;i<cEquation;i++){
-        Labels[i]=new QLabel("",this);
-        Labels[i]->setGeometry(30,190 +i*30,70+70*vars,15);
-    }
-    char chars[22];
-    for(int i=0;i<cEquation;i++){
-     for(int j=0;j<vars;j++)
-     {
-         if(coeffSystems[i][j]<0 or j==0){
-             if(coeffSystems[i][j]-((int)coeffSystems[i][j])==0){
-                 sprintf(chars, "%.0f * X%d ",coeffSystems[i][j],j+1);
-             }
-        else{
-                 sprintf(chars, "%.2f * X%d ",coeffSystems[i][j],j+1);
-             }
-         }
-         else {
-             if(coeffSystems[i][j]-((int)coeffSystems[i][j])==0){
-                 sprintf(chars, "+ %.0f * X%d ",coeffSystems[i][j],j+1);
-             }
-             else{
-             sprintf(chars, "+ %.2f * X%d ",coeffSystems[i][j],j+1);
-             }
-         }
+      int startX=(size.width()-80-120*vars)/2;
+      int startY=(size.height()-50-70*(cEquation+2))/2;
+      Zx =new QLabel("Z(X)=",this);
+      Zx->setGeometry(startX,startY,80+120*vars,70);
+      Zx->setAlignment(Qt::AlignCenter);
+      Zx->show();
+      for(int i=0;i<vars;i++)
+      {
+          char chars[12];
+          if(coeff[i]<0 or i==0){
+              if(coeff[i]-((int)coeff[i])==0){
+                  sprintf(chars, "%2.0f * X%d ",coeff[i],i+1);
+              }
+          else{
+                  sprintf(chars, "%2.2f * X%d ",coeff[i],i+1);
+              }
+          }
+          else {
+              if(coeff[i]-((int)coeff[i])==0){
+                  sprintf(chars, "+ %2.0f * X%d ",coeff[i],i+1);
+              }
+              else{
+              sprintf(chars, "+ %2.2f * X%d ",coeff[i],i+1);
+              }
+          }
+          Zx->setText(Zx->text()+(QString)chars);
+      }
+      Labels =new QLabel*[cEquation];
+      for(int i=0;i<cEquation;i++){
+          Labels[i]=new QLabel("",this);
+          Labels[i]->setGeometry(startX,startY+210+i*70,80+120*vars,50);
+          Labels[i]->setAlignment(Qt::AlignCenter);
+      }
+      char chars[22];
+      for(int i=0;i<cEquation;i++){
+       for(int j=0;j<vars;j++)
+       {
+           if(coeffSystems[i][j]<0 or j==0){
+               if(coeffSystems[i][j]-((int)coeffSystems[i][j])==0){
+                   sprintf(chars, "%2.0f * X%d ",coeffSystems[i][j],j+1);
+               }
+          else{
+                   sprintf(chars, "%2.2f * X%d ",coeffSystems[i][j],j+1);
+               }
+           }
+           else {
+               if(coeffSystems[i][j]-((int)coeffSystems[i][j])==0){
+                   sprintf(chars, "+ %2.0f * X%d ",coeffSystems[i][j],j+1);
+               }
+               else{
+               sprintf(chars, "+ %2.2f * X%d ",coeffSystems[i][j],j+1);
+               }
+           }
 
-             Labels[i]->setText(Labels[i]->text()+(QString)chars);
+               Labels[i]->setText(Labels[i]->text()+(QString)chars);
 
-     }
-     if(coeffSystems[i][vars]-((int)coeffSystems[i][vars])==0){
-         sprintf(chars, "= %.0f",coeffSystems[i][vars]);
-     }
-     else {
-          sprintf(chars, "= %.2f",coeffSystems[i][vars]);
-     }
-     Labels[i]->setText(Labels[i]->text()+(QString)chars);
-     Labels[i]->setAlignment(Qt::AlignCenter);
-     Labels[i]->show();
+       }
+       if(coeffSystems[i][vars]-((int)coeffSystems[i][vars])==0){
+           if(sign[i]==0){
+           sprintf(chars, "= %2.0f",coeffSystems[i][vars]);
+           }
+           else if(sign[i]==1){
+                sprintf(chars, "≥ %2.0f",coeffSystems[i][vars]);
+           }
+           else{
+               sprintf(chars, "≤ %2.0f",coeffSystems[i][vars]);
+           }
+       }
+       else {
+           if(sign[i]==0){
+           sprintf(chars, "= %2.2f",coeffSystems[i][vars]);
+           }
+           else if(sign[i]==1){
+                sprintf(chars, "≥ %2.2f",coeffSystems[i][vars]);
+           }
+           else{
+               sprintf(chars, "≤ %2.2f",coeffSystems[i][vars]);
+           }
 
-    }
+       }
+       Labels[i]->setText(Labels[i]->text()+(QString)chars);
+       Labels[i]->show();
+
+      }
     disconnect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(Kanon()));
     connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(PaintTable()));
     ui->pushButton->show();
@@ -303,36 +334,38 @@ void Solution::ShowInputEquation()
 
 void Solution::Show()
 {
+    int startX=(size.width()-80-120*vars)/2;
+    int startY=(size.height()-50-70*(cEquation+2))/2;
     Zx =new QLabel("Z(X)=",this);
-    Zx->setGeometry(30,120,50+70*vars,15);
+    Zx->setGeometry(startX,startY,80+120*vars,70);
+    Zx->setAlignment(Qt::AlignCenter);
     Zx->show();
     for(int i=0;i<vars;i++)
     {
         char chars[12];
         if(coeff[i]<0 or i==0){
             if(coeff[i]-((int)coeff[i])==0){
-                sprintf(chars, "%.0f * X%d ",coeff[i],i+1);
+                sprintf(chars, "%2.0f * X%d ",coeff[i],i+1);
             }
         else{
-                sprintf(chars, "%.2f * X%d ",coeff[i],i+1);
+                sprintf(chars, "%2.2f * X%d ",coeff[i],i+1);
             }
         }
         else {
             if(coeff[i]-((int)coeff[i])==0){
-                sprintf(chars, "+ %.0f * X%d ",coeff[i],i+1);
+                sprintf(chars, "+ %2.0f * X%d ",coeff[i],i+1);
             }
             else{
-            sprintf(chars, "+ %.2f * X%d ",coeff[i],i+1);
+            sprintf(chars, "+ %2.2f * X%d ",coeff[i],i+1);
             }
         }
         Zx->setText(Zx->text()+(QString)chars);
-
     }
-    Zx->setAlignment(Qt::AlignCenter);
     Labels =new QLabel*[cEquation];
     for(int i=0;i<cEquation;i++){
         Labels[i]=new QLabel("",this);
-        Labels[i]->setGeometry(30,190 +i*30,70+70*vars,15);
+        Labels[i]->setGeometry(startX,startY+210+i*70,80+120*vars,50);
+        Labels[i]->setAlignment(Qt::AlignCenter);
     }
     char chars[22];
     for(int i=0;i<cEquation;i++){
@@ -340,18 +373,18 @@ void Solution::Show()
      {
          if(coeffSystems[i][j]<0 or j==0){
              if(coeffSystems[i][j]-((int)coeffSystems[i][j])==0){
-                 sprintf(chars, "%.0f * X%d ",coeffSystems[i][j],j+1);
+                 sprintf(chars, "%2.0f * X%d ",coeffSystems[i][j],j+1);
              }
         else{
-                 sprintf(chars, "%.2f * X%d ",coeffSystems[i][j],j+1);
+                 sprintf(chars, "%2.2f * X%d ",coeffSystems[i][j],j+1);
              }
          }
          else {
              if(coeffSystems[i][j]-((int)coeffSystems[i][j])==0){
-                 sprintf(chars, "+ %.0f * X%d ",coeffSystems[i][j],j+1);
+                 sprintf(chars, "+ %2.0f * X%d ",coeffSystems[i][j],j+1);
              }
              else{
-             sprintf(chars, "+ %.2f * X%d ",coeffSystems[i][j],j+1);
+             sprintf(chars, "+ %2.2f * X%d ",coeffSystems[i][j],j+1);
              }
          }
 
@@ -360,30 +393,29 @@ void Solution::Show()
      }
      if(coeffSystems[i][vars]-((int)coeffSystems[i][vars])==0){
          if(sign[i]==0){
-         sprintf(chars, "= %.0f",coeffSystems[i][vars]);
+         sprintf(chars, "= %2.0f",coeffSystems[i][vars]);
          }
          else if(sign[i]==1){
-              sprintf(chars, ">= %.0f",coeffSystems[i][vars]);
+              sprintf(chars, "≥ %2.0f",coeffSystems[i][vars]);
          }
          else{
-             sprintf(chars, "<= %.0f",coeffSystems[i][vars]);
+             sprintf(chars, "≤ %2.0f",coeffSystems[i][vars]);
          }
      }
      else {
          if(sign[i]==0){
-         sprintf(chars, "= %.2f",coeffSystems[i][vars]);
+         sprintf(chars, "= %2.2f",coeffSystems[i][vars]);
          }
          else if(sign[i]==1){
-              sprintf(chars, ">= %.2f",coeffSystems[i][vars]);
+              sprintf(chars, "≥ %2.2f",coeffSystems[i][vars]);
          }
          else{
-             sprintf(chars, "<= %.2f",coeffSystems[i][vars]);
+             sprintf(chars, "≤ %2.2f",coeffSystems[i][vars]);
          }
 
      }
      Labels[i]->setText(Labels[i]->text()+(QString)chars);
      Labels[i]->show();
-     Labels[i]->setAlignment(Qt::AlignCenter);
 
     }
     disconnect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(GetCoeffSystem()));
