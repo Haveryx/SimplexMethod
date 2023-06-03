@@ -87,6 +87,7 @@ void GetInputTetta();
  void SetWrite(int StringOne,int StringTwo,int ColumnOne,int ColumnTwo);
  void CheckMinTetta();
  void AllInputNotColor();
+ void ErrorNotColor();
 protected:
     void paintEvent(QPaintEvent*) override;
 

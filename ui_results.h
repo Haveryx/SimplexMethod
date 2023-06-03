@@ -28,6 +28,14 @@ public:
         if (Results->objectName().isEmpty())
             Results->setObjectName(QStringLiteral("Results"));
         Results->resize(1142, 654);
+        Results->setStyleSheet(QLatin1String("QLabel{\n"
+"font: 75 18pt \"Times New Roman\";\n"
+"}\n"
+"QGroupBox{\n"
+"border-radius:10px;\n"
+"border: 2px solid rgb(110,151,145);\n"
+"\n"
+"}"));
         groupBox = new QGroupBox(Results);
         groupBox->setObjectName(QStringLiteral("groupBox"));
         groupBox->setGeometry(QRect(310, 10, 521, 611));

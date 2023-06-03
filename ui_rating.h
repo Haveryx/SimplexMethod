@@ -47,11 +47,11 @@ public:
     QHBoxLayout *horizontalLayout_5;
     QLabel *label_6;
     QLabel *label_7;
-    QWidget *widget;
+    QWidget *layoutWidget6;
     QHBoxLayout *horizontalLayout_7;
     QLabel *label_14;
     QLabel *label_15;
-    QWidget *widget1;
+    QWidget *layoutWidget7;
     QHBoxLayout *horizontalLayout_8;
     QLabel *label_17;
     QLabel *label_16;
@@ -62,7 +62,7 @@ public:
             Rating->setObjectName(QStringLiteral("Rating"));
         Rating->resize(1194, 685);
         Rating->setStyleSheet(QLatin1String("QLabel{\n"
-"background-color: rgb(212, 188, 181);\n"
+"font: 75 14pt \"Times New Roman\";\n"
 "}\n"
 "QGroupBox{\n"
 "border-radius:10px;\n"
@@ -71,7 +71,7 @@ public:
 "}"));
         groupBox = new QGroupBox(Rating);
         groupBox->setObjectName(QStringLiteral("groupBox"));
-        groupBox->setGeometry(QRect(360, 10, 471, 651));
+        groupBox->setGeometry(QRect(360, 10, 521, 651));
         groupBox->setStyleSheet(QStringLiteral(""));
         label = new QLabel(groupBox);
         label->setObjectName(QStringLiteral("label"));
@@ -173,36 +173,36 @@ public:
 
         horizontalLayout_5->addWidget(label_7);
 
-        widget = new QWidget(groupBox);
-        widget->setObjectName(QStringLiteral("widget"));
-        widget->setGeometry(QRect(-2, 530, 471, 41));
-        horizontalLayout_7 = new QHBoxLayout(widget);
+        layoutWidget6 = new QWidget(groupBox);
+        layoutWidget6->setObjectName(QStringLiteral("layoutWidget6"));
+        layoutWidget6->setGeometry(QRect(-2, 530, 471, 41));
+        horizontalLayout_7 = new QHBoxLayout(layoutWidget6);
         horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
         horizontalLayout_7->setContentsMargins(0, 0, 0, 0);
-        label_14 = new QLabel(widget);
+        label_14 = new QLabel(layoutWidget6);
         label_14->setObjectName(QStringLiteral("label_14"));
         label_14->setAlignment(Qt::AlignCenter);
 
         horizontalLayout_7->addWidget(label_14);
 
-        label_15 = new QLabel(widget);
+        label_15 = new QLabel(layoutWidget6);
         label_15->setObjectName(QStringLiteral("label_15"));
         label_15->setAlignment(Qt::AlignCenter);
 
         horizontalLayout_7->addWidget(label_15);
 
-        widget1 = new QWidget(groupBox);
-        widget1->setObjectName(QStringLiteral("widget1"));
-        widget1->setGeometry(QRect(0, 320, 471, 41));
-        horizontalLayout_8 = new QHBoxLayout(widget1);
+        layoutWidget7 = new QWidget(groupBox);
+        layoutWidget7->setObjectName(QStringLiteral("layoutWidget7"));
+        layoutWidget7->setGeometry(QRect(0, 320, 512, 41));
+        horizontalLayout_8 = new QHBoxLayout(layoutWidget7);
         horizontalLayout_8->setObjectName(QStringLiteral("horizontalLayout_8"));
         horizontalLayout_8->setContentsMargins(0, 0, 0, 0);
-        label_17 = new QLabel(widget1);
+        label_17 = new QLabel(layoutWidget7);
         label_17->setObjectName(QStringLiteral("label_17"));
 
         horizontalLayout_8->addWidget(label_17);
 
-        label_16 = new QLabel(widget1);
+        label_16 = new QLabel(layoutWidget7);
         label_16->setObjectName(QStringLiteral("label_16"));
 
         horizontalLayout_8->addWidget(label_16);

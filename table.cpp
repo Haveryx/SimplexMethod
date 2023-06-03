@@ -44,7 +44,7 @@ Table::Table(QWidget *parent) :
 
      next=new QPushButton(this);
      next->setText("Далее");
-     next->setGeometry(size.width()-251,size.height()-170,241,61);
+     next->setGeometry(size.width()-400,size.height()-170,350,61);
      next->hide();
 
 errors=new int[7];
@@ -786,10 +786,12 @@ next->setText("Проверить приведение базису");
     return true;
 }
 else{
+    if(actualInput[i]->styleSheet()!="background-color: rgb(71,250,148);"){
                actualInput[i]->setStyleSheet("background-color: rgb(71,250,148);");
                 flag=false;
 countMinTetta++;
 return true;
+    }
 }
                 }
     }
@@ -812,7 +814,6 @@ return true;
                     flag=false;
 
                                 }
-                delete line;
 
                 }
 
@@ -823,7 +824,6 @@ return true;
                         errors[2]++;
 QLineEdit* line=(QLineEdit*)watched;
 line->setStyleSheet("background-color: rgb(214,153,146);");
- delete line;
 return true;
 
                     }
@@ -887,11 +887,12 @@ void Table::CheckAllMin()
 {
    next->setStyleSheet("background-color: rgb(255,255,255);");
     if(actualInput.size()==countMinTetta){
-     setStyleSheet("background-color: rgb(255,255,255);");
+     ErrorNotColor();
+     int reshenie=0;
      next->setText("Выбираем базис");
         disconnect(next,SIGNAL(clicked(bool)),this,SLOT(CheckAllMin()));
        countMinTetta=-2000;
-       vectors.clear();
+       actualInput.clear();
        switch (Solution) {
        case solution::NotOptimal:
            vectors=SimpleGod->GetMax(system,Basis,vars,cEquation,checkMin);
@@ -903,7 +904,43 @@ void Table::CheckAllMin()
            vectors=SimpleGod->GetMin(system,Basis,vars,cEquation);
            break;
        }
+       for(int i=0;i<cEquation;i++)
+       {
+           while(!vectors[i].empty()){
+       if(SimpleGod->checkBlackList(blackList,i,vectors[i].front())==false){
+           actualInput.push_back(&input[i][vectors[i].front()+1]);
+               reshenie++;
+           }
+       vectors[i].pop_front();
+           }
+       }
+       if(reshenie==0){
+       if(Solution==solution::NotOptimal){
+       label->setText("Нет решения");
+     label->show();
+           for(int i=3;i<vars+3;i++)
+           {
+                 input[cEquation][i].setStyleSheet("background-color: rgb(214,153,146);");
+           }
+        next->hide();
+        PushInfo(result,vars,errors);
+        results->show();
+        this->close();
+   }
+   else if(Solution==solution::SomeSolution){
+       for(int i=3;i<vars+3;i++)
+       {
+             input[cEquation][i].setStyleSheet("background-color: rgb(71,250,148);");
+       }
+       next->hide();
+       PushInfo(result,vars,errors);
+       results->show();
+      this->close();
+   }
+       }
+
     }
+
     else{
       next->setStyleSheet("background-color: rgb(214,153,146);");
       errors[2]++;
@@ -1059,6 +1096,17 @@ void Table::AllInputNotColor()
         for(int j=0;j<3+2*vars;j++)
         {
             input[i][j].setStyleSheet("background-color: rgb(255,255,255);");
+        }
+    }
+}
+
+void Table::ErrorNotColor()
+{
+    for(int i=0;i<cEquation+1;i++)
+    {
+        for(int j=vars+3;j<3+2*vars;j++)
+        {
+        if(input[i][j].styleSheet()=="background-color: rgb(214,153,146);")input[i][j].setStyleSheet("background-color: rgb(255,255,255);");
         }
     }
 }

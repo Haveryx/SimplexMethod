@@ -15,7 +15,7 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QLabel{
-background-color: rgb(212, 188, 181);
+font: 75 14pt &quot;Times New Roman&quot;;
 }
 QGroupBox{
 border-radius:10px;
@@ -28,7 +28,7 @@ border: 2px solid rgb(110,151,145);
     <rect>
      <x>360</x>
      <y>10</y>
-     <width>471</width>
+     <width>521</width>
      <height>651</height>
     </rect>
    </property>
@@ -210,7 +210,7 @@ border: 2px solid rgb(110,151,145);
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>-2</x>
@@ -242,12 +242,12 @@ border: 2px solid rgb(110,151,145);
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>320</y>
-      <width>471</width>
+      <width>512</width>
       <height>41</height>
      </rect>
     </property>

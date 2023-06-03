@@ -178,18 +178,18 @@ ui->label_3->hide();
     }
     button=new QPushButton*[cEquation];
     button_two=new QPushButton*[cEquation];
-    int startX=(size.width()-80-120*vars)/2;
+   int startX=(size.width()-700-120*vars)/2;
     int startY=(size.height()-50-70*(cEquation+2))/2;
     for(int i=0;i<cEquation;i++)
     {
         button[i]=new QPushButton(this);
-        button[i]->setGeometry(startX+100+120*vars,startY+210 +i*70,300,50);
-        button[i]->setText("Добавить переменную с -");
+        button[i]->setGeometry(startX+340+120*vars,startY+210 +i*70,150,50);
+        button[i]->setText("-X");
         button[i]->show();
 
         button_two[i]=new QPushButton(this);
-        button_two[i]->setGeometry(startX+420+120*vars,startY+210 +i*70,300,50);
-        button_two[i]->setText("Добавить переменную с +");
+        button_two[i]->setGeometry(startX+510+120*vars,startY+210 +i*70,150,50);
+        button_two[i]->setText("+X");
         button_two[i]->show();
         disconnect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(StepOne()));
         connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(StepTwo()));
@@ -430,7 +430,7 @@ void Training::Show()
 
 void Training::Repaint()
 {
-    int startX=(size.width()-80-120*vars)/2;
+     int startX=(size.width()-700-120*vars)/2;
     int startY=(size.height()-50-70*(cEquation+2))/2;
     Zx =new QLabel("Z(X)=",this);
     Zx->setGeometry(startX,startY,80+120*vars,70);
