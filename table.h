@@ -52,6 +52,7 @@ private:
     Type type=Type::none;
     solution Solution=solution::None;
    QLabel** text,** Z;
+   QLabel * label1;
    QLineEdit ** input;
    QPushButton* next;
    QPainter* painter;

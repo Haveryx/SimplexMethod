@@ -26,6 +26,7 @@ background-color: rgb(117, 174, 143);
 }
 QLabel{
 font: 75 18pt &quot;Times New Roman&quot;;
+background-color: rgb(212, 188, 181);
 }
 QLineEdit{
 font: 75 18pt &quot;Times New Roman&quot;;

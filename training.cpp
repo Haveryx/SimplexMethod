@@ -6,6 +6,7 @@ Training::Training(QWidget *parent) :
     ui(new Ui::Training)
 {
     //this->setWindowFlags(Qt::WindowStaysOnTopHint);
+
     ui->setupUi(this);
   //  this->activateWindow();
     ui->label_3->hide();
@@ -24,7 +25,18 @@ ui->lineEdit_2->setGeometry(StartPositionX+442,StartPositionY+102,151,51);
 
 ui->groupBox->setGeometry(StartPositionX*2+593,StartPositionY,141,153);
 
+label1=new QLabel(this);
+label1->setGeometry(StartPositionX,StartPositionY-81,593,51);
+label1->setAlignment(Qt::AlignCenter);
+label1->setText("Исходные данные:");
 
+label2=new QLabel(this);
+label2->setGeometry(StartPositionX*2+593,StartPositionY-81,141,51);
+label2->setAlignment(Qt::AlignCenter);
+label2->setText("Вид задачи:");
+label3=new QLabel(this);
+label3->setAlignment(Qt::AlignCenter);
+label3->hide();
     checkMin=0;
     for(int i=0;i<7;i++)errors[i]=0;
     table=new Table();
@@ -61,6 +73,8 @@ void Training::on_pushButton_clicked()
    delete ui->lineEdit;
    delete ui->lineEdit_2;
     ui->pushButton->hide();
+    label1->hide();
+    label2->hide();
     //Add Equation
 ShowEquation();
 
@@ -84,6 +98,7 @@ for(int i=0;i<vars;i++)
     delete Labels[i];
 }
 ui->pushButton->hide();
+label1->hide();
 disconnect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(GetCoeff()));
 GetSystems();
 
@@ -136,6 +151,7 @@ delete comboBox[i];
 delete []LineEdits;
 delete []Labels;
 ui->pushButton->hide();
+label1->hide();
 Show();
 }
 
@@ -150,6 +166,7 @@ this->close();
 void Training::KanonOne()
 {
     int startX=(size.width()-80-120*vars)/2;
+    label1->hide();
     int startY=(size.height()-50-70*(cEquation+2))/2;
     button_two=new QPushButton*[cEquation];
     for(int i=0;i<cEquation;i++)
@@ -180,16 +197,18 @@ ui->label_3->hide();
     button_two=new QPushButton*[cEquation];
    int startX=(size.width()-700-120*vars)/2;
     int startY=(size.height()-50-70*(cEquation+2))/2;
+
+
     for(int i=0;i<cEquation;i++)
     {
         button[i]=new QPushButton(this);
         button[i]->setGeometry(startX+340+120*vars,startY+210 +i*70,150,50);
-        button[i]->setText("-X");
+        button[i]->setText("-");
         button[i]->show();
 
         button_two[i]=new QPushButton(this);
         button_two[i]->setGeometry(startX+510+120*vars,startY+210 +i*70,150,50);
-        button_two[i]->setText("+X");
+        button_two[i]->setText("+");
         button_two[i]->show();
         disconnect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(StepOne()));
         connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(StepTwo()));
@@ -197,6 +216,9 @@ ui->label_3->hide();
         connect(button_two[i],SIGNAL(clicked(bool)),SLOT(CheckPlus()));
 
     }
+    label2->setText("Добавить переменную\nс нужным знаком:");
+    label2->setGeometry(startX+340+120*vars,startY+94,320,81);
+    label2->show();
 }
 
 void Training::CheckMinus()
@@ -211,8 +233,8 @@ void Training::CheckMinus()
         }
     }
     if(sign[position]!=1){
-        if(button[position]->styleSheet()=="background-color: rgb(214,153,146);")button[position]->setStyleSheet("background-color: rgb(255,255,255);");
-        else{
+        if(button[position]->styleSheet()=="background-color: rgb(214,153,146);")button[position]->setStyleSheet("");
+        else if(button[position]->styleSheet()!="background-color: rgb(71,250,148);"){
         button[position]->setStyleSheet("background-color: rgb(214,153,146);");
         errors[0]++;
         }
@@ -247,8 +269,8 @@ void Training::CheckPlus()
         }
     }
     if(sign[position]!=2){
-        if(button_two[position]->styleSheet()=="background-color: rgb(214,153,146);")button_two[position]->setStyleSheet("background-color: rgb(255,255,255);");
-        else{
+        if(button_two[position]->styleSheet()=="background-color: rgb(214,153,146);")button_two[position]->setStyleSheet("");
+       else if(button_two[position]->styleSheet()!="background-color: rgb(71,250,148);"){
             button_two[position]->setStyleSheet("background-color: rgb(214,153,146);");
         errors[0]++;
         }
@@ -281,9 +303,9 @@ void Training::Unsigned()
             i=cEquation;
         }
     }
-    if(coeffSystems[position][vars]>0){
-        if(button_two[position]->styleSheet()=="background-color: rgb(214,153,146);")button_two[position]->setStyleSheet("background-color: rgb(255,255,255);");
-        else{
+    if(coeffSystems[position][vars]>=0){
+        if(button_two[position]->styleSheet()=="background-color: rgb(214,153,146);")button_two[position]->setStyleSheet("");
+        else if(button_two[position]->styleSheet()!="background-color: rgb(71,250,148);"){
         button_two[position]->setStyleSheet("background-color: rgb(214,153,146);");
         errors[0]++;
         }
@@ -390,6 +412,9 @@ LineEdits[j][i].setParent(this);
 
     }
     ui->pushButton->show();
+    label1->setGeometry(startPositionX,startPositionY-132,240+130*(vars-1),102);
+    label1->setText("Введите коэффициенты и знаки\nпри системе ограничений:");
+    label1->show();
    // connect(ui->pushButton,SIGNAL(clicked(bool)),SLOT(Show()));
  connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(GetCoeffSystem()));
 
@@ -416,13 +441,16 @@ void Training::ShowEquation()
     Labels[i]->setGeometry(startPositionX+210+i*180,startPositionY,50,30);
     Labels[i]->show();
     }
-
+    label1->setText("Введите коэффициенты целевой функции:");
+    label1->setGeometry(startPositionX,startPositionY-81,210+(vars-1)*180+50,51);
+    label1->show();
 }
 
 
 void Training::Show()
 {
     Repaint();
+     label1->setText("Исходная задача имеет вид:");
     disconnect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(GetCoeffSystem()));
     connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(KanonOne()));
     ui->pushButton->show();
@@ -433,7 +461,7 @@ void Training::Repaint()
      int startX=(size.width()-700-120*vars)/2;
     int startY=(size.height()-50-70*(cEquation+2))/2;
     Zx =new QLabel("Z(X)=",this);
-    Zx->setGeometry(startX,startY,80+120*vars,70);
+    Zx->setGeometry(startX,startY+94,80+120*vars,81);
     Zx->setAlignment(Qt::AlignCenter);
     Zx->show();
     for(int i=0;i<vars;i++)
@@ -465,6 +493,7 @@ void Training::Repaint()
     }
     char chars[22];
     for(int i=0;i<cEquation;i++){
+
      for(int j=0;j<vars;j++)
      {
          if(coeffSystems[i][j]<0 or j==0){
@@ -512,8 +541,20 @@ void Training::Repaint()
      }
      Labels[i]->setText(Labels[i]->text()+(QString)chars);
      Labels[i]->show();
-
+     label1->setGeometry(startX,startY-81,80+120*vars,51);
+label1->show();
     }
+     label3->setGeometry(startX,startY+210+cEquation*70,80+120*vars,50);
+     label3->setText("Xj ≥ 0, j=");
+     for(int i=1;i<vars+1;i++){
+         if(i==vars){
+             sprintf(chars, "%d.",i);
+         }
+         else sprintf(chars, "%d,",i);
+         label3->setText(label3->text()+(QString)chars);
+     }
+    label3->show();
+
 }
 
 void Training::on_pushButton_2_clicked()

@@ -66,6 +66,7 @@ Table* table; //Форма с таблицей
     int vars=0,cEquation=0;//Количество уравнений и переменных
     double* coeff,** coeffSystems,*sign; //Коэфициенты системы, целевой функции, а так же знаки (>=,=,<=)
     QLabel * Zx; //Вывод целевой функции
+    QLabel* label1,*label2,*label3;
     Massive* massive; //Класс с методами для работы с массивами
    int checkMin; //тип задачи (Минимум, максимум)
    int *errors;//ошибки
