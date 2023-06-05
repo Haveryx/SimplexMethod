@@ -34,8 +34,8 @@ public:
 "QGroupBox{\n"
 "border-radius:10px;\n"
 "border: 2px solid rgb(110,151,145);\n"
-"\n"
-"}"));
+"}\n"
+""));
         groupBox = new QGroupBox(Results);
         groupBox->setObjectName(QStringLiteral("groupBox"));
         groupBox->setGeometry(QRect(310, 10, 521, 611));

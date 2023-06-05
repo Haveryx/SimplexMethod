@@ -5,9 +5,9 @@ Solution::Solution(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Solution)
 {
-    //this->setWindowFlags(Qt::WindowStaysOnTopHint);
+this->setWindowFlags(Qt::WindowStaysOnTopHint);
     ui->setupUi(this);
-  //  this->activateWindow();
+  this->activateWindow();
 massive=new Massive();
 QDesktopWidget desktop;
 table=new Table();

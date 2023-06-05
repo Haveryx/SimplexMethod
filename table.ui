@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>SimplexMethod</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QPushButton{
@@ -82,6 +82,26 @@ font: 75 18pt &quot;Times New Roman&quot;;
    </property>
    <property name="text">
     <string>Есть еще одно решение</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>251</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Вернуться к  
+электронному пособию</string>
+   </property>
+   <property name="autoRepeat">
+    <bool>false</bool>
+   </property>
+   <property name="autoExclusive">
+    <bool>false</bool>
    </property>
   </widget>
  </widget>

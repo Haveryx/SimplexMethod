@@ -5,11 +5,9 @@ Training::Training(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Training)
 {
-    //this->setWindowFlags(Qt::WindowStaysOnTopHint);
-
+  this->setWindowFlags(Qt::WindowStaysOnTopHint);
     ui->setupUi(this);
-  //  this->activateWindow();
-    ui->label_3->hide();
+  this->activateWindow();
     massive=new Massive();
     QDesktopWidget desktop;
 errors=new int[7];
@@ -37,11 +35,17 @@ label2->setText("Вид задачи:");
 label3=new QLabel(this);
 label3->setAlignment(Qt::AlignCenter);
 label3->hide();
+help=new QLabel(this);
+help->setAlignment(Qt::AlignCenter);
+help->hide();
     checkMin=0;
     for(int i=0;i<7;i++)errors[i]=0;
     table=new Table();
     table->hide();
     connect(this,SIGNAL(CreateTable(int, int,int *,int,double**,double*)),table,SLOT(addInformation(int, int,int *,int,double**,double*)));
+    ui->label_3->setGeometry((size.width()-401)/2,size.height()-170,401,51);
+    ui->label_3->setAlignment(Qt::AlignCenter);
+    ui->label_3->hide();
     ui->pushButton_2->setGeometry(size.width()-88,15,75,23);
     ui->pushButton->setGeometry(size.width()-251,size.height()-170,241,61);
 
@@ -152,6 +156,7 @@ delete []LineEdits;
 delete []Labels;
 ui->pushButton->hide();
 label1->hide();
+help->hide();
 Show();
 }
 
@@ -167,6 +172,12 @@ void Training::KanonOne()
 {
     int startX=(size.width()-80-120*vars)/2;
     label1->hide();
+    help->hide();
+    label2->setText("Избавление от отрицательной правой части.");
+    label2->setGeometry((size.width()-600)/2,150,600,51);
+    label2->show();
+    help->setText("Умножьте на (-1) строки, содержащие в\nправой части отрицательное значение.");
+    help->show();
     int startY=(size.height()-50-70*(cEquation+2))/2;
     button_two=new QPushButton*[cEquation];
     for(int i=0;i<cEquation;i++)
@@ -189,6 +200,16 @@ void Training::KanonOne()
 void Training::KanonTwo()
 {
 ui->label_3->hide();
+label2->setGeometry((size.width()-600)/2,150,600,51);
+QLabel* labelsOne=new QLabel(this);
+help->hide();
+label2->setText("Приведение исходной системы к каноническому виду");
+label2->show();
+labelsOne->setText("Для приведения системы к каноническому виду,\n"
+              "в строки, содержащие ограничения-неравенства\n"
+              "типа «≥», «≤», добавьте дополнительные\n"
+              " переменные X с нужным знаком.\n");
+
     for(int i=0;i<cEquation;i++)
     {
         delete button_two[i];
@@ -197,7 +218,9 @@ ui->label_3->hide();
     button_two=new QPushButton*[cEquation];
    int startX=(size.width()-700-120*vars)/2;
     int startY=(size.height()-50-70*(cEquation+2))/2;
-
+labelsOne->setGeometry((size.width()-80-120*vars)/2-65+120*vars,(size.height()-50-70*(cEquation+2))/2+84,530,111);
+labelsOne->setAlignment(Qt::AlignCenter);
+labelsOne->show();
 
     for(int i=0;i<cEquation;i++)
     {
@@ -216,9 +239,7 @@ ui->label_3->hide();
         connect(button_two[i],SIGNAL(clicked(bool)),SLOT(CheckPlus()));
 
     }
-    label2->setText("Добавить переменную\nс нужным знаком:");
-    label2->setGeometry(startX+340+120*vars,startY+94,320,81);
-    label2->show();
+
 }
 
 void Training::CheckMinus()
@@ -412,9 +433,12 @@ LineEdits[j][i].setParent(this);
 
     }
     ui->pushButton->show();
-    label1->setGeometry(startPositionX,startPositionY-132,240+130*(vars-1),102);
+    label1->setGeometry(startPositionX-30,startPositionY-132,300+130*(vars-1),102);
     label1->setText("Введите коэффициенты и знаки\nпри системе ограничений:");
     label1->show();
+    help->hide();
+     help->setGeometry(startPositionX-80,startPositionY+(cEquation+1)*50,400+130*(vars-1),81);
+     help->show();
    // connect(ui->pushButton,SIGNAL(clicked(bool)),SLOT(Show()));
  connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(GetCoeffSystem()));
 
@@ -444,13 +468,19 @@ void Training::ShowEquation()
     label1->setText("Введите коэффициенты целевой функции:");
     label1->setGeometry(startPositionX,startPositionY-81,210+(vars-1)*180+50,51);
     label1->show();
+    help->setText("Вводите данные внимательно!\nВернуться к предыдущему шагу будет невозможно.");
+    help->setGeometry(startPositionX-50,startPositionY+150,210+(vars-1)*180+150,81);
+    help->show();
 }
 
 
 void Training::Show()
 {
+    help->setText("Проверьте введенные вами данные.\nПри обнаружении ошибки, закройте приложение и\nзапустите «Тренажер» заново.");
     Repaint();
      label1->setText("Исходная задача имеет вид:");
+     label1->show();
+     help->show();
     disconnect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(GetCoeffSystem()));
     connect(ui->pushButton,SIGNAL(clicked(bool)),this,SLOT(KanonOne()));
     ui->pushButton->show();
@@ -460,7 +490,7 @@ void Training::Repaint()
 {
      int startX=(size.width()-700-120*vars)/2;
     int startY=(size.height()-50-70*(cEquation+2))/2;
-    Zx =new QLabel("Z(X)=",this);
+    Zx =new QLabel("Z(X) =",this);
     Zx->setGeometry(startX,startY+94,80+120*vars,81);
     Zx->setAlignment(Qt::AlignCenter);
     Zx->show();
@@ -484,7 +514,10 @@ void Training::Repaint()
             }
         }
         Zx->setText(Zx->text()+(QString)chars);
+
     }
+    QString strings=(checkMin==0)?"→min":"→max";
+    Zx->setText(Zx->text()+strings);
     Labels =new QLabel*[cEquation];
     for(int i=0;i<cEquation;i++){
         Labels[i]=new QLabel("",this);
@@ -542,10 +575,10 @@ void Training::Repaint()
      Labels[i]->setText(Labels[i]->text()+(QString)chars);
      Labels[i]->show();
      label1->setGeometry(startX,startY-81,80+120*vars,51);
-label1->show();
+     help->setGeometry((size.width()-80-120*vars)/2-65+120*vars,startY+84,530,111);
     }
      label3->setGeometry(startX,startY+210+cEquation*70,80+120*vars,50);
-     label3->setText("Xj ≥ 0, j=");
+     label3->setText("Xj ≥ 0, j = ");
      for(int i=1;i<vars+1;i++){
          if(i==vars){
              sprintf(chars, "%d.",i);

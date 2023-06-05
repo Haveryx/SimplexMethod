@@ -20,8 +20,8 @@ font: 75 18pt &quot;Times New Roman&quot;;
 QGroupBox{
 border-radius:10px;
 border: 2px solid rgb(110,151,145);
-
-}</string>
+}
+</string>
   </property>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">

@@ -6,9 +6,9 @@ Table::Table(QWidget *parent) :
     ui(new Ui::Table)
 {
 
-    //this->setWindowFlags(Qt::WindowStaysOnTopHint);
+//this->setWindowFlags(Qt::WindowStaysOnTopHint);
     ui->setupUi(this);
-  //  this->activateWindow();
+ // this->activateWindow();
    results=new Results();
    results->hide();
    connect(this,SIGNAL(PushInfo(QVector<double*>,int)),results,SLOT(AddInfo(QVector<double*>,int)));
@@ -36,22 +36,23 @@ label1->hide();
 
  auto StartPosition=(size.width()-648)/5;
 
-     ui->pushButton_2->setGeometry(StartPosition*4+573,15,75,41);
+      ui->pushButton_2->setGeometry(size.width()-88,15,75,23);
 
- ui->Optimal->setGeometry(StartPosition,15,161,41);
+      goToResul=new QPushButton(this);
+      goToResul->setGeometry(size.width()-153,68,140,50);
+      goToResul->setText("Ответ");
+      goToResul->show();
+      connect(goToResul,SIGNAL(clicked(bool)),this,SLOT(NoResult()));
+
  ui->Optimal->hide();
-
- ui->NotOptimal->setGeometry(StartPosition*2+161,15,171,41);
  ui->NotOptimal->hide();
-
- ui->SomeSolution->setGeometry(StartPosition*3+332,15,241,41);
  ui->SomeSolution->hide();
 
      next=new QPushButton(this);
      next->setText("Далее");
-     next->setGeometry(size.width()-400,size.height()-170,350,61);
+     next->setGeometry(size.width()-251,size.height()-170,241,61);
      next->hide();
-
+ui->pushButton->setGeometry(10,size.height()-170,251,61);
 errors=new int[7];
 }
 
@@ -244,6 +245,7 @@ connect(next,SIGNAL(clicked(bool)),SLOT(CheckTetta()));
 
 SetReadOnly();
 SetWrite(0,cEquation,3+vars,2*vars+3);
+label1->setGeometry(0,0,0,0);
 label1->show();
 }
 
@@ -503,6 +505,7 @@ int Table::CheckString(QLineEdit *lineOne, QLineEdit **lineTwo)
 
 void Table::GetInputTetta()
 {
+      goToResul->setStyleSheet("");
       next->setStyleSheet("");
     bool flag=true;
     double ** CheckInput=new double*[cEquation+1];
@@ -550,6 +553,10 @@ void Table::GetInputTetta()
 
 void Table::paintEvent(QPaintEvent *)
 {
+
+    if(this->windowFlags()=!Qt::WindowStaysOnTopHint){this->setWindowFlags(Qt::WindowStaysOnTopHint);
+          this->activateWindow();
+    }
     painter=new QPainter(this);
      painter->setPen(QPen(color,sizeLine,Qt::SolidLine));
    auto geometry= this->geometry();
@@ -589,7 +596,7 @@ case Type::reshenie:
     text[0][0].show();
 
     text[0][1].setGeometry(x+sizeX+sizeLine,y+sizeLine,sizeX-sizeLine*2,sizeY-sizeLine*2);
-    text[0][1].setText("C");
+    text[0][1].setText("Cб");
     text[0][1].setAlignment(Qt::AlignCenter);
     text[0][1].show();
 //Выводим цифры из Z
@@ -670,14 +677,36 @@ text[1+cEquation][i+1].setText((QString)chars);
 }
     break;
 case Type::training:
-    label1->setGeometry(x,70,(vars*2 +3)*sizeX,51);
+
+    if(label1->isVisible()){
+        label1->hide();
+         label1->setGeometry(x,70,(vars*2 +3)*sizeX,51);
+         label1->show();
+    }
+    if(((vars*2 +3)*sizeX-573)/2<=0){
+        int position=std::abs(((vars*2 +3)*sizeX-593)/2);
+        ui->Optimal->setGeometry(x-position,y+(cEquation+3)*sizeY,161,41);
+
+        ui->NotOptimal->setGeometry(x-position+171,y+(cEquation+3)*sizeY,171,41);
+
+        ui->SomeSolution->setGeometry(x-position+352,y+(cEquation+3)*sizeY,241,41);
+    }
+    else{
+        int position=((vars*2 +3)*sizeX-573)/2;
+    ui->Optimal->setGeometry(x,y+(cEquation+3)*sizeY,161,41);
+
+    ui->NotOptimal->setGeometry(x+161+position,y+(cEquation+3)*sizeY,171,41);
+
+    ui->SomeSolution->setGeometry(x+332+2*position,y+(cEquation+3)*sizeY,241,41);
+    }
+
     //text[0][0].setFont();Todo Добавить шрифт
     text[0]->setGeometry(x+sizeLine,y+sizeLine,sizeX-2*sizeLine,sizeY-2*sizeLine);
     text[0]->setText("B");
     text[0]->show();
 
     text[1]->setGeometry(x+sizeX+sizeLine,y+sizeLine,sizeX-sizeLine*2,sizeY-sizeLine*2);
-    text[1]->setText("C");
+    text[1]->setText("Cб");
     text[1]->show();
     //Выводим цифры из Z
         for(int i=0;i<vars+2;i++)
@@ -871,6 +900,7 @@ GetInputTetta();
 void Table::CheckBasis()
 {
       next->setStyleSheet("");
+      goToResul->setStyleSheet("");
     bool flag=true;
     double ** CheckInput=new double*[cEquation];
        for(int i=0;i<cEquation;i++)
@@ -908,6 +938,7 @@ void Table::CheckBasis()
 }
 void Table::CheckAllMin()
 {
+   goToResul->setStyleSheet("");
    next->setStyleSheet("");
     if(actualInput.size()==countMinTetta){
      ErrorNotColor();
@@ -937,33 +968,8 @@ void Table::CheckAllMin()
        vectors[i].pop_front();
            }
        }
-       if(reshenie==0){
-       if(Solution==solution::NotOptimal){
-       label->setText("Нет решения");
-     label->show();
-           for(int i=3;i<vars+3;i++)
-           {
-                 input[cEquation][i].setStyleSheet("background-color: rgb(214,153,146);");
-           }
-        next->hide();
-        PushInfo(result,vars,errors);
-        results->show();
-        this->close();
-   }
-   else if(Solution==solution::SomeSolution){
-       for(int i=3;i<vars+3;i++)
-       {
-             input[cEquation][i].setStyleSheet("background-color: rgb(71,250,148);");
-       }
-       next->hide();
-       PushInfo(result,vars,errors);
-       results->show();
-      this->close();
-   }
-       }
-
-    }
-
+       if(reshenie==0)resultat=true;
+}
     else{
       next->setStyleSheet("background-color: rgb(214,153,146);");
       errors[2]++;
@@ -973,6 +979,7 @@ void Table::CheckAllMin()
 void Table::CheckC()
 {
     next->setStyleSheet("");
+    goToResul->setStyleSheet("");
      input[Position][1].setText(input[Position][1].text().replace(",","."));
     double C=(input[Position][1].text()=="-")? INFINITY:input[Position][1].text().toDouble();
     input[Position][1].setStyleSheet("");
@@ -1016,6 +1023,7 @@ void Table::CheckDelta()
 {
     SimpleGod->getDelta(system,z,vars,cEquation);
     next->setStyleSheet("");
+    goToResul->setStyleSheet("");
   bool flag=true;
   double ** CheckInput=new double*[cEquation+1];
   for(int i=0;i<cEquation+1;i++)
@@ -1031,7 +1039,7 @@ void Table::CheckDelta()
          input[cEquation][j+1].setStyleSheet("");
          if(std::abs(CheckInput[cEquation][j]-system[cEquation][j])>0.05){
              flag=false;
-             errors[1]++;
+             errors[5]++;
              input[cEquation][j+1].setStyleSheet("background-color: rgb(214,153,146);");
 
 
@@ -1051,6 +1059,7 @@ void Table::CheckMinTetta()
 {
     int reshenie=0;
        next->setStyleSheet("");
+       goToResul->setStyleSheet("");
     checked=true;
         vectors=SimpleGod->GetMin(system,Basis,vars,cEquation);
 
@@ -1063,10 +1072,9 @@ void Table::CheckMinTetta()
     for(int i=0;i<cEquation;i++)
     {
     while(!vectors[i].empty()){
-if(SimpleGod->checkBlackList(blackList,i,vectors[i].front())==false){
+
     actualInput.push_back(&input[i][vectors[i].front()+1]);
         reshenie++;
-    }
 vectors[i].pop_front();
     }
 
@@ -1085,32 +1093,9 @@ vectors[i].pop_front();
     connect(next,SIGNAL(clicked(bool)),SLOT(CheckAllMin()));
 
     }
-    else{
+    else resultat=true;
 
-        if(Solution==solution::NotOptimal){
-        label->setText("Нет решения");
-      label->show();
-            for(int i=3;i<vars+3;i++)
-            {
-                  input[cEquation][i].setStyleSheet("background-color: rgb(214,153,146);");
-            }
-         next->hide();
-         PushInfo(result,vars,errors);
-         results->show();
-         this->close();
-    }
-    else if(Solution==solution::SomeSolution){
-        for(int i=3;i<vars+3;i++)
-        {
-              input[cEquation][i].setStyleSheet("background-color: rgb(71,250,148);");
-        }
-        next->hide();
-        PushInfo(result,vars,errors);
-        results->show();
-       this->close();
-    }
 
-}
 }
 
 void Table::AllInputNotColor()
@@ -1239,4 +1224,26 @@ void Table::on_SomeSolution_clicked()
          ui->SomeSolution->setStyleSheet("background-color: rgb(214,153,146);");
          errors[6]++;
     }
+}
+
+void Table::on_pushButton_clicked()
+{
+    QDesktopServices::openUrl(QUrl::fromLocalFile("website/main.html"));
+    this->setWindowFlags(Qt::WindowStaysOnBottomHint);
+    this->showMinimized();
+}
+
+void Table::NoResult()
+{
+   if(resultat){ PushInfo(result,vars,errors);
+    results->show();
+    this->close();
+   }
+   else{
+       if(goToResul->styleSheet()!="background-color: rgb(214,153,146);"){
+       errors[6]++;
+       goToResul->setStyleSheet("background-color: rgb(214,153,146);");
+           }
+   }
+
 }

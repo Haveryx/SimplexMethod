@@ -11,6 +11,8 @@
 #include<QDesktopWidget>
 #include<QMap>
 #include<QPushButton>
+#include<QDesktopServices>
+#include<QUrl>
 #include"results.h"
 #define INFINITI 33554432
 
@@ -47,14 +49,14 @@ private:
     int cEquation=3,vars=3;
     int* errors;
     int countMinTetta=0;
-    bool* count,checked=false;
+    bool* count,checked=false,resultat=false;
     const int sizeX=80,sizeY=40;
     Type type=Type::none;
     solution Solution=solution::None;
    QLabel** text,** Z;
    QLabel * label1;
    QLineEdit ** input;
-   QPushButton* next;
+   QPushButton* next,* goToResul;
    QPainter* painter;
    Results* results;
    int sizeLine=2;
@@ -102,11 +104,11 @@ private slots:
 void CheckAllMin();
 void CheckC();
 void CheckDelta();
-
-
 void on_Optimal_clicked();
 void on_NotOptimal_clicked();
 void on_SomeSolution_clicked();
+void on_pushButton_clicked();
+void NoResult();
 };
 
 #endif // TABLE_H
