@@ -60,7 +60,7 @@ void Results::ShowResult(QVector<double *> resultat, int vars)
             QString string="Z=";
             string+=CheckOstatok(resultat[i][vars])+" при X=(";
             label[i]=new QLabel(ui->groupBox);
-            label[i]->setGeometry(0,40+i*80,521,40);//ToDo Добавить размеры
+            label[i]->setGeometry(0,71+i*80,521,40);//ToDo Добавить размеры
             for(int j=0;j<vars;j++){
                 if(j==vars-1)string+=CheckOstatok(resultat[i][j])+")";
                 else string+=CheckOstatok(resultat[i][j])+", ";
@@ -73,8 +73,8 @@ void Results::ShowResult(QVector<double *> resultat, int vars)
     }
     else{
          QLabel *label=new QLabel(ui->groupBox);
-         label->setGeometry(0,10,521,40);//ToDo Добавить размеры
+         label->setGeometry(0,51,521,40);//ToDo Добавить размеры
          label->setAlignment(Qt::AlignCenter);
-         label->setText("Нет решения!!");
+         label->setText("Z(X)→ +∞.");
     }
 }

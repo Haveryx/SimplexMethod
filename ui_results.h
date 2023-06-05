@@ -53,7 +53,7 @@ public:
     {
         Results->setWindowTitle(QApplication::translate("Results", "Form", nullptr));
         groupBox->setTitle(QString());
-        label->setText(QApplication::translate("Results", "\320\236\321\202\320\262\320\265\321\202", nullptr));
+        label->setText(QApplication::translate("Results", "\320\236\321\202\320\262\320\265\321\202:", nullptr));
     } // retranslateUi
 
 };
