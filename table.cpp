@@ -6,9 +6,9 @@ Table::Table(QWidget *parent) :
     ui(new Ui::Table)
 {
 
-//this->setWindowFlags(Qt::WindowStaysOnTopHint);
+   this->setWindowFlags(Qt::CustomizeWindowHint|Qt::WindowStaysOnTopHint|Qt::ToolTip);
     ui->setupUi(this);
- // this->activateWindow();
+   this->activateWindow();
    results=new Results();
    results->hide();
    connect(this,SIGNAL(PushInfo(QVector<double*>,int)),results,SLOT(AddInfo(QVector<double*>,int)));
@@ -33,8 +33,6 @@ label1->hide();
     label2->setGeometry(0,30,300,20);
     label2->setAlignment(Qt::AlignCenter);
      label2->hide();
-
- auto StartPosition=(size.width()-648)/5;
 
       ui->pushButton_2->setGeometry(size.width()-88,15,75,23);
 
@@ -521,9 +519,11 @@ void Table::GetInputTetta()
             CheckInput[i][j]=(input[i][j+1].text()=="-")? INFINITY:input[i][j+1].text().toDouble();
             input[i][j+1].setStyleSheet("");
             if(std::abs(CheckInput[i][j]-system[i][j])>0.05){
+                if(input[i][j+1].styleSheet()!="background-color: rgb(214,153,146);"){
                 flag=false;
                 errors[1]++;
                 input[i][j+1].setStyleSheet("background-color: rgb(214,153,146);");
+                }
           }
 
         }
@@ -554,9 +554,9 @@ void Table::GetInputTetta()
 void Table::paintEvent(QPaintEvent *)
 {
 
-    if(this->windowFlags()=!Qt::WindowStaysOnTopHint){this->setWindowFlags(Qt::WindowStaysOnTopHint);
-          this->activateWindow();
-    }
+
+     this->showFullScreen();
+
     painter=new QPainter(this);
      painter->setPen(QPen(color,sizeLine,Qt::SolidLine));
    auto geometry= this->geometry();

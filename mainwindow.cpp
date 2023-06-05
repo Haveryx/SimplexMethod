@@ -5,7 +5,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
-this->setWindowFlags(Qt::WindowStaysOnTopHint);
+
+
+this->setWindowFlags(Qt::CustomizeWindowHint|Qt::WindowStaysOnTopHint|Qt::ToolTip);
+
     ui->setupUi(this);
   this->activateWindow();
     QDesktopWidget desktop;

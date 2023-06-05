@@ -77,7 +77,7 @@ public:
         label_18->setAlignment(Qt::AlignCenter);
         splitter = new QSplitter(groupBox);
         splitter->setObjectName(QStringLiteral("splitter"));
-        splitter->setGeometry(QRect(10, 79, 501, 561));
+        splitter->setGeometry(QRect(10, 79, 511, 561));
         splitter->setOrientation(Qt::Horizontal);
         widget = new QWidget(splitter);
         widget->setObjectName(QStringLiteral("widget"));
@@ -148,6 +148,7 @@ public:
         verticalLayout_2->setContentsMargins(0, 0, 0, 0);
         label_5 = new QLabel(widget1);
         label_5->setObjectName(QStringLiteral("label_5"));
+        label_5->setMinimumSize(QSize(141, 51));
         label_5->setMaximumSize(QSize(141, 51));
         label_5->setAlignment(Qt::AlignCenter);
 
@@ -155,6 +156,7 @@ public:
 
         label_7 = new QLabel(widget1);
         label_7->setObjectName(QStringLiteral("label_7"));
+        label_7->setMinimumSize(QSize(141, 51));
         label_7->setMaximumSize(QSize(141, 51));
         label_7->setAlignment(Qt::AlignCenter);
 
@@ -162,6 +164,7 @@ public:
 
         label_9 = new QLabel(widget1);
         label_9->setObjectName(QStringLiteral("label_9"));
+        label_9->setMinimumSize(QSize(141, 51));
         label_9->setMaximumSize(QSize(141, 51));
         label_9->setAlignment(Qt::AlignCenter);
 
@@ -169,6 +172,7 @@ public:
 
         label_16 = new QLabel(widget1);
         label_16->setObjectName(QStringLiteral("label_16"));
+        label_16->setMinimumSize(QSize(141, 51));
         label_16->setMaximumSize(QSize(141, 51));
         label_16->setAlignment(Qt::AlignCenter);
 
@@ -176,6 +180,7 @@ public:
 
         label_11 = new QLabel(widget1);
         label_11->setObjectName(QStringLiteral("label_11"));
+        label_11->setMinimumSize(QSize(141, 51));
         label_11->setMaximumSize(QSize(141, 51));
         label_11->setAlignment(Qt::AlignCenter);
 
@@ -183,6 +188,7 @@ public:
 
         label_13 = new QLabel(widget1);
         label_13->setObjectName(QStringLiteral("label_13"));
+        label_13->setMinimumSize(QSize(141, 51));
         label_13->setMaximumSize(QSize(141, 51));
         label_13->setAlignment(Qt::AlignCenter);
 
@@ -190,6 +196,7 @@ public:
 
         label_15 = new QLabel(widget1);
         label_15->setObjectName(QStringLiteral("label_15"));
+        label_15->setMinimumSize(QSize(141, 51));
         label_15->setMaximumSize(QSize(141, 51));
         label_15->setAlignment(Qt::AlignCenter);
 
@@ -197,6 +204,7 @@ public:
 
         label_3 = new QLabel(widget1);
         label_3->setObjectName(QStringLiteral("label_3"));
+        label_3->setMinimumSize(QSize(141, 51));
         label_3->setMaximumSize(QSize(141, 51));
         label_3->setAlignment(Qt::AlignCenter);
 

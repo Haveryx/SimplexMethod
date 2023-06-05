@@ -5,7 +5,7 @@ Solution::Solution(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Solution)
 {
-this->setWindowFlags(Qt::WindowStaysOnTopHint);
+this->setWindowFlags(Qt::CustomizeWindowHint|Qt::WindowStaysOnTopHint|Qt::ToolTip);
     ui->setupUi(this);
   this->activateWindow();
 massive=new Massive();

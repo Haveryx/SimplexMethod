@@ -5,7 +5,7 @@ Training::Training(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Training)
 {
-  this->setWindowFlags(Qt::WindowStaysOnTopHint);
+ this->setWindowFlags(Qt::CustomizeWindowHint|Qt::WindowStaysOnTopHint|Qt::ToolTip);
     ui->setupUi(this);
   this->activateWindow();
     massive=new Massive();
