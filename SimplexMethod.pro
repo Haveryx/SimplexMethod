@@ -32,7 +32,8 @@ SOURCES += \
     simplex.cpp \
     training.cpp \
     results.cpp \
-    rating.cpp
+    rating.cpp \
+    name.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -42,7 +43,8 @@ HEADERS += \
     simplex.h \
     training.h \
     results.h \
-    rating.h
+    rating.h \
+    name.h
 
 FORMS += \
         mainwindow.ui \
@@ -50,4 +52,8 @@ FORMS += \
     table.ui \
     training.ui \
     results.ui \
-    rating.ui
+    rating.ui \
+    name.ui
+
+DISTFILES += \
+    website/main.html

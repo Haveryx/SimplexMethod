@@ -40,10 +40,10 @@ public:
     ~Table();
 signals:
     void PushInfo(QVector<double*>,int);
-    void PushInfo(QVector<double *>, int,int*);
+    void PushInfo(QVector<double *>, int,int*,QString name,double variant);
    public slots:
     void addInformation(int,int,int,double**,double*);
- void addInformation(int,int,int*,int,double**,double*);
+ void addInformation(int,int,int*,int,double**,double*,QString name,double variant);
 private:
     Ui::Table *ui;
     int cEquation=3,vars=3;
@@ -78,6 +78,8 @@ QVector<QLineEdit*>actualInput;
 QLabel* label,*label2;
 QMap<QLabel*,int> map;
  QVector<QVector<int>> vectors,blackList;
+ QString name="";
+ double variant=0;
 void ColorColumn(int j);
 void NotColor();
 void PushResult();

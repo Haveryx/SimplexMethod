@@ -42,7 +42,7 @@ help->hide();
     for(int i=0;i<7;i++)errors[i]=0;
     table=new Table();
     table->hide();
-    connect(this,SIGNAL(CreateTable(int, int,int *,int,double**,double*)),table,SLOT(addInformation(int, int,int *,int,double**,double*)));
+    connect(this,SIGNAL(CreateTable(int, int,int *,int,double**,double*,QString,double)),table,SLOT(addInformation(int, int,int *,int,double**,double*,QString,double)));
     ui->label_3->setGeometry((size.width()-401)/2,size.height()-170,401,51);
     ui->label_3->setAlignment(Qt::AlignCenter);
     ui->label_3->hide();
@@ -162,7 +162,7 @@ Show();
 
 void Training::PaintTable()
 {
-CreateTable(cEquation,vars,errors,checkMin,coeffSystems,coeff);
+CreateTable(cEquation,vars,errors,checkMin,coeffSystems,coeff,name,variant);
 table->show();
 this->close();
 
@@ -177,6 +177,7 @@ void Training::KanonOne()
     label2->setGeometry((size.width()-600)/2,150,600,51);
     label2->show();
     help->setText("Умножьте на (-1) строки, содержащие в\nправой части отрицательное значение.");
+    help->setStyleSheet("");
     help->show();
     int startY=(size.height()-50-70*(cEquation+2))/2;
     button_two=new QPushButton*[cEquation];
@@ -254,9 +255,9 @@ void Training::CheckMinus()
         }
     }
     if(sign[position]!=1){
-        if(button[position]->styleSheet()=="background-color: rgb(214,153,146);")button[position]->setStyleSheet("");
-        else if(button[position]->styleSheet()!="background-color: rgb(71,250,148);"){
-        button[position]->setStyleSheet("background-color: rgb(214,153,146);");
+        if(button[position]->styleSheet()=="background-color: rgb(252, 162, 189);")button[position]->setStyleSheet("");
+        else if(button[position]->styleSheet()!="background-color: rgb(108, 245, 199);"){
+        button[position]->setStyleSheet("background-color: rgb(252, 162, 189);");
         errors[0]++;
         }
     }
@@ -267,7 +268,7 @@ void Training::CheckMinus()
         massive->AddElement(coeff,vars);
         vars++;
         sign[position]=0;
-        button[position]->setStyleSheet("background-color: rgb(71,250,148);");
+        button[position]->setStyleSheet("background-color: rgb(108, 245, 199);");
         for(int i=0;i<cEquation;i++){
           delete Labels[i];
   }
@@ -290,9 +291,9 @@ void Training::CheckPlus()
         }
     }
     if(sign[position]!=2){
-        if(button_two[position]->styleSheet()=="background-color: rgb(214,153,146);")button_two[position]->setStyleSheet("");
-       else if(button_two[position]->styleSheet()!="background-color: rgb(71,250,148);"){
-            button_two[position]->setStyleSheet("background-color: rgb(214,153,146);");
+        if(button_two[position]->styleSheet()=="background-color: rgb(252, 162, 189);")button_two[position]->setStyleSheet("");
+       else if(button_two[position]->styleSheet()!="background-color: rgb(108, 245, 199);"){
+            button_two[position]->setStyleSheet("background-color: rgb(252, 162, 189);");
         errors[0]++;
         }
     }
@@ -303,7 +304,7 @@ void Training::CheckPlus()
         massive->AddElement(coeff,vars);
         vars++;
         sign[position]=0;
-        button_two[position]->setStyleSheet("background-color: rgb(71,250,148);");
+        button_two[position]->setStyleSheet("background-color: rgb(108, 245, 199);");
         for(int i=0;i<cEquation;i++){
           delete Labels[i];
   }
@@ -325,9 +326,9 @@ void Training::Unsigned()
         }
     }
     if(coeffSystems[position][vars]>=0){
-        if(button_two[position]->styleSheet()=="background-color: rgb(214,153,146);")button_two[position]->setStyleSheet("");
-        else if(button_two[position]->styleSheet()!="background-color: rgb(71,250,148);"){
-        button_two[position]->setStyleSheet("background-color: rgb(214,153,146);");
+        if(button_two[position]->styleSheet()=="background-color: rgb(252, 162, 189);")button_two[position]->setStyleSheet("");
+        else if(button_two[position]->styleSheet()!="background-color: rgb(108, 245, 199);"){
+        button_two[position]->setStyleSheet("background-color: rgb(252, 162, 189);");
         errors[0]++;
         }
     }
@@ -344,7 +345,7 @@ void Training::Unsigned()
             delete Zx;
 
         Repaint();
-        button_two[position]->setStyleSheet("background-color: rgb(71,250,148);");
+        button_two[position]->setStyleSheet("background-color: rgb(108, 245, 199);");
     }
 }
 
@@ -362,7 +363,7 @@ void Training::StepOne()
     else {
         for(int i=0;i<cEquation;i++)
         {
-            if(button_two[i]->styleSheet()=="background-color: rgb(214,153,146);")flag=true;
+            if(button_two[i]->styleSheet()=="background-color: rgb(252, 162, 189);")flag=true;
         }
        if(flag==false)KanonTwo();
     }
@@ -385,8 +386,8 @@ void Training::StepTwo()
     else {
         for(int i=0;i<cEquation;i++)
         {
-            if(button_two[i]->styleSheet()=="background-color: rgb(214,153,146);")flag=true;
-            if(button[i]->styleSheet()=="background-color: rgb(214,153,146);")flag=true;
+            if(button_two[i]->styleSheet()=="background-color: rgb(252, 162, 189);")flag=true;
+            if(button[i]->styleSheet()=="background-color: rgb(252, 162, 189);")flag=true;
         }
        if(flag==false)PaintTable();
     }
@@ -469,8 +470,10 @@ void Training::ShowEquation()
     label1->setGeometry(startPositionX,startPositionY-81,210+(vars-1)*180+50,51);
     label1->show();
     help->setText("Вводите данные внимательно!\nВернуться к предыдущему шагу будет невозможно.");
+    help->setStyleSheet("background-color: rgb(255, 244, 140);");
     help->setGeometry(startPositionX-50,startPositionY+150,210+(vars-1)*180+150,81);
     help->show();
+
 }
 
 
@@ -593,4 +596,10 @@ void Training::Repaint()
 void Training::on_pushButton_2_clicked()
 {
     this->close();
+}
+
+void Training::GetName(QString name, double variant)
+{
+    this->name=name;
+    this->variant=variant;
 }

@@ -15,9 +15,11 @@ public:
     explicit Rating(QWidget *parent = 0);
     ~Rating();
 public slots:
-    void addError(int*);
+    void addError(int*,QString,double);
 private:
     Ui::Rating *ui;
+protected:
+    void paintEvent(QPaintEvent*) override;
 };
 
 #endif // RATING_H

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1142</width>
-    <height>654</height>
+    <height>713</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,17 +19,30 @@ font: 75 18pt &quot;Times New Roman&quot;;
 }
 QGroupBox{
 border-radius:10px;
-border: 2px solid rgb(110,151,145);
+border: 4px solid rgb(163, 137, 131);
+background-color: rgb(255, 240, 245);
 }
-</string>
+QLabel#label{
+font: 75 20pt &quot;Times New Roman&quot;;
+}
+QPushButton{
+border-radius:8px;
+border: 2px solid rgb(163, 137, 131);
+background-color: rgb(196, 170, 164);
+	font: 75 18pt &quot;Times New Roman&quot;;
+}
+QPushButton::hover{
+border: 2px solid rgb(163, 137, 131);
+background-color: rgb(214, 186, 180);
+}</string>
   </property>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>310</x>
-     <y>10</y>
-     <width>521</width>
-     <height>611</height>
+     <x>250</x>
+     <y>0</y>
+     <width>691</width>
+     <height>661</height>
     </rect>
    </property>
    <property name="title">
@@ -39,13 +52,25 @@ border: 2px solid rgb(110,151,145);
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>10</y>
-      <width>521</width>
+      <y>180</y>
+      <width>681</width>
       <height>21</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Times New Roman</family>
+      <pointsize>20</pointsize>
+      <weight>9</weight>
+      <italic>false</italic>
+      <bold>false</bold>
+     </font>
+    </property>
     <property name="text">
      <string>Ответ:</string>
+    </property>
+    <property name="scaledContents">
+     <bool>false</bool>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>

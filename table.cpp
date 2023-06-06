@@ -6,13 +6,13 @@ Table::Table(QWidget *parent) :
     ui(new Ui::Table)
 {
 
-   this->setWindowFlags(Qt::CustomizeWindowHint|Qt::WindowStaysOnTopHint|Qt::ToolTip);
-    ui->setupUi(this);
+  this->setWindowFlags(Qt::CustomizeWindowHint|Qt::WindowStaysOnTopHint|Qt::ToolTip);
+   ui->setupUi(this);
    this->activateWindow();
    results=new Results();
    results->hide();
    connect(this,SIGNAL(PushInfo(QVector<double*>,int)),results,SLOT(AddInfo(QVector<double*>,int)));
-   connect(this,SIGNAL(PushInfo(QVector<double*>,int,int*)),results,SLOT(AddInfo(QVector<double*>,int,int*)));
+   connect(this,SIGNAL(PushInfo(QVector<double*>,int,int*,QString,double)),results,SLOT(AddInfo(QVector<double*>,int,int*,QString,double)));
     QDesktopWidget desktop;
     QRect size=desktop.geometry();
 
@@ -39,7 +39,7 @@ label1->hide();
       goToResul=new QPushButton(this);
       goToResul->setGeometry(size.width()-153,68,140,50);
       goToResul->setText("Ответ");
-      goToResul->show();
+      goToResul->hide();
       connect(goToResul,SIGNAL(clicked(bool)),this,SLOT(NoResult()));
 
  ui->Optimal->hide();
@@ -50,7 +50,10 @@ label1->hide();
      next->setText("Далее");
      next->setGeometry(size.width()-251,size.height()-170,241,61);
      next->hide();
+     connect(next,SIGNAL(clicked(bool)),SLOT(CheckTetta()));
+
 ui->pushButton->setGeometry(10,size.height()-170,251,61);
+ui->pushButton->hide();
 errors=new int[7];
 }
 
@@ -128,32 +131,19 @@ QVector<int> p;
                 text[j][i].setParent(this);
            }
        }
-SimpleGod->getTetta(system,Basis,vars,cEquation);
-     vectors=SimpleGod->GetMin(system,Basis,vars,cEquation);
-     for(int i=0;i<cEquation;i++)
-     {
-     while(!vectors[i].empty()){
-         text[1+i][vectors[i].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
-         text[1+i][vectors[i].front()+1].installEventFilter(this);
-         actual.push_back(&text[1+i][vectors[i].front()+1]);
-         map[&text[1+i][vectors[i].front()+1]]=vectors[i].front();
-         vectors[i].pop_front();
-     }
-}
+NextStep();
 
    repaint();
 }
 
-void Table::addInformation(int cEquation, int vars,int *errors,int minimum,double** System,double* Z)
+void Table::addInformation(int cEquation, int vars,int *errors,int minimum,double** System,double* Z,QString name,double variant)
 {
-    next->show();
 
     count=new bool[cEquation];
     for(int i=0;i<cEquation;i++)count[i]=false;
 
     system=new double*[cEquation+1];
 QVector<int> p;
-connect(next,SIGNAL(clicked(bool)),SLOT(CheckTetta()));
     for(int i=0;i<cEquation+1;i++)
     {
         system[i]=new double[vars*2+2];
@@ -196,6 +186,8 @@ connect(next,SIGNAL(clicked(bool)),SLOT(CheckTetta()));
     this->cEquation=cEquation;
     this->vars=vars;
     this->type=Type::training;
+     this->name=name;
+     this->variant=variant;
      for(int i=0;i<7;i++){
          this->errors[i]=errors[i];
      }
@@ -245,6 +237,10 @@ SetReadOnly();
 SetWrite(0,cEquation,3+vars,2*vars+3);
 label1->setGeometry(0,0,0,0);
 label1->show();
+next->show();
+goToResul->show();
+ui->pushButton->show();
+
 }
 
 void Table::AllNotColor()
@@ -263,7 +259,7 @@ void Table::SetColorBasis()
 {
     for(int i=0;i<cEquation+1;i++)
     {
-       text[i][0].setStyleSheet("background-color: rgb(71,250,148);");
+       text[i][0].setStyleSheet("background-color: rgb(108, 245, 199);");
     }
 }
 
@@ -284,7 +280,7 @@ void Table::SetColorBasis(int *basis)
        {
     for(int i=0;i<cEquation+1;i++)
     {
-        if(basis[j]!=-1000)text[i][basis[j]+2].setStyleSheet("background-color: rgb(71,250,148);");
+        if(basis[j]!=-1000)text[i][basis[j]+2].setStyleSheet("background-color: rgb(108, 245, 199);");
     }
        }
 }
@@ -293,7 +289,7 @@ void Table::ColorColumn(int j)
 {
     for(int i=0;i<cEquation+2;i++)
     {
-        text[i][j].setStyleSheet("background-color: rgb(71,250,148);");
+        text[i][j].setStyleSheet("background-color: rgb(108, 245, 199);");
     }
 }
 
@@ -324,6 +320,8 @@ void Table::NextStep()
 {
     int Reshenie=0;
     bool flags=false;
+    QDesktopWidget desktop;
+    QRect size=desktop.geometry();
     for(int i=0;i<cEquation;i++){
         if(count[i]==false){
             flags=true;
@@ -335,7 +333,7 @@ void Table::NextStep()
              for(int i=0;i<cEquation;i++){
              while(!vectors[i].empty()){
                  if(SimpleGod->checkBlackList(blackList,i,vectors[i].front())==false){
-                 text[1+i][vectors[i].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
+                 text[1+i][vectors[i].front()+1].setStyleSheet("background-color: rgb(108, 245, 199);");
                  text[1+i][vectors[i].front()+1].installEventFilter(this);
                  actual.push_back(&text[1+i][vectors[i].front()+1]);
                  map[&text[1+i][vectors[i].front()+1]]=vectors[i].front();
@@ -353,8 +351,8 @@ void Table::NextStep()
                   label->show();
                   AllNotColor();
                   PushInfo(result,vars);
-                  results->show();
-                   this->close();
+                  goToResul->setGeometry(size.width()-251,size.height()-170,241,61);
+                  goToResul->show();
              }
     }
     else{
@@ -368,12 +366,12 @@ void Table::NextStep()
             SetColorBasis();
             for(int i=3;i<vars+3;i++)
             {
-                  text[cEquation+1][i].setStyleSheet("background-color: rgb(71,250,148);");
+                  text[cEquation+1][i].setStyleSheet("background-color: rgb(108, 245, 199);");
             }
             PushResult();
             PushInfo(result,vars);
-            results->show();
-             this->close();
+            goToResul->setGeometry(size.width()-251,size.height()-170,241,61);
+            goToResul->show();
             break;
 
         case solution::NotOptimal:
@@ -385,7 +383,7 @@ void Table::NextStep()
             {
                 while(!vectors[i].empty()){
 if(SimpleGod->checkBlackList(blackList,i,vectors[i].front())==false){
-                    text[1+i][vectors[i].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
+                    text[1+i][vectors[i].front()+1].setStyleSheet("background-color: rgb(108, 245, 199);");
                     text[1+i][vectors[i].front()+1].installEventFilter(this);
                     actual.push_back(&text[1+i][vectors[i].front()+1]);
                     map[&text[1+i][vectors[i].front()+1]]=vectors[i].front();
@@ -403,8 +401,8 @@ if(Reshenie==0){
      label->show();
      AllNotColor();
      PushInfo(result,vars);
-     results->show();
-      this->close();
+     goToResul->setGeometry(size.width()-251,size.height()-170,241,61);
+     goToResul->show();
 }
             break;
         case solution::SomeSolution:
@@ -414,7 +412,7 @@ if(Reshenie==0){
             PushResult();
             for(int i=3;i<vars+3;i++)
             {
-                  text[cEquation+1][i].setStyleSheet("background-color: rgb(71,250,148);");
+                  text[cEquation+1][i].setStyleSheet("background-color: rgb(108, 245, 199);");
             }
 
               label->show();
@@ -427,7 +425,7 @@ if(Reshenie==0){
                   while(!vectors[i].empty()){
 if(SimpleGod->checkBlackList(blackList,i,vectors[i].front())==false)
 {
-                      text[1+i][vectors[i].front()+1].setStyleSheet("background-color: rgb(71,250,148);");
+                      text[1+i][vectors[i].front()+1].setStyleSheet("background-color: rgb(108, 245, 199);");
                       text[1+i][vectors[i].front()+1].installEventFilter(this);
                       actual.push_back(&text[1+i][vectors[i].front()+1]);
                       map[&text[1+i][vectors[i].front()+1]]=vectors[i].front();
@@ -446,12 +444,11 @@ else{
                   label->show();
                   AllNotColor();
                   SetColorBasis();
-                  PushInfo(result,vars);
-                  results->show();
-                  this->close();
+                 goToResul->setGeometry(size.width()-251,size.height()-170,241,61);
+                 goToResul->show();
                   for(int i=3;i<vars+3;i++)
                   {
-                        text[cEquation+1][i].setStyleSheet("background-color: rgb(71,250,148);");
+                        text[cEquation+1][i].setStyleSheet("background-color: rgb(108, 245, 199);");
                   }
               }
 
@@ -519,10 +516,10 @@ void Table::GetInputTetta()
             CheckInput[i][j]=(input[i][j+1].text()=="-")? INFINITY:input[i][j+1].text().toDouble();
             input[i][j+1].setStyleSheet("");
             if(std::abs(CheckInput[i][j]-system[i][j])>0.05){
-                if(input[i][j+1].styleSheet()!="background-color: rgb(214,153,146);"){
+                if(input[i][j+1].styleSheet()!="background-color: rgb(252, 162, 189);"){
                 flag=false;
                 errors[1]++;
-                input[i][j+1].setStyleSheet("background-color: rgb(214,153,146);");
+                input[i][j+1].setStyleSheet("background-color: rgb(252, 162, 189);");
                 }
           }
 
@@ -555,7 +552,7 @@ void Table::paintEvent(QPaintEvent *)
 {
 
 
-     this->showFullScreen();
+    this->showFullScreen();
 
     painter=new QPainter(this);
      painter->setPen(QPen(color,sizeLine,Qt::SolidLine));
@@ -838,11 +835,15 @@ label1->setText("Выполните приведение к базису");
     return true;
 }
 else{
-    if(actualInput[i]->styleSheet()!="background-color: rgb(71,250,148);"){
-               actualInput[i]->setStyleSheet("background-color: rgb(71,250,148);");
+    if(actualInput[i]->styleSheet()!="background-color: rgb(108, 245, 199);"){
+               actualInput[i]->setStyleSheet("background-color: rgb(108, 245, 199);");
                 flag=false;
 countMinTetta++;
 return true;
+    }
+    else if(actualInput[i]->styleSheet()=="background-color: rgb(108, 245, 199);"){
+        flag=false;
+        return true;
     }
 }
                 }
@@ -861,7 +862,7 @@ return true;
                                 if(event->type() == QEvent::MouseButtonPress)
                                 {
                                     QLineEdit* line=(QLineEdit*)watched;
-                if(line->styleSheet()=="background-color: rgb(214,153,146);")flag=true;
+                if(line->styleSheet()=="background-color: rgb(252, 162, 189);" )flag=true;
                 else{
                     flag=false;
 
@@ -875,7 +876,7 @@ return true;
                     if(flag==false){
                         errors[2]++;
 QLineEdit* line=(QLineEdit*)watched;
-line->setStyleSheet("background-color: rgb(214,153,146);");
+line->setStyleSheet("background-color: rgb(252, 162, 189);");
 return true;
 
                     }
@@ -916,7 +917,7 @@ void Table::CheckBasis()
             if(std::abs(CheckInput[i][j]-system[i][j])>0.05){
                 flag=false;
                 errors[3]++;
-                input[i][j+1].setStyleSheet("background-color: rgb(214,153,146);");
+                input[i][j+1].setStyleSheet("background-color: rgb(252, 162, 189);");
           }
 
         }
@@ -971,7 +972,7 @@ void Table::CheckAllMin()
        if(reshenie==0)resultat=true;
 }
     else{
-      next->setStyleSheet("background-color: rgb(214,153,146);");
+      next->setStyleSheet("background-color: rgb(252, 162, 189);");
       errors[2]++;
     }
 }
@@ -984,8 +985,7 @@ void Table::CheckC()
     double C=(input[Position][1].text()=="-")? INFINITY:input[Position][1].text().toDouble();
     input[Position][1].setStyleSheet("");
     if(std::abs(C-z[string-vars-3])>0.05){
-        errors[4]++;
-         input[Position][1].setStyleSheet("background-color: rgb(214,153,146);");
+         input[Position][1].setStyleSheet("background-color: rgb(252, 162, 189);");
     }
     else{
         system[Position][0]=C;
@@ -1040,7 +1040,7 @@ void Table::CheckDelta()
          if(std::abs(CheckInput[cEquation][j]-system[cEquation][j])>0.05){
              flag=false;
              errors[5]++;
-             input[cEquation][j+1].setStyleSheet("background-color: rgb(214,153,146);");
+             input[cEquation][j+1].setStyleSheet("background-color: rgb(252, 162, 189);");
 
 
      }
@@ -1115,7 +1115,7 @@ void Table::ErrorNotColor()
     {
         for(int j=vars+3;j<3+2*vars;j++)
         {
-        if(input[i][j].styleSheet()=="background-color: rgb(214,153,146);")input[i][j].setStyleSheet("");
+        if(input[i][j].styleSheet()=="background-color: rgb(252, 162, 189);")input[i][j].setStyleSheet("");
         }
     }
 }
@@ -1148,7 +1148,7 @@ void Table::on_Optimal_clicked()
     {
         for(int i=3;i<vars+3;i++)
         {
-              input[cEquation][i].setStyleSheet("background-color: rgb(71,250,148);");
+              input[cEquation][i].setStyleSheet("background-color: rgb(108, 245, 199);");
         }
         ui->SomeSolution->setStyleSheet("");
         ui->NotOptimal->setStyleSheet("");
@@ -1158,12 +1158,12 @@ void Table::on_Optimal_clicked()
         ui->NotOptimal->hide();
         ui->Optimal->hide();
         PushResult();
-        PushInfo(result,vars,errors);
+        PushInfo(result,vars,errors,name,variant);
         results->show();
         this->close();
     }
     else{
-        ui->Optimal->setStyleSheet("background-color: rgb(214,153,146);");
+        ui->Optimal->setStyleSheet("background-color: rgb(252, 162, 189);");
          errors[6]++;
     }
 }
@@ -1189,7 +1189,7 @@ void Table::on_NotOptimal_clicked()
        connect(next,SIGNAL(clicked(bool)),this,SLOT(CheckTetta()));
     }
     else{
-        ui->NotOptimal->setStyleSheet("background-color: rgb(214,153,146);");
+        ui->NotOptimal->setStyleSheet("background-color: rgb(252, 162, 189);");
          errors[6]++;
     }
 }
@@ -1201,7 +1201,7 @@ void Table::on_SomeSolution_clicked()
     {
         for(int i=3;i<vars+3;i++)
         {
-              input[cEquation][i].setStyleSheet("background-color: rgb(71,250,148);");
+              input[cEquation][i].setStyleSheet("background-color: rgb(108, 245, 199);");
         }
         ui->SomeSolution->setStyleSheet("");
         ui->NotOptimal->setStyleSheet("");
@@ -1221,13 +1221,14 @@ void Table::on_SomeSolution_clicked()
        connect(next,SIGNAL(clicked(bool)),this,SLOT(CheckTetta()));
     }
     else{
-         ui->SomeSolution->setStyleSheet("background-color: rgb(214,153,146);");
+         ui->SomeSolution->setStyleSheet("background-color: rgb(252, 162, 189);");
          errors[6]++;
     }
 }
 
 void Table::on_pushButton_clicked()
 {
+    errors[4]++;
     QDesktopServices::openUrl(QUrl::fromLocalFile("website/main.html"));
     this->setWindowFlags(Qt::WindowStaysOnBottomHint);
     this->showMinimized();
@@ -1235,15 +1236,20 @@ void Table::on_pushButton_clicked()
 
 void Table::NoResult()
 {
-   if(resultat){ PushInfo(result,vars,errors);
+    if(type==Type::training){
+   if(resultat){ PushInfo(result,vars,errors,name,variant);
     results->show();
     this->close();
    }
    else{
-       if(goToResul->styleSheet()!="background-color: rgb(214,153,146);"){
+       if(goToResul->styleSheet()!="background-color: rgb(252, 162, 189);"){
        errors[6]++;
-       goToResul->setStyleSheet("background-color: rgb(214,153,146);");
+       goToResul->setStyleSheet("background-color: rgb(252, 162, 189);");
            }
    }
-
+}
+    else{
+        results->show();
+        this->close();
+    }
 }

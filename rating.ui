@@ -6,33 +6,38 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1194</width>
-    <height>685</height>
+    <width>1224</width>
+    <height>725</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QLabel{
-font: 75 14pt &quot;Times New Roman&quot;;
-}
-QGroupBox{
+   <string notr="true">QGroupBox{
 border-radius:10px;
-border: 2px solid rgb(110,151,145);
+border: 4px solid rgb(163, 137, 131);
+background-color: rgb(255, 240,245);
 }
 QLabel{
+font: 75 16pt &quot;Times New Roman&quot;;
+border: 1px solid rgb(163, 137, 131);
+}
+QLabel#label_3,QLabel#label_5,QLabel#label_7,QLabel#label_9,QLabel#label_11,QLabel#label_13,QLabel#label_15,QLabel#label_16,QLabel#label_20{
+background-color: rgb(236, 215, 210);
+}
+QLabel#label,QLabel#label_18,QLabel#label_19{
+border: 0px solid rgb(163, 137, 131);
 font: 75 18pt &quot;Times New Roman&quot;;
-background-color: rgb(212, 188, 181);
 }</string>
   </property>
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>360</x>
+     <x>340</x>
      <y>10</y>
-     <width>521</width>
-     <height>651</height>
+     <width>571</width>
+     <height>691</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -44,9 +49,9 @@ background-color: rgb(212, 188, 181);
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>0</y>
-      <width>471</width>
+      <x>10</x>
+      <y>51</y>
+      <width>551</width>
       <height>31</height>
      </rect>
     </property>
@@ -60,14 +65,14 @@ background-color: rgb(212, 188, 181);
    <widget class="QLabel" name="label_18">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>40</y>
-      <width>471</width>
-      <height>21</height>
+      <x>10</x>
+      <y>91</y>
+      <width>551</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>Ошибок:</string>
+     <string>Ошибки:</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -77,15 +82,15 @@ background-color: rgb(212, 188, 181);
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>79</y>
-      <width>511</width>
+      <y>120</y>
+      <width>551</width>
       <height>561</height>
      </rect>
     </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
     </property>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QLabel" name="label_4">
@@ -96,7 +101,7 @@ background-color: rgb(212, 188, 181);
          </size>
         </property>
         <property name="text">
-         <string>Приведения к каноническому
+         <string>при приведении к каноническому
  виду:</string>
         </property>
         <property name="alignment">
@@ -113,7 +118,7 @@ background-color: rgb(212, 188, 181);
          </size>
         </property>
         <property name="text">
-         <string>Вычисления θ:</string>
+         <string>при вычислении θ:</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -129,7 +134,7 @@ background-color: rgb(212, 188, 181);
          </size>
         </property>
         <property name="text">
-         <string>Выбора базиса/min θ:</string>
+         <string>при выборе базиса/min θ:</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -145,24 +150,7 @@ background-color: rgb(212, 188, 181);
          </size>
         </property>
         <property name="text">
-         <string>Привидения базисной
-переменной:</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="label_10">
-        <property name="maximumSize">
-         <size>
-          <width>311</width>
-          <height>51</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Заполнения стобца Cб:</string>
+         <string>при привидении к базису:</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -178,7 +166,7 @@ background-color: rgb(212, 188, 181);
          </size>
         </property>
         <property name="text">
-         <string>Вычисления ∆k:</string>
+         <string>при вычисление ∆k:</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -194,7 +182,7 @@ background-color: rgb(212, 188, 181);
          </size>
         </property>
         <property name="text">
-         <string>Оценки ∆k:</string>
+         <string>при оценивании ∆k:</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -217,9 +205,25 @@ background-color: rgb(212, 188, 181);
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QLabel" name="label_10">
+        <property name="maximumSize">
+         <size>
+          <width>311</width>
+          <height>51</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Число обращений к комплексу:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="">
+    <widget class="QWidget" name="layoutWidget">
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="QLabel" name="label_5">
@@ -310,28 +314,6 @@ background-color: rgb(212, 188, 181);
        </widget>
       </item>
       <item>
-       <widget class="QLabel" name="label_11">
-        <property name="minimumSize">
-         <size>
-          <width>141</width>
-          <height>51</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>141</width>
-          <height>51</height>
-         </size>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QLabel" name="label_13">
         <property name="minimumSize">
          <size>
@@ -397,9 +379,63 @@ background-color: rgb(212, 188, 181);
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QLabel" name="label_11">
+        <property name="minimumSize">
+         <size>
+          <width>141</width>
+          <height>51</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>141</width>
+          <height>51</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </widget>
+   <widget class="QLabel" name="label_19">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>551</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QLabel" name="label_20">
+   <property name="geometry">
+    <rect>
+     <x>940</x>
+     <y>40</y>
+     <width>181</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Вариант:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
   </widget>
  </widget>
  <resources/>

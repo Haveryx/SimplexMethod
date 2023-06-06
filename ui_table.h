@@ -30,22 +30,29 @@ public:
         if (Table->objectName().isEmpty())
             Table->setObjectName(QStringLiteral("Table"));
         Table->resize(762, 496);
-        Table->setStyleSheet(QLatin1String("QPushButton{\n"
+        Table->setStyleSheet(QLatin1String("Table{\n"
+"background-color: rgb(255, 240, 245);\n"
+"}\n"
+"QPushButton{\n"
 "border-radius:8px;\n"
-"border: 2px solid rgb(132, 139, 97);\n"
-"background-color: rgb(132, 139, 97);\n"
+"border: 2px solid rgb(163, 137, 131);\n"
+"background-color: rgb(196, 170, 164);\n"
 "	font: 75 18pt \"Times New Roman\";\n"
 "}\n"
 "QPushButton::hover{\n"
-"border: 2px solid rgb(51, 107, 83);\n"
-"background-color: rgb(117, 174, 143);\n"
+"border: 2px solid rgb(163, 137, 131);\n"
+"background-color: rgb(214, 186, 180);\n"
 "}\n"
+"\n"
 "QLabel{\n"
 "font: 75 18pt \"Times New Roman\";\n"
-"background-color: rgb(212, 188, 181);\n"
+"/*background-color: rgb(212, 188, 181);*/\n"
+"background-color: rgb(236, 215, 210);\n"
+"border: 1px solid rgb(163, 137, 131);\n"
 "}\n"
 "QLineEdit{\n"
 "font: 75 18pt \"Times New Roman\";\n"
+"border: 2px solid rgb(163, 137, 131);\n"
 "}"));
         pushButton_2 = new QPushButton(Table);
         pushButton_2->setObjectName(QStringLiteral("pushButton_2"));

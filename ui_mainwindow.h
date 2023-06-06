@@ -32,18 +32,18 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QStringLiteral("MainWindow"));
         MainWindow->resize(782, 441);
-        MainWindow->setStyleSheet(QLatin1String("/*QMainWindow{\n"
-"background-color: rgb(227, 225, 237);\n"
-"}*/\n"
+        MainWindow->setStyleSheet(QLatin1String("QMainWindow{\n"
+"background-color: rgb(255, 240, 245);\n"
+"}\n"
 "QPushButton{\n"
 "border-radius:8px;\n"
-"border: 2px solid rgb(132, 139, 97);\n"
-"background-color: rgb(132, 139, 97);\n"
+"border: 2px solid rgb(163, 137, 131);\n"
+"background-color: rgb(196, 170, 164);\n"
 "	font: 75 18pt \"Times New Roman\";\n"
 "}\n"
 "QPushButton::hover{\n"
-"border: 2px solid rgb(51, 107, 83);\n"
-"background-color: rgb(117, 174, 143);\n"
+"border: 2px solid rgb(163, 137, 131);\n"
+"background-color: rgb(214, 186, 180);\n"
 "}\n"
 ""));
         centralWidget = new QWidget(MainWindow);

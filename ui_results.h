@@ -27,21 +27,42 @@ public:
     {
         if (Results->objectName().isEmpty())
             Results->setObjectName(QStringLiteral("Results"));
-        Results->resize(1142, 654);
+        Results->resize(1142, 713);
         Results->setStyleSheet(QLatin1String("QLabel{\n"
 "font: 75 18pt \"Times New Roman\";\n"
 "}\n"
 "QGroupBox{\n"
 "border-radius:10px;\n"
-"border: 2px solid rgb(110,151,145);\n"
+"border: 4px solid rgb(163, 137, 131);\n"
+"background-color: rgb(255, 240, 245);\n"
 "}\n"
-""));
+"QLabel#label{\n"
+"font: 75 20pt \"Times New Roman\";\n"
+"}\n"
+"QPushButton{\n"
+"border-radius:8px;\n"
+"border: 2px solid rgb(163, 137, 131);\n"
+"background-color: rgb(196, 170, 164);\n"
+"	font: 75 18pt \"Times New Roman\";\n"
+"}\n"
+"QPushButton::hover{\n"
+"border: 2px solid rgb(163, 137, 131);\n"
+"background-color: rgb(214, 186, 180);\n"
+"}"));
         groupBox = new QGroupBox(Results);
         groupBox->setObjectName(QStringLiteral("groupBox"));
-        groupBox->setGeometry(QRect(310, 10, 521, 611));
+        groupBox->setGeometry(QRect(250, 0, 691, 661));
         label = new QLabel(groupBox);
         label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(0, 10, 521, 21));
+        label->setGeometry(QRect(0, 180, 681, 21));
+        QFont font;
+        font.setFamily(QStringLiteral("Times New Roman"));
+        font.setPointSize(20);
+        font.setBold(false);
+        font.setItalic(false);
+        font.setWeight(9);
+        label->setFont(font);
+        label->setScaledContents(false);
         label->setAlignment(Qt::AlignCenter);
 
         retranslateUi(Results);

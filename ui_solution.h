@@ -69,6 +69,9 @@ public:
 "QLineEdit{\n"
 "font: 75 18pt \"Times New Roman\";\n"
 "}\n"
+"QComboBox{\n"
+"font: 75 18pt \"Times New Roman\";\n"
+"}\n"
 ""));
         groupBox = new QGroupBox(Solution);
         groupBox->setObjectName(QStringLiteral("groupBox"));

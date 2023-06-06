@@ -16,7 +16,7 @@
  * 1)Подсчет тетт
  * 2)Выбор минимальных Тетт/базиса
  * 3)не правильно высчитывается базис методом гаусса
- * 4)не правильно вводится с из z(x)
+ * 4)кол-во использований пособия
  * 5)Дельты
  * 6)Не правильная оценка дельты
  */
@@ -32,7 +32,7 @@ public:
     explicit Training(QWidget *parent = 0);
     ~Training();
 signals:
-    void CreateTable(int, int,int*,int,double**,double*);
+    void CreateTable(int, int,int*,int,double**,double*,QString,double);
 private slots:
     void on_pushButton_clicked();
     void GetCoeff();
@@ -49,7 +49,8 @@ void Unsigned();
 void StepOne();
 void StepTwo();
 void on_pushButton_2_clicked();
-
+public slots:
+void GetName(QString name,double variant);
 private:
 void GetSystems();
 void Show();
@@ -64,12 +65,13 @@ Table* table; //Форма с таблицей
     QPushButton ** button,**button_two; //Кнопки
     QComboBox ** comboBox; //<=,=,>=
     int vars=0,cEquation=0;//Количество уравнений и переменных
-    double* coeff,** coeffSystems,*sign; //Коэфициенты системы, целевой функции, а так же знаки (>=,=,<=)
+    double* coeff,** coeffSystems,*sign,variant=0; //Коэфициенты системы, целевой функции, а так же знаки (>=,=,<=)
     QLabel * Zx; //Вывод целевой функции
     QLabel* label1,*label2,*label3,*help;
     Massive* massive; //Класс с методами для работы с массивами
    int checkMin; //тип задачи (Минимум, максимум)
    int *errors;//ошибки
+   QString name="";
 };
 
 #endif // TRAINING_H

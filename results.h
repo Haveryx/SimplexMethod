@@ -16,10 +16,10 @@ public:
     explicit Results(QWidget *parent = 0);
     ~Results();
 signals:
-    void ShowRaiting(int*);
+    void ShowRaiting(int*,QString,double);
 public slots:
     void AddInfo(QVector<double*>,int);
-    void AddInfo(QVector<double *>, int,int*);
+    void AddInfo(QVector<double *>, int,int*,QString,double);
 
 private:
     Ui::Results *ui;
@@ -27,6 +27,8 @@ private:
     QString CheckOstatok(double&);
     Rating* rating;
     int* error;
+    QString name="";
+    double variant=0;
 private slots:
     void ShowRaiting();
 };

@@ -14,18 +14,18 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">/*QMainWindow{
-background-color: rgb(227, 225, 237);
-}*/
+   <string notr="true">QMainWindow{
+background-color: rgb(255, 240, 245);
+}
 QPushButton{
 border-radius:8px;
-border: 2px solid rgb(132, 139, 97);
-background-color: rgb(132, 139, 97);
+border: 2px solid rgb(163, 137, 131);
+background-color: rgb(196, 170, 164);
 	font: 75 18pt &quot;Times New Roman&quot;;
 }
 QPushButton::hover{
-border: 2px solid rgb(51, 107, 83);
-background-color: rgb(117, 174, 143);
+border: 2px solid rgb(163, 137, 131);
+background-color: rgb(214, 186, 180);
 }
 </string>
   </property>

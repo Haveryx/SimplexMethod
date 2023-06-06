@@ -1,0 +1,10 @@
+<HTML>
+<HEAD>
+<TITLE>3ЧАСТЬ</TITLE>
+</HEAD>
+<BODY  bgcolor="#ffc0cb">
+<dl>
+<dt> <b>Знаки зодиака:</b> </dt> 
+</dl>
+</BODY>
+</HTML>

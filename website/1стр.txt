@@ -1,0 +1,12 @@
+<HTML>
+<HEAD>
+<TITLE>1стр</TITLE>
+</HEAD>
+<BODY  bgcolor="#FFF5EE">
+
+<h1  align="center">ВАРИАНТЫ ЗАДАНИЙ</h1>
+<CENTER><IMG SRC="варианты2.gif" width="550" heigh="900" ></CENTER> 
+<a href="10стр.html"><IMG SRC="стрелка налево.gif"  align= "left"></a> 
+
+</BODY>
+</HTML>

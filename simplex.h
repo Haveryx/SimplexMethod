@@ -2,6 +2,7 @@
 #define SIMPLEX_H
 #include<QVector>
 #define INFINITI 33554432
+
 enum class solution
 {
     Optimal,

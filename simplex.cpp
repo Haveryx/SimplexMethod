@@ -219,9 +219,16 @@ QVector<QVector<int>> simplex::GetMax(double **system,int* Basis, int vars, int 
     }
     Vector[I].push_back(position);
     for(int i=0;i<cEquation;i++){
+        if(!Vector[i].empty()){
  for(auto j=Vector[i].begin();j<Vector[i].end();j++){
-     if(((-1*system[i][*j]*system[cEquation][(*j)-vars])>Max) ||(system[cEquation][(*j)-vars]>=0))Vector[i].erase(j);
+     if(std::abs((-1*system[i][*j]*system[cEquation][(*j)-vars])-Max)>0.001){
+         Vector[i].erase(j);
+     }
+         else if(system[cEquation][(*j)-vars]>=0){
+         Vector[i].erase(j);
+     }
  }
+    }
     }
     return Vector;
      }
@@ -252,11 +259,19 @@ QVector<QVector<int>> simplex::GetMax(double **system,int* Basis, int vars, int 
          }
          Vector[I].push_back(position);
          for(int i=0;i<cEquation;i++){
+             if(!Vector[i].empty()){
       for(auto j=Vector[i].begin();j<Vector[i].end();j++){
-          if(((-1*system[i][*j]*system[cEquation][(*j)-vars])>Max) ||(system[cEquation][(*j)-vars]<=0))Vector[i].erase(j);
+          if(std::abs((-1*system[i][*j]*system[cEquation][(*j)-vars])-Max)>0.001){
+
+              Vector[i].erase(j);
+          }
+              else if(system[cEquation][(*j)-vars]<=0){
+              Vector[i].erase(j);
+          }
       }
          }
-         return Vector;
+         }
+                  return Vector;
           }
      }
 
@@ -306,7 +321,7 @@ int simplex::GetMin(double **system, int j, int cEquation)
     if(Min!=INFINITY){
     return position;
     }
-    else return 0;
+    else return -1;
 }
 
 bool simplex::checkBlackList(QVector<QVector<int> > blackList, int position, int data)

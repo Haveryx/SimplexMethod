@@ -5,7 +5,6 @@
 *.user
 *.o
 /debug/*
-/website/*
 /release/*
 /releaseKsenia/*
 

@@ -1,0 +1,7 @@
+<HTML>
+<HEAD>
+<TITLE>Электронный комплекс по изучению симплексного мелода</TITLE>
+</HEAD>
+<BODY>
+<CENTER><IMG SRC="C:\Users\Ksenia\Desktop\электронный комплекс\разворот2.jpg"  width="600" heigh="800"></CENTER> 
+</HTML>
