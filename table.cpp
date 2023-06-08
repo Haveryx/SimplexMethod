@@ -214,6 +214,7 @@ QVector<int> p;
        {
            text[i]=new QLabel(this);
            text[i]->setAlignment(Qt::AlignCenter);
+           text[i]->hide();
 
        }
 
@@ -235,7 +236,6 @@ QVector<int> p;
 
 SetReadOnly();
 SetWrite(0,cEquation,3+vars,2*vars+3);
-label1->setGeometry(0,0,0,0);
 label1->show();
 next->show();
 goToResul->show();
@@ -551,9 +551,13 @@ void Table::GetInputTetta()
 void Table::paintEvent(QPaintEvent *)
 {
 
-
+if(this->windowFlags()!=(Qt::CustomizeWindowHint|Qt::WindowStaysOnTopHint|Qt::ToolTip)){
+        this->setWindowFlags(Qt::CustomizeWindowHint|Qt::WindowStaysOnTopHint|Qt::ToolTip);
+        this->activateWindow();
+    this->show();
     this->showFullScreen();
-
+    this->repaint();
+}
     painter=new QPainter(this);
      painter->setPen(QPen(color,sizeLine,Qt::SolidLine));
    auto geometry= this->geometry();
@@ -588,7 +592,7 @@ switch (type) {
 case Type::reshenie:
     //text[0][0].setFont();Todo Добавить шрифт
     text[0][0].setGeometry(x+sizeLine,y+sizeLine,sizeX-2*sizeLine,sizeY-2*sizeLine);
-    text[0][0].setText("B");
+    text[0][0].setText("Б");
     text[0][0].setAlignment(Qt::AlignCenter);
     text[0][0].show();
 
@@ -623,6 +627,9 @@ case Type::reshenie:
         text[0][i+vars].setAlignment(Qt::AlignCenter);
         text[0][i+vars].show();
     }
+    text[0][2].setText("b");
+    text[0][2].setAlignment(Qt::AlignCenter);
+    text[0][2].show();
 //Delta
     //text[0][0].setFont();Todo Добавить шрифт
     text[cEquation+1][0].setGeometry(x+sizeLine,y+(cEquation+1)*sizeY+sizeLine,2*(sizeX-sizeLine),sizeY-2*sizeLine);
@@ -675,11 +682,9 @@ text[1+cEquation][i+1].setText((QString)chars);
     break;
 case Type::training:
 
-    if(label1->isVisible()){
-        label1->hide();
          label1->setGeometry(x,70,(vars*2 +3)*sizeX,51);
          label1->show();
-    }
+
     if(((vars*2 +3)*sizeX-573)/2<=0){
         int position=std::abs(((vars*2 +3)*sizeX-593)/2);
         ui->Optimal->setGeometry(x-position,y+(cEquation+3)*sizeY,161,41);
@@ -699,7 +704,7 @@ case Type::training:
 
     //text[0][0].setFont();Todo Добавить шрифт
     text[0]->setGeometry(x+sizeLine,y+sizeLine,sizeX-2*sizeLine,sizeY-2*sizeLine);
-    text[0]->setText("B");
+    text[0]->setText("Б");
     text[0]->show();
 
     text[1]->setGeometry(x+sizeX+sizeLine,y+sizeLine,sizeX-sizeLine*2,sizeY-sizeLine*2);
@@ -729,6 +734,8 @@ case Type::training:
         text[i+vars]->setText((QString)chars);
         text[i+vars]->show();
     }
+    text[2]->setText("b");
+    text[2]->show();
 //Delta
     //text[0][0].setFont();Todo Добавить шрифт
     text[vars*2+3]->setGeometry(x+sizeLine,y+(cEquation+1)*sizeY+sizeLine,2*(sizeX-sizeLine),sizeY-2*sizeLine);

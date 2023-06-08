@@ -202,7 +202,7 @@ void Training::KanonTwo()
 {
 ui->label_3->hide();
 label2->setGeometry((size.width()-600)/2,150,600,51);
-QLabel* labelsOne=new QLabel(this);
+ labelsOne=new QLabel(this);
 help->hide();
 label2->setText("Приведение исходной системы к каноническому виду");
 label2->show();
@@ -275,6 +275,7 @@ void Training::CheckMinus()
         delete []Labels;
         delete Zx;
         Repaint();
+        RepaintButton();
     }
 
 }
@@ -311,6 +312,7 @@ void Training::CheckPlus()
         delete []Labels;
         delete Zx;
         Repaint();
+        RepaintButton();
     }
 }
 
@@ -591,6 +593,26 @@ void Training::Repaint()
      }
     label3->show();
 
+}
+
+void Training::RepaintButton()
+{
+    int startX=(size.width()-700-120*vars)/2;
+     int startY=(size.height()-50-70*(cEquation+2))/2;
+ labelsOne->setGeometry((size.width()-80-120*vars)/2-65+120*vars,(size.height()-50-70*(cEquation+2))/2+84,530,111);
+ labelsOne->setAlignment(Qt::AlignCenter);
+ labelsOne->show();
+
+     for(int i=0;i<cEquation;i++)
+     {
+
+         button[i]->setGeometry(startX+340+120*vars,startY+210 +i*70,150,50);
+         button[i]->show();
+
+         button_two[i]->setGeometry(startX+510+120*vars,startY+210 +i*70,150,50);
+         button_two[i]->show();
+
+     }
 }
 
 void Training::on_pushButton_2_clicked()

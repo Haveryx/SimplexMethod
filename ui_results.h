@@ -27,7 +27,7 @@ public:
     {
         if (Results->objectName().isEmpty())
             Results->setObjectName(QStringLiteral("Results"));
-        Results->resize(1142, 713);
+        Results->resize(1205, 713);
         Results->setStyleSheet(QLatin1String("QLabel{\n"
 "font: 75 18pt \"Times New Roman\";\n"
 "}\n"

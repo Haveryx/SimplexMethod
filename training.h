@@ -55,6 +55,7 @@ private:
 void GetSystems();
 void Show();
 void Repaint();
+void RepaintButton();
 void ShowEquation();
 void ShowInputEquation();
 QRect size; //Размеры монитора
@@ -71,6 +72,7 @@ Table* table; //Форма с таблицей
     Massive* massive; //Класс с методами для работы с массивами
    int checkMin; //тип задачи (Минимум, максимум)
    int *errors;//ошибки
+   QLabel* labelsOne;//Информация о том как добавлять переменные
    QString name="";
 };
 

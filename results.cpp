@@ -46,7 +46,7 @@ this->variant=variant;
 QPushButton* button=new QPushButton(this);
 error=new int[7];
 for(int i=0;i<7;i++)error[i]=errors[i];
-button->setGeometry(861,591,241,61);
+button->setGeometry(961,591,241,61);
 button->setText("Далее");
 connect(button,SIGNAL(clicked(bool)),this,SLOT(ShowRaiting()));
 button->show();

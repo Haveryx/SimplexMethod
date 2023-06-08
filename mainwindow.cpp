@@ -9,7 +9,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 this->setWindowFlags(Qt::CustomizeWindowHint|Qt::WindowStaysOnTopHint|Qt::ToolTip);
     ui->setupUi(this);
-    ui->pushButton_2->hide();
   this->activateWindow();
     QDesktopWidget desktop;
 
@@ -36,6 +35,7 @@ void MainWindow::on_pushButton_clicked()
     Name* name=new Name();
     this->hide();
     name->show();
+
 }
 
 void MainWindow::on_pushButton_2_clicked()
